@@ -1,0 +1,98 @@
+html {
+    background-color: #000000; /* 검은색 배경 */
+    color: #FFFFFF; /* 흰색 글씨 */
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #000000; /* 검은색 배경 */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    color: #FFFFFF; /* 흰색 글씨 */
+    border-radius: 8px;
+    text-align: center;
+    position: relative;
+}
+
+.logo {
+    /*position: absolute;*/
+    top: 10px;
+    left: 10px;
+    color: #FFFFFF; /* 흰색 글씨 */
+    text-decoration: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    background-color: #000000; /* 검은색 배경 */
+}
+
+.logo:hover {
+    background-color: #333333; /* 더 어두운 회색 배경 */
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 50px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+    width: 100%;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    text-align: left;
+}
+
+input {
+    width: calc(100% - 20px);
+    padding: 10px;
+    border: 1px solid #444444;
+    border-radius: 5px;
+    background-color: #333333; /* 어두운 회색 배경 */
+    color: #FFFFFF; /* 흰색 글씨 */
+}
+
+input:focus {
+    border-color: #666666;
+    outline: none;
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.button {
+    flex: 1;
+    padding: 8px 0; /* 버튼 크기를 줄임 */
+    background-color: #444444; /* 어두운 회색 배경 */
+    color: #FFFFFF; /* 흰색 글씨 */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    margin: 0 5px;
+    font-size: 14px; /* 글씨 크기를 작게 맞춤 */
+    font-family: Arial, sans-serif; /* 동일한 글씨체 */
+}
+
+.button:first-child {
+    margin-left: 0;
+}
+
+.button:last-child {
+    margin-right: 0;
+}
+
+.button:hover {
+    background-color: #555555; /* 더 어두운 회색 배경 */
+}

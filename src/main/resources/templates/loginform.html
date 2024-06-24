@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/" lang="ko">
+    <head>
+        <meta charset="UTF-8">
+        <title>로그인 화면</title>
+        <link rel="stylesheet" href="/css/loginform.css">
+        <script th:inline="javascript">
+            /*<![CDATA[*/
+            var errorMSG = /*[[${errorMSG}]]*/ '';
+            if (errorMSG) {
+                alert(errorMSG);
+            }
+            /*]]>*/
+        </script>
+    </head>
+
+    <body>
+        <div class="container">
+            <header>
+                <a class="center logo" th:href="@{/velog}">Velog</a>
+            </header>
+            <form th:action="@{/velog/loginform}" method="post" th:object="${user}">
+                <div class="form-group">
+                    <input type="text" id="username" placeholder="아이디" th:field="*{username}" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="password" placeholder="비밀번호" th:field="*{password}" required>
+                </div>
+                <div class="form-group buttons">
+                    <button type="submit" class="button">로그인</button>
+                    <a th:href="@{/velog/userregform}" class="button">회원가입</a>
+                </div>
+            </form>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>My Blog</title>
+    <link rel="stylesheet" href="/css/myblog.css">
+</head>
+<body>
+<div class="container">
+    <header>
+        <div class="left">
+            <a th:href="@{/velog}" class="logo">V</a>
+            <a th:href="@{/velog/myblog/{userId}(userId=${blogOwner.id})}">
+                <h1 th:text="${blogOwner.name} + '의 블로그'">User's Blog</h1>
+            </a>
+        </div>
+        <div class="right">
+            <div th:if="${session.user == null}">
+                <a th:href="@{/velog/loginform}">로그인</a>
+            </div>
+            <div th:if="${session.user != null}">
+                <a th:href="@{/velog/newpost}" class="button">새 글 작성</a>
+                <div class="dropdown">
+                    <button class="dropbtn">
+                        <img th:src="@{${session.user.profileImage}}" alt="Profile Image" class="profile-image"/>
+                    </button>
+                    <div class="dropdown-content">
+                        <a th:href="@{/velog/myblog/{userId}(userId=${session.user.id})}">내 벨로그</a>
+                        <a th:href="@{/velog/drafts}">임시 글</a>
+                        <a th:href="@{/velog/readlist}">읽기 목록</a>
+                        <a th:href="@{/velog/settings}">설정</a>
+                        <a th:href="@{/velog/logout}">로그아웃</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <section>
+        <div class="post-list">
+            <div th:each="post : ${posts}" class="post-item">
+                <h2 th:text="${post.title}">Post Title</h2>
+                <p th:text="${post.content}">Post Content</p>
+                <p th:text="${post.createdAt}">Post Date</p>
+                <img th:src="@{${post.thumbnailImage}}" alt="Thumbnail Image"/>
+            </div>
+        </div>
+    </section>
+</div>
+</body>
+</html>

@@ -1,0 +1,92 @@
+html {
+    background-color: #000000; /* 검은색 배경 */
+    color: #FFFFFF; /* 흰색 글씨 */
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: black; /* 약간의 차이를 둔 검은색 배경 */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    color: #FFFFFF; /* 흰색 글씨 */
+    border-radius: 8px;
+    text-align: center;
+    position: relative;
+}
+
+header {
+    margin-bottom: 30px;
+}
+
+.logo {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    color: #FFFFFF; /* 흰색 글씨 */
+    text-decoration: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    background-color: #333333; /* 어두운 회색 배경 */
+}
+
+h1 {
+    margin-top: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.check-group {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.check-group2 {
+    display: flex;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    color: #CCCCCC; /* 연한 회색 글씨 */
+}
+
+input[type="text"],
+input[type="file"],
+textarea {
+    width: calc(100% - 22px);
+    padding: 10px;
+    border: 1px solid #444444;
+    border-radius: 5px;
+    background-color: #333333; /* 어두운 회색 배경 */
+    color: #FFFFFF; /* 흰색 글씨 */
+    margin-top: 5px;
+}
+
+textarea {
+    resize: vertical;
+    height: 150px;
+}
+
+input[type="checkbox"] {
+    margin-top: 5px;
+}
+
+button {
+    cursor: pointer;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #444444; /* 어두운 회색 배경 */
+    color: #FFFFFF; /* 흰색 글씨 */
+    width: 100%;
+}
+
+.button:hover {
+    background-color: #555555; /* 더 어두운 회색 배경 */
+}
