@@ -11,7 +11,7 @@
         <div class="left">
             <a th:href="@{/velog}" class="logo">V</a>
             <a th:href="@{/velog/myblog/{userId}(userId=${blogOwner.id})}">
-                <h1 th:text="${blogOwner.name} + '의 블로그'">User's Blog</h1>
+                <h1 th:text="${blog.title} + '의 블로그'">User's Blog</h1>
             </a>
         </div>
         <div class="right">
@@ -26,7 +26,7 @@
                     </button>
                     <div class="dropdown-content">
                         <a th:href="@{/velog/myblog/{userId}(userId=${session.user.id})}">내 벨로그</a>
-                        <a th:href="@{/velog/drafts}">임시 글</a>
+                        <a th:href="@{/velog/saves}">임시 글</a>
                         <a th:href="@{/velog/readlist}">읽기 목록</a>
                         <a th:href="@{/velog/settings}">설정</a>
                         <a th:href="@{/velog/logout}">로그아웃</a>
@@ -38,10 +38,10 @@
     <section>
         <div class="post-list">
             <div th:each="post : ${posts}" class="post-item">
-                <h2 th:text="${post.title}">Post Title</h2>
-                <p th:text="${post.content}">Post Content</p>
-                <p th:text="${post.createdAt}">Post Date</p>
                 <img th:src="@{${post.thumbnailImage}}" alt="Thumbnail Image"/>
+                <h2 th:text="${post.title}">Post Title</h2>
+                <p th:text="${post.thumbnailText}">Post Content</p>
+                <p th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd')}">Post Date</p>
             </div>
         </div>
     </section>

@@ -1,10 +1,8 @@
 package hello.velog.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Table(name = "blogs")
@@ -15,11 +13,18 @@ public class Blog {
     private Long id;
 
     @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id", nullable = false)
+    @JsonBackReference
     private User user;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String title;
 
-    @Column(nullable = false, length = 100)
-    private String intro;
+    @Column(nullable = true)
+    private String intro = "소개를 입력해주세요.";
+
+    public Blog(User user, String title) {
+        this.user = user;
+        this.title = title;
+    }
 }

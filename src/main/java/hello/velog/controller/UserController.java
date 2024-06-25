@@ -3,7 +3,7 @@ package hello.velog.controller;
 import hello.velog.domain.User;
 import hello.velog.service.UserService;
 import jakarta.servlet.http.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -12,9 +12,9 @@ import java.util.NoSuchElementException;
 
 @Controller
 @RequestMapping("/velog")
+@RequiredArgsConstructor
 public class UserController {
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
     @GetMapping
     public String home() {
@@ -39,7 +39,6 @@ public class UserController {
             redirectAttributes.addFlashAttribute("errorMSG", e.getMessage());
             return "redirect:/velog/loginform";
         }
-
         return "redirect:/velog";
     }
 

@@ -2,15 +2,15 @@ package hello.velog.controller;
 
 import hello.velog.domain.User;
 import hello.velog.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/velog")
+@RequiredArgsConstructor
 public class UserRestController {
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
     // 사용자 등록 엔드포인트
     @PostMapping("/userregform")

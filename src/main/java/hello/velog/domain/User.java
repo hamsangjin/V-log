@@ -1,5 +1,6 @@
 package hello.velog.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -18,8 +19,9 @@ public class User {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//    @OneToOne(fetch = FetchType.EAGER)
-//    private Blog blog;
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private Blog blog;
 
     @Column(nullable = false, unique = true, length = 50)
     private String username;
@@ -34,7 +36,7 @@ public class User {
     private String email;
 
     @Column(name = "profile_image")
-    private String profileImage;
+    private String profileImage = "/images/user/default-thumbnail.png";
 
     @Column(name = "registration_date")
     @CreatedDate

@@ -20,7 +20,7 @@ public class Post {
     @Column(name = "user_id", nullable = false)
     private Long userId;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String title;
 
     @Column(nullable = false)
@@ -36,7 +36,7 @@ public class Post {
     private Boolean temporarySetting = false;
 
     @Column(name = "thumbnail_image")
-    private String thumbnailImage = "/Users/sangjin/Desktop/likelion/velog/src/main/resources/static/images/default-profile.png";
+    private String thumbnailImage = "/images/post/default-thumbnail.png";
 
     @Column(name = "thumbnail_text", length = 100)
     private String thumbnailText;

@@ -3,7 +3,7 @@ package hello.velog.controller;
 import hello.velog.domain.*;
 import hello.velog.service.*;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -14,11 +14,10 @@ import java.util.*;
 
 @Controller
 @RequestMapping("/velog")
+@RequiredArgsConstructor
 public class PostController {
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private PostService postService;
+    private final UserService userService;
+    private final PostService postService;
 
     @GetMapping("/newpost")
     public String newPostForm(HttpSession session,
@@ -46,10 +45,10 @@ public class PostController {
             return "redirect:/velog/loginform";
         }
 
-        String thumbnailImagePath = "/Users/sangjin/Desktop/likelion/velog/src/main/resources/static/images/default-profile.png";
+        String thumbnailImagePath = "/images/post/default-thumbnail.png";
         if (!thumbnailImageFile.isEmpty()) {
             try {
-                String uploadDir = "/Users/sangjin/Desktop/likelion/velog/src/main/resources/static/images/"; // 썸네일 이미지 저장 경로 설정
+                String uploadDir = "/Users/sangjin/Desktop/likelion/velog/src/main/resources/static/images/post/"; // 썸네일 이미지 저장 경로 설정
                 String uuid = UUID.randomUUID().toString();
                 String originalFilename = thumbnailImageFile.getOriginalFilename();
                 String storedFilename = uuid + "_" + originalFilename;
@@ -57,7 +56,7 @@ public class PostController {
                 File destFile = new File(uploadDir + storedFilename);
                 thumbnailImageFile.transferTo(destFile);
 
-                thumbnailImagePath = "/Users/sangjin/Desktop/likelion/velog/src/main/resources/static/images/" + storedFilename; // 저장된 이미지의 URL 설정
+                thumbnailImagePath = "/images/post/" + storedFilename; // 저장된 이미지의 URL 설정
             } catch (IOException e) {
                 e.printStackTrace();
                 redirectAttributes.addFlashAttribute("errorMSG", "썸네일 이미지 업로드 중 오류가 발생했습니다.");
