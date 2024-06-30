@@ -1,12 +1,9 @@
 package hello.velog.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-import java.time.LocalDateTime;
+import lombok.*;
+import java.time.*;
+import java.util.*;
 
 @Entity
 @Table(name = "posts")
@@ -43,6 +40,20 @@ public class Post {
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
+
+    @OneToMany(mappedBy = "post")
+    private Set<Like> likes = new HashSet<>();
+
+    @OneToMany(mappedBy = "post")
+    private Set<Comment> comments = new HashSet<>();
+
+    @OneToMany(mappedBy = "post")
+    private Set<PostTag> postTags = new HashSet<>();
+
+    @ManyToOne
+    @JoinColumn(name = "series_id")
+    private Series series;
+
     public Post(Long userId, String title, String content, Boolean privacySetting, Boolean temporarySetting, String thumbnailImage, String thumbnailText) {
         this.userId = userId;
         this.title = title;

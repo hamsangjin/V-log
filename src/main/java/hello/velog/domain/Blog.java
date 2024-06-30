@@ -3,6 +3,7 @@ package hello.velog.domain;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
+import java.util.*;
 
 @Entity
 @Table(name = "blogs")
@@ -22,6 +23,12 @@ public class Blog {
 
     @Column(nullable = true)
     private String intro = "소개를 입력해주세요.";
+
+    @OneToMany(mappedBy = "blog")
+    private Set<Tag> tags = new HashSet<>();
+
+    @OneToMany(mappedBy = "blog")
+    private Set<Series> series = new HashSet<>();
 
     public Blog(User user, String title) {
         this.user = user;

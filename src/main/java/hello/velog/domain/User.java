@@ -50,6 +50,12 @@ public class User {
     )
     private Set<Role> roles = new HashSet<>();
 
+    @OneToMany(mappedBy = "user")
+    private Set<Like> likes = new HashSet<>();
+
+    @OneToMany(mappedBy = "user")
+    private Set<Comment> comments = new HashSet<>();
+
     public User(String username, String password, String name, String email) {
         this.username = username;
         this.password = password;
