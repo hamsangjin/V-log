@@ -1,3 +1,5 @@
+/* header를 위한 css 파일*/
+
 html {
     background-color: #000000; /* 검은색 배경 */
     color: #FFFFFF; /* 흰색 글씨 */
@@ -5,39 +7,119 @@ html {
 }
 
 .container {
-    max-width: 600px;
-    margin: 50px auto;
+    max-width: 960px;
+    margin: 0 auto;
     padding: 20px;
-    background-color: black; /* 약간의 차이를 둔 검은색 배경 */
+    background-color: #000000; /* 검은색 배경 */
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     color: #FFFFFF; /* 흰색 글씨 */
     border-radius: 8px;
-    text-align: center;
-    position: relative;
 }
 
 header {
-    margin-bottom: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #444444; /* 아래쪽 경계선 */
+    margin-bottom: 20px; /* 아래쪽 여백 */
 }
 
-.logo {
-    position: absolute;
-    top: 10px;
-    left: 10px;
+header a {
     color: #FFFFFF; /* 흰색 글씨 */
     text-decoration: none;
     padding: 5px 10px;
     border-radius: 5px;
-    background-color: #333333; /* 어두운 회색 배경 */
+    background-color: #000000; /* 검은색 배경 */
 }
 
-h1 {
-    margin-top: 20px;
+header a:hover {
+    background-color: #333333; /* 더 어두운 회색 배경 */
 }
+
+.left {
+    flex: 1;
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    top: 10px;
+    left: 10px;
+    color: black;
+    text-decoration: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    background-color: white;
+}
+
+.logo:hover {
+    background-color: #333333; /* 더 어두운 회색 배경 */
+}
+
+.right {
+    flex: 1;
+    text-align: right;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropbtn {
+    background-color: #000000;
+    color: white;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    border-radius: 50%;
+}
+
+.profile-image {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #000000;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    border-radius: 5px;
+}
+
+.dropdown-content a {
+    color: white;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {
+    background-color: #333333;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* -- */
+
+/* 게시글 작성을 위한 css */
 
 .form-group {
     margin-bottom: 15px;
     text-align: left;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    color: #CCCCCC; /* 연한 회색 글씨 */
 }
 
 .check-group {
@@ -50,10 +132,8 @@ h1 {
     display: flex;
 }
 
-label {
-    display: block;
-    margin-bottom: 5px;
-    color: #CCCCCC; /* 연한 회색 글씨 */
+input[type="checkbox"] {
+    margin-top: 5px;
 }
 
 input[type="text"],
@@ -71,10 +151,6 @@ textarea {
 textarea {
     resize: vertical;
     height: 150px;
-}
-
-input[type="checkbox"] {
-    margin-top: 5px;
 }
 
 button {

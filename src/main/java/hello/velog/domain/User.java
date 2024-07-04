@@ -36,7 +36,7 @@ public class User {
     private String email;
 
     @Column(name = "profile_image")
-    private String profileImage = "/images/user/default-thumbnail.png";
+    private String profileImage = "/images/user/default-image.png";
 
     @Column(name = "registration_date")
     @CreatedDate

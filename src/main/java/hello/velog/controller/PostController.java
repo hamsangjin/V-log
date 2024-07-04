@@ -28,6 +28,8 @@ public class PostController {
             redirectAttributes.addFlashAttribute("errorMSG", "로그인이 필요한 기능입니다.");
             return "redirect:/velog/loginform";
         }
+
+        model.addAttribute("user", user);
         model.addAttribute("post", new Post());
         return "newpost";
     }
@@ -45,7 +47,7 @@ public class PostController {
             return "redirect:/velog/loginform";
         }
 
-        String thumbnailImagePath = "/images/post/default-thumbnail.png";
+        String thumbnailImagePath = "/images/post/default-image.png";
         if (!thumbnailImageFile.isEmpty()) {
             try {
                 String uploadDir = "/Users/sangjin/Desktop/likelion/velog/src/main/resources/static/images/post/"; // 썸네일 이미지 저장 경로 설정

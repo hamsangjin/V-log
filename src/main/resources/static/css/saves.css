@@ -1,4 +1,5 @@
-/* 공통 스타일 */
+/* header를 위한 css 파일*/
+
 html {
     background-color: #000000; /* 검은색 배경 */
     color: #FFFFFF; /* 흰색 글씨 */
@@ -13,8 +14,6 @@ html {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     color: #FFFFFF; /* 흰색 글씨 */
     border-radius: 8px;
-    text-align: center;
-    position: relative;
 }
 
 header {
@@ -40,7 +39,22 @@ header a:hover {
 
 .left {
     flex: 1;
-    text-align: left;
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    top: 10px;
+    left: 10px;
+    color: black;
+    text-decoration: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    background-color: white;
+}
+
+.logo:hover {
+    background-color: #333333; /* 더 어두운 회색 배경 */
 }
 
 .right {
@@ -59,6 +73,12 @@ header a:hover {
     padding: 10px;
     border: none;
     cursor: pointer;
+    border-radius: 50%;
+}
+
+.profile-image {
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
 }
 
@@ -87,43 +107,49 @@ header a:hover {
     display: block;
 }
 
-.profile-image {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
+/* -- */
+
+/* 게시글 목록을 위한 css */
+.post-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
-/* Draft Section 스타일 */
-.draft-section {
-    margin-top: 20px;
-    text-align: left; /* 왼쪽 정렬 */
+.post-item {
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 5px;
 }
 
-.draft-post {
-    background-color: #333333; /* 어두운 회색 배경 */
-    padding: 15px;
-    margin-bottom: 10px; /* 아래쪽 여백 */
-    border-radius: 5px; /* 모서리를 둥글게 */
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5); /* 그림자 효과 */
+.post-item:hover {
+    background-color: #333333; /* 더 어두운 회색 배경 */
 }
 
-.draft-post h3 {
-    font-size: 18px;
-    margin-bottom: 5px; /* 아래쪽 여백 */
+.post-item a {
     color: #FFFFFF; /* 흰색 글씨 */
+    text-decoration: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    background-color: unset; /* 검은색 배경 */
 }
 
-.draft-post p {
-    font-size: 14px;
-    line-height: 1.5; /* 줄 간격 */
-    color: #CCCCCC; /* 연한 회색 글씨 */
+.post-item img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+    margin-top: 10px;
 }
 
-.draft-post a {
-    color: #1e90ff; /* 링크 색상 */
-    text-decoration: none; /* 밑줄 제거 */
+.thumbnail-container {
+    text-align: center;
+    margin-bottom: 20px;
 }
 
-.draft-post a:hover {
-    text-decoration: underline; /* 호버시 밑줄 추가 */
+.post-thumbnail {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
 }
+
+/**/

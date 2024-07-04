@@ -7,6 +7,23 @@ spring:
     username: sangjin
     password: sangjin
     driver-class-name: com.mysql.cj.jdbc.Driver
+#
+#  security:
+#    oauth2:
+#      client:
+#        registration:
+#          github:
+#            client-id: Iv23liLQwsNCV9YFuV1k
+#            client-secret: c5bc91ce2e038ebf96e42aac6907831d656d5444
+#            scope: profile, email
+#            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+#            client-name: GitHub
+#        provider:
+#          github:
+#            authorization-uri: https://github.com/login/oauth/authorize
+#            token-uri: https://github.com/login/oauth/access_token
+#            user-info-uri: https://api.github.com/user
+#            user-name-attribute: id
 
   jpa:
     hibernate:

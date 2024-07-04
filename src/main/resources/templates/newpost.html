@@ -8,7 +8,28 @@
     <body>
         <div class="container">
             <header>
-                <a th:href="@{/velog}" class="logo">Velog</a>
+                <div class="left">
+                    <a th:href="@{/velog}">Velog</a>
+                </div>
+                <div class="right">
+                    <div th:if="${session.user == null}">
+                        <a th:href="@{/velog/loginform}">로그인</a>
+                    </div>
+                    <div th:if="${session.user != null}">
+                        <div class="dropdown">
+                            <button class="dropbtn">
+                                <img th:src="@{{profileImage}(profileImage=${session.user.profileImage})}" alt="Profile Image" class="profile-image"/>
+                            </button>
+                            <div class="dropdown-content">
+                                <a th:href="@{/velog/myblog/{userId}(userId=${session.user.id})}">내 벨로그</a>
+                                <a th:href="@{/velog/saves}">임시 글</a>
+                                <a th:href="@{/velog/readlist}">읽기 목록</a>
+                                <a th:href="@{/velog/settings}">설정</a>
+                                <a th:href="@{/velog/logout}">로그아웃</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </header>
             <form th:action="@{/velog/newpost}" method="post" enctype="multipart/form-data" th:object="${post}">
                 <div class="form-group">
@@ -25,7 +46,7 @@
                         <input type="checkbox" id="privacySetting" th:field="*{privacySetting}">
                     </div>
                     <div class="check-group2">
-                        <label for="temporarySetting">임시 저장 설정</label>
+                        <label for="temporarySetting">임시 저장</label>
                         <input type="checkbox" id="temporarySetting" th:field="*{temporarySetting}">
                     </div>
                 </div>

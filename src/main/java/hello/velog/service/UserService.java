@@ -6,6 +6,9 @@ import jakarta.servlet.http.*;
 import lombok.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 @RequiredArgsConstructor
@@ -33,14 +36,14 @@ public class UserService {
     public User register(User user) {
         // 아이디 중복 확인
         if (isUsernameTaken(user.getUsername()))    throw new IllegalArgumentException("아이디가 이미 존재합니다.");
-
         // 이메일 중복 확인
         if (isEmailTaken(user.getEmail()))          throw new IllegalArgumentException("이메일이 이미 존재합니다.");
 
         Blog blog = new Blog(user, user.getName()); // 블로그 엔티티 생성 및 설정
         user.setBlog(blog);                         // User 엔티티 설정
         User savedUser = userRepository.save(user); // User 엔티티를 먼저 저장
-        blogRepository.save(blog);                  // Blog 엔티티를 그 다음에 저장
+
+        blogRepository.save(blog);                      // Blog 엔티티를 그 다음에 저장
 
         // 역할을 ROLE_USER로 설정
         Optional<Role> role = roleRepository.findByName("ROLE_USER");
@@ -48,6 +51,7 @@ public class UserService {
             UserRole userRole = new UserRole(savedUser, role.get());
             userRoleRepository.save(userRole);
         }
+
         return savedUser;
     }
 

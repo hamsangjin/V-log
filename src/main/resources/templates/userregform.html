@@ -9,8 +9,12 @@
     <body>
         <div class="container">
             <header>
-                <a th:href="@{/velog}" class="logo">Velog</a>
-                <a th:href="@{/velog/loginform}" class="link">Login</a>
+                <div class="left">
+                    <a th:href="@{/velog}">Velog</a>
+                </div>
+                <div class="right">
+                        <a th:href="@{/velog/loginform}">로그인</a>
+                </div>
             </header>
 
             <form th:action="@{/velog/userregform}" method="post" th:object="${user}" onsubmit="submitForm(event)">
@@ -34,8 +38,8 @@
                     <label for="name">Email</label>
                     <input type="text" id="email" placeholder="Email" th:field="*{email}" required>
                 </div>
-                <div>
-                    <button type="submit" class="button">회원가입</button>
+                <div class="form-group">
+                    <button type="submit">회원가입</button>
                 </div>
             </form>
         </div>

@@ -17,7 +17,9 @@
     <body>
         <div class="container">
             <header>
-                <a class="center logo" th:href="@{/velog}">Velog</a>
+                <div class="left">
+                    <a th:href="@{/velog}">Velog</a>
+                </div>
             </header>
             <form th:action="@{/velog/loginform}" method="post" th:object="${user}">
                 <div class="form-group">

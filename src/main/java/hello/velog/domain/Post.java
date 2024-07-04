@@ -9,6 +9,7 @@ import java.util.*;
 @Table(name = "posts")
 @Getter @Setter
 @NoArgsConstructor @AllArgsConstructor
+@ToString
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,7 +34,7 @@ public class Post {
     private Boolean temporarySetting = false;
 
     @Column(name = "thumbnail_image")
-    private String thumbnailImage = "/images/post/default-thumbnail.png";
+    private String thumbnailImage = "/images/post/default-image.png";
 
     @Column(name = "thumbnail_text", length = 100)
     private String thumbnailText;

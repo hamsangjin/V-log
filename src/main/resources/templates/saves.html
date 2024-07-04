@@ -33,13 +33,18 @@
             </div>
         </div>
     </header>
-    <section class="draft-section">
-        <div th:each="save : ${saves}">
-            <div class="draft-post">
-                <img th:src="@{${save.thumbnailImage}}" alt="Thumbnail Image"/>
-                <h2 th:text="${save.title}">Post Title</h2>
-                <p th:text="${save.thumbnailText}">Post Content</p>
-                <p th:text="${#temporals.format(save.createdAt, 'yyyy-MM-dd')}">Post Date</p>
+    <section>
+        <div class="post-list">
+            <div th:each="post : ${posts}" class="post-item">
+                <a th:href="@{'/velog/myblog/' + ${session.user.id} + '/' + ${post.id}}">
+                    <div class="thumbnail-container">
+                        <img class="post-thumbnail" th:src="@{${post.thumbnailImage}}" alt="Thumbnail Image"/>
+                    </div>
+
+                    <h2 th:text="${post.title}">Post Title</h2>
+                    <p th:text="${post.thumbnailText}">Post Content</p>
+                    <p th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd')}">Post Date</p>
+                </a>
             </div>
         </div>
     </section>

@@ -1,3 +1,5 @@
+/* header를 위한 css 파일*/
+
 html {
     background-color: #000000; /* 검은색 배경 */
     color: #FFFFFF; /* 흰색 글씨 */
@@ -35,16 +37,24 @@ header a:hover {
     background-color: #333333; /* 더 어두운 회색 배경 */
 }
 
-header h1 {
-    font-size: 24px;
-    color: #FFFFFF; /* 흰색 글씨 */
-    margin-left: 10px;
-}
-
 .left {
     flex: 1;
     display: flex;
     align-items: center;
+}
+
+.logo {
+    top: 10px;
+    left: 10px;
+    color: black;
+    text-decoration: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    background-color: white;
+}
+
+.logo:hover {
+    background-color: #333333; /* 더 어두운 회색 배경 */
 }
 
 .right {
@@ -63,6 +73,12 @@ header h1 {
     padding: 10px;
     border: none;
     cursor: pointer;
+    border-radius: 50%;
+}
+
+.profile-image {
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
 }
 
@@ -91,67 +107,9 @@ header h1 {
     display: block;
 }
 
-.profile-image {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-}
+/* -- */
 
-.blog-section {
-    margin-top: 20px;
-}
-
-.blog-section h2 {
-    font-size: 20px;
-    color: #FFFFFF; /* 흰색 글씨 */
-    margin-bottom: 10px; /* 아래쪽 여백 */
-    text-align: left; /* 왼쪽 정렬 */
-}
-
-.blog-post {
-    background-color: #333333; /* 어두운 회색 배경 */
-    padding: 15px;
-    margin-bottom: 10px; /* 아래쪽 여백 */
-    border-radius: 5px; /* 모서리를 둥글게 */
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5); /* 그림자 효과 */
-    text-align: left; /* 왼쪽 정렬 */
-}
-
-.blog-post h3 {
-    font-size: 18px;
-    margin-bottom: 5px; /* 아래쪽 여백 */
-    color: #FFFFFF; /* 흰색 글씨 */
-}
-
-.blog-post p {
-    font-size: 14px;
-    line-height: 1.5; /* 줄 간격 */
-    color: #CCCCCC; /* 연한 회색 글씨 */
-}
-
-.blog-post a {
-    color: #1e90ff; /* 링크 색상 */
-    text-decoration: none; /* 밑줄 제거 */
-}
-
-.blog-post a:hover {
-    text-decoration: underline; /* 호버시 밑줄 추가 */
-}
-
-.logo {
-    top: 10px;
-    left: 10px;
-    color: black;
-    text-decoration: none;
-    padding: 5px 10px;
-    border-radius: 5px;
-    background-color: white;
-}
-
-.logo:hover {
-    background-color: #333333; /* 더 어두운 회색 배경 */
-}
-
+/* 게시글 목록을 위한 css */
 .post-list {
     display: flex;
     flex-direction: column;
@@ -164,9 +122,33 @@ header h1 {
     border-radius: 5px;
 }
 
+.post-item:hover {
+    background-color: #333333; /* 더 어두운 회색 배경 */
+}
+
+.post-item a {
+    color: #FFFFFF; /* 흰색 글씨 */
+    text-decoration: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    background-color: unset; /* 검은색 배경 */
+}
+
 .post-item img {
     max-width: 100%;
     height: auto;
     border-radius: 5px;
     margin-top: 10px;
 }
+
+.thumbnail-container {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.post-thumbnail {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+/**/

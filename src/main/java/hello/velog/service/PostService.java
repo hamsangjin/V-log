@@ -28,4 +28,9 @@ public class PostService {
     public User getUserById(Long userId) {
         return userRepository.findById(userId).orElse(null);
     }
+
+    // 포스트 상세보기를 위한 메소드
+    public Post getPostById(Long id) {
+        return postRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid post ID"));
+    }
 }

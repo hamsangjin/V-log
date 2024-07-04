@@ -35,11 +35,36 @@ public class BlogController {
             posts = postService.getUserPosts(userId, false, false);
         }
 
-        Blog blog = blogService.findBlogByUserId(sessionUser.getId());
+        Blog blog = blogService.findBlogByUserId(userId);
         model.addAttribute("blog", blog);
         model.addAttribute("posts", posts);
         model.addAttribute("blogOwner", postService.getUserById(userId));
         return "myblog";
+    }
+
+    @GetMapping("/myblog/{userId}/{id}")
+    public String getPost(@PathVariable Long userId, @PathVariable Long id,
+                          HttpServletRequest request, Model model){
+
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
+
+        Post post = postService.getPostById(id);
+
+        // 일반적으론 게시물 클릭을 통해 접속해 아래 if문이 필요없지만, url을 통한 접속을 제한하는 것이다.
+        // 게시물 권한 확인
+        if (post.getPrivacySetting() || post.getTemporarySetting()) {
+            // 로그아웃 상태이거나 다른 유저의 블로그를 보는 경우
+            if (user == null || !user.getId().equals(userId)) {
+                return "redirect:/velog/myblog/" + userId;      // 접근할 수 없으면 다시 게시글 목록으로
+            }
+        }
+
+        model.addAttribute("user", user);
+        model.addAttribute("post", post);
+        model.addAttribute("blogOwner", postService.getUserById(userId));
+
+        return "postDetail";
     }
 
     @GetMapping("/saves")
@@ -50,8 +75,8 @@ public class BlogController {
             redirectAttributes.addFlashAttribute("errorMSG", "로그인이 필요한 기능입니다.");
             return "redirect:/velog/loginform";
         }
-        List<Post> saves = postService.getUserPosts(user.getId(), null, true);
-        model.addAttribute("saves", saves);
+        List<Post> posts = postService.getUserPosts(user.getId(), null, true);
+        model.addAttribute("posts", posts);
         return "saves";
     }
 }

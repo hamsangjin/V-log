@@ -38,10 +38,15 @@
     <section>
         <div class="post-list">
             <div th:each="post : ${posts}" class="post-item">
-                <img th:src="@{${post.thumbnailImage}}" alt="Thumbnail Image"/>
-                <h2 th:text="${post.title}">Post Title</h2>
-                <p th:text="${post.thumbnailText}">Post Content</p>
-                <p th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd')}">Post Date</p>
+                <a th:href="@{'/velog/myblog/' + ${blogOwner.id} + '/' + ${post.id}}">
+                        <div class="thumbnail-container">
+                            <img class="post-thumbnail" th:src="@{${post.thumbnailImage}}" alt="Thumbnail Image"/>
+                        </div>
+
+                        <h2 th:text="${post.title}">Post Title</h2>
+                        <p th:text="${post.thumbnailText}">Post Content</p>
+                        <p th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd')}">Post Date</p>
+                </a>
             </div>
         </div>
     </section>

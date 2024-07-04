@@ -1,3 +1,4 @@
+/* header를 위한 css 부분*/
 html {
     background-color: #000000; /* 검은색 배경 */
     color: #FFFFFF; /* 흰색 글씨 */
@@ -5,21 +6,25 @@ html {
 }
 
 .container {
-    max-width: 400px;
+    max-width: 960px;
     margin: 0 auto;
     padding: 20px;
     background-color: #000000; /* 검은색 배경 */
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     color: #FFFFFF; /* 흰색 글씨 */
     border-radius: 8px;
-    text-align: center;
-    position: relative;
 }
 
-.logo {
-    /*position: absolute;*/
-    top: 10px;
-    left: 10px;
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #444444; /* 아래쪽 경계선 */
+    margin-bottom: 20px; /* 아래쪽 여백 */
+}
+
+header a {
     color: #FFFFFF; /* 흰색 글씨 */
     text-decoration: none;
     padding: 5px 10px;
@@ -27,9 +32,17 @@ html {
     background-color: #000000; /* 검은색 배경 */
 }
 
-.logo:hover {
+header a:hover {
     background-color: #333333; /* 더 어두운 회색 배경 */
 }
+
+.left {
+    flex: 1;
+    display: flex;
+    align-items: center;
+}
+
+/* -- */
 
 form {
     display: flex;
@@ -40,13 +53,9 @@ form {
 
 .form-group {
     margin-bottom: 15px;
-    width: 100%;
-}
-
-label {
-    display: block;
-    margin-bottom: 5px;
-    text-align: left;
+    width: 40%;
+    text-align: center;
+    position: relative;
 }
 
 input {
@@ -67,7 +76,7 @@ input:focus {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 100%;
+    width: 40%;
 }
 
 .button {
@@ -96,3 +105,5 @@ input:focus {
 .button:hover {
     background-color: #555555; /* 더 어두운 회색 배경 */
 }
+
+
