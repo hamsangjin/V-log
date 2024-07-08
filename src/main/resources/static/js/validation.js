@@ -6,7 +6,7 @@ let isPasswordChecked = false;
 function checkUsername() {
     const username = document.getElementById("username").value;
     // 아이디 중복 확인 API 호출
-    return fetch(`/velog/api/users/check-username?username=${username}`)
+    return fetch(`/vlog/api/users/check-username?username=${username}`)
         .then(response => response.json())
         .then(data => {
             isUsernameChecked = !data; // data가 true면 중복, false면 사용 가능
@@ -17,7 +17,7 @@ function checkUsername() {
 function checkEmail() {
     const email = document.getElementById("email").value;
     // 이메일 중복 확인 API 호출
-    return fetch(`/velog/api/users/check-email?email=${email}`)
+    return fetch(`/vlog/api/users/check-email?email=${email}`)
         .then(response => response.json())
         .then(data => {
             isEmailChecked = !data; // data가 true면 중복, false면 사용 가능
@@ -59,7 +59,7 @@ function submitForm(event) {
             email: document.getElementById("email").value
         };
 
-        fetch('/velog/userregform', {
+        fetch('/vlog/userreg', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -68,7 +68,7 @@ function submitForm(event) {
         })
             .then(response => response.json())
             .then(data => {
-                window.location.href = '/velog/loginform'; // 회원가입 완료 후 로그인 페이지로 이동
+                window.location.href = '/vlog/loginform'; // 회원가입 완료 후 로그인 페이지로 이동
             })
             .catch(error => {
                 alert("회원가입 중 오류가 발생했습니다.");

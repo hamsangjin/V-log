@@ -10,14 +10,14 @@
         <div class="container">
             <header>
                 <div class="left">
-                    <a th:href="@{/velog}">Velog</a>
+                    <a th:href="@{/vlog}">V-log</a>
                 </div>
                 <div class="right">
-                        <a th:href="@{/velog/loginform}">로그인</a>
+                        <a th:href="@{/vlog/loginform}">로그인</a>
                 </div>
             </header>
 
-            <form th:action="@{/velog/userregform}" method="post" th:object="${user}" onsubmit="submitForm(event)">
+            <form th:action="@{/vlog/userreg}" method="post" th:object="${user}" onsubmit="submitForm(event)">
                 <div class="form-group">
                     <label for="name">아이디</label>
                     <input type="text" id="username" placeholder="아이디" th:field="*{username}" required>

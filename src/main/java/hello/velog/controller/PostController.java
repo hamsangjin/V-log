@@ -13,7 +13,7 @@ import java.io.*;
 import java.util.*;
 
 @Controller
-@RequestMapping("/velog")
+@RequestMapping("/vlog")
 @RequiredArgsConstructor
 public class PostController {
     private final UserService userService;
@@ -26,7 +26,7 @@ public class PostController {
         User user = (User) session.getAttribute("user");
         if (user == null){
             redirectAttributes.addFlashAttribute("errorMSG", "로그인이 필요한 기능입니다.");
-            return "redirect:/velog/loginform";
+            return "redirect:/vlog/loginform";
         }
 
         model.addAttribute("user", user);
@@ -44,7 +44,7 @@ public class PostController {
         User user = (User) session.getAttribute("user");
         if (user == null){
             redirectAttributes.addFlashAttribute("errorMSG", "로그인이 필요한 기능입니다.");
-            return "redirect:/velog/loginform";
+            return "redirect:/vlog/loginform";
         }
 
         String thumbnailImagePath = "/images/post/default-image.png";
@@ -62,7 +62,7 @@ public class PostController {
             } catch (IOException e) {
                 e.printStackTrace();
                 redirectAttributes.addFlashAttribute("errorMSG", "썸네일 이미지 업로드 중 오류가 발생했습니다.");
-                return "redirect:/velog/newpost";
+                return "redirect:/vlog/newpost";
             }
         }
 
@@ -71,6 +71,6 @@ public class PostController {
 
         postService.savePost(post);
         redirectAttributes.addFlashAttribute("message", "글이 성공적으로 작성되었습니다.");
-        return "redirect:/velog/myblog/" + user.getId();
+        return "redirect:/vlog/myblog/" + user.getId();
     }
 }

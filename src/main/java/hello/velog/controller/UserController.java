@@ -11,7 +11,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.NoSuchElementException;
 
 @Controller
-@RequestMapping("/velog")
+@RequestMapping("/vlog")
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
@@ -27,26 +27,26 @@ public class UserController {
         return "loginform";
     }
 
-    @PostMapping("/loginform")
+    @PostMapping("/login")
     public String login(@ModelAttribute User user, RedirectAttributes redirectAttributes, HttpServletRequest request) {
         // 로그인할 때 아이디 및 비밀번호 확인 로직
         try {
             userService.login(user.getUsername(), user.getPassword(), request);     // 유저 정보 넘겨줌
         } catch (NoSuchElementException e) {
             redirectAttributes.addFlashAttribute("errorMSG", e.getMessage());
-            return "redirect:/velog/loginform";
+            return "redirect:/vlog/loginform";
         } catch (IllegalArgumentException e) {
             redirectAttributes.addFlashAttribute("errorMSG", e.getMessage());
-            return "redirect:/velog/loginform";
+            return "redirect:/vlog/loginform";
         }
-        return "redirect:/velog";
+        return "redirect:/vlog";
     }
 
     @GetMapping("/logout")
     public String logout(HttpServletRequest request) {
         HttpSession session = request.getSession();
         session.invalidate();       // 세션 무효화
-        return "redirect:/velog";
+        return "redirect:/vlog";
     }
 
     @GetMapping("/userregform")

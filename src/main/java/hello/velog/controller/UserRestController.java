@@ -7,13 +7,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/velog")
+@RequestMapping("/vlog")
 @RequiredArgsConstructor
 public class UserRestController {
     private final UserService userService;
 
     // 사용자 등록 엔드포인트
-    @PostMapping("/userregform")
+    @PostMapping("/userreg")
     public ResponseEntity<?> registerUser(@RequestBody User user) {
         try {
             User registeredUser = userService.register(user);

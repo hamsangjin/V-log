@@ -9,11 +9,11 @@
         <div class="container">
             <header>
                 <div class="left">
-                    <a th:href="@{/velog}">Velog</a>
+                    <a th:href="@{/vlog}">V-log</a>
                 </div>
                 <div class="right">
                     <div th:if="${session.user == null}">
-                        <a th:href="@{/velog/loginform}">로그인</a>
+                        <a th:href="@{/vlog/loginform}">로그인</a>
                     </div>
                     <div th:if="${session.user != null}">
                         <div class="dropdown">
@@ -21,17 +21,17 @@
                                 <img th:src="@{{profileImage}(profileImage=${session.user.profileImage})}" alt="Profile Image" class="profile-image"/>
                             </button>
                             <div class="dropdown-content">
-                                <a th:href="@{/velog/myblog/{userId}(userId=${session.user.id})}">내 벨로그</a>
-                                <a th:href="@{/velog/saves}">임시 글</a>
-                                <a th:href="@{/velog/readlist}">읽기 목록</a>
-                                <a th:href="@{/velog/settings}">설정</a>
-                                <a th:href="@{/velog/logout}">로그아웃</a>
+                                <a th:href="@{/vlog/myblog/{userId}(userId=${session.user.id})}">내 블로그</a>
+                                <a th:href="@{/vlog/saves}">임시 글</a>
+                                <a th:href="@{/vlog/readlist}">읽기 목록</a>
+                                <a th:href="@{/vlog/settings}">설정</a>
+                                <a th:href="@{/vlog/logout}">로그아웃</a>
                             </div>
                         </div>
                     </div>
                 </div>
             </header>
-            <form th:action="@{/velog/newpost}" method="post" enctype="multipart/form-data" th:object="${post}">
+            <form th:action="@{/vlog/newpost}" method="post" enctype="multipart/form-data" th:object="${post}">
                 <div class="form-group">
                     <label for="title">제목</label>
                     <input type="text" id="title" th:field="*{title}" placeholder="제목을 입력하세요" required>

@@ -13,7 +13,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.List;
 
 @Controller
-@RequestMapping("/velog")
+@RequestMapping("/vlog")
 @RequiredArgsConstructor
 
 public class BlogController {
@@ -56,7 +56,7 @@ public class BlogController {
         if (post.getPrivacySetting() || post.getTemporarySetting()) {
             // 로그아웃 상태이거나 다른 유저의 블로그를 보는 경우
             if (user == null || !user.getId().equals(userId)) {
-                return "redirect:/velog/myblog/" + userId;      // 접근할 수 없으면 다시 게시글 목록으로
+                return "redirect:/vlog/myblog/" + userId;      // 접근할 수 없으면 다시 게시글 목록으로
             }
         }
 
@@ -73,7 +73,7 @@ public class BlogController {
         User user = (User) session.getAttribute("user");
         if (user == null) {
             redirectAttributes.addFlashAttribute("errorMSG", "로그인이 필요한 기능입니다.");
-            return "redirect:/velog/loginform";
+            return "redirect:/vlog/loginform";
         }
         List<Post> posts = postService.getUserPosts(user.getId(), null, true);
         model.addAttribute("posts", posts);

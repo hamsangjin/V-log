@@ -18,10 +18,10 @@
         <div class="container">
             <header>
                 <div class="left">
-                    <a th:href="@{/velog}">Velog</a>
+                    <a th:href="@{/vlog}">V-log</a>
                 </div>
             </header>
-            <form th:action="@{/velog/loginform}" method="post" th:object="${user}">
+            <form th:action="@{/vlog/login}" method="post" th:object="${user}">
                 <div class="form-group">
                     <input type="text" id="username" placeholder="아이디" th:field="*{username}" required>
                 </div>
@@ -30,7 +30,7 @@
                 </div>
                 <div class="form-group buttons">
                     <button type="submit" class="button">로그인</button>
-                    <a th:href="@{/velog/userregform}" class="button">회원가입</a>
+                    <a th:href="@{/vlog/userregform}" class="button">회원가입</a>
                 </div>
             </form>
         </div>
