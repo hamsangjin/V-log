@@ -22,7 +22,7 @@
                                 <img th:src="@{{profileImage}(profileImage=${session.user.profileImage})}" alt="Profile Image" class="profile-image"/>
                             </button>
                             <div class="dropdown-content">
-                                <a th:href="@{/vlog/myblog/{userId}(userId=${session.user.id})}">내 블로그</a>
+                                <a th:href="@{'/vlog/myblog/@' + ${session.user.username}}">내 블로그</a>
                                 <a th:href="@{/vlog/saves}">임시 글</a>
                                 <a th:href="@{/vlog/readlist}">읽기 목록</a>
                                 <a th:href="@{/vlog/settings}">설정</a>

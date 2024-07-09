@@ -71,6 +71,6 @@ public class PostController {
 
         postService.savePost(post);
         redirectAttributes.addFlashAttribute("message", "글이 성공적으로 작성되었습니다.");
-        return "redirect:/vlog/myblog/" + user.getId();
+        return "redirect:/vlog/myblog/@" + user.getUsername();
     }
 }

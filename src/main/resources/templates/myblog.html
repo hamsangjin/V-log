@@ -10,7 +10,7 @@
     <header>
         <div class="left">
             <a th:href="@{/vlog}" class="logo">V</a>
-            <a th:href="@{/vlog/myblog/{userId}(userId=${blogOwner.id})}">
+            <a th:href="@{'/vlog/myblog/@' + ${session.user.username}}">
                 <h1 th:text="${blog.title} + '의 블로그'">User's Blog</h1>
             </a>
         </div>
@@ -25,7 +25,7 @@
                         <img th:src="@{${session.user.profileImage}}" alt="Profile Image" class="profile-image"/>
                     </button>
                     <div class="dropdown-content">
-                        <a th:href="@{/vlog/myblog/{userId}(userId=${session.user.id})}">내 블로그</a>
+                        <a th:href="@{'/vlog/myblog/@' + ${session.user.username}}">내 블로그</a>
                         <a th:href="@{/vlog/saves}">임시 글</a>
                         <a th:href="@{/vlog/readlist}">읽기 목록</a>
                         <a th:href="@{/vlog/settings}">설정</a>
@@ -38,7 +38,7 @@
     <section>
         <div class="post-list">
             <div th:each="post : ${posts}" class="post-item">
-                <a th:href="@{'/vlog/myblog/' + ${blogOwner.id} + '/' + ${post.id}}">
+                <a th:href="@{'/vlog/myblog/@' + ${blogOwner.username} + '/' + ${post.id}}">
                         <div class="thumbnail-container">
                             <img class="post-thumbnail" th:src="@{${post.thumbnailImage}}" alt="Thumbnail Image"/>
                         </div>
