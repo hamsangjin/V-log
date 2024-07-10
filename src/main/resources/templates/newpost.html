@@ -1,67 +1,86 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org/" lang="ko">
-    <head>
-        <meta charset="UTF-8">
-        <title>새 글 작성</title>
-        <link rel="stylesheet" href="/css/newpost.css">
-    </head>
-    <body>
-        <div class="container">
-            <header>
-                <div class="left">
-                    <a th:href="@{/vlog}">V-log</a>
-                </div>
-                <div class="right">
-                    <div th:if="${session.user == null}">
-                        <a th:href="@{/vlog/loginform}">로그인</a>
-                    </div>
-                    <div th:if="${session.user != null}">
-                        <div class="dropdown">
-                            <button class="dropbtn">
-                                <img th:src="@{{profileImage}(profileImage=${session.user.profileImage})}" alt="Profile Image" class="profile-image"/>
-                            </button>
-                            <div class="dropdown-content">
-                                <a th:href="@{'/vlog/myblog/@' + ${session.user.username}}">내 블로그</a>
-                                <a th:href="@{/vlog/saves}">임시 글</a>
-                                <a th:href="@{/vlog/readlist}">읽기 목록</a>
-                                <a th:href="@{/vlog/settings}">설정</a>
-                                <a th:href="@{/vlog/logout}">로그아웃</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </header>
-            <form th:action="@{/vlog/newpost}" method="post" enctype="multipart/form-data" th:object="${post}">
-                <div class="form-group">
-                    <label for="title">제목</label>
-                    <input type="text" id="title" th:field="*{title}" placeholder="제목을 입력하세요" required>
-                </div>
-                <div class="form-group">
-                    <label for="content">내용</label>
-                    <textarea id="content" th:field="*{content}" placeholder="내용을 입력하세요" required></textarea>
-                </div>
-                <div class="check-group">
-                    <div class="check-group2">
-                        <label for="privacySetting">비공개 설정</label>
-                        <input type="checkbox" id="privacySetting" th:field="*{privacySetting}">
-                    </div>
-                    <div class="check-group2">
-                        <label for="temporarySetting">임시 저장</label>
-                        <input type="checkbox" id="temporarySetting" th:field="*{temporarySetting}">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="thumbnailImageFile">썸네일 이미지</label>
-                    <input type="file" id="thumbnailImageFile" name="thumbnailImageFile">
-                </div>
-                <div class="form-group">
-                    <label for="thumbnailText">썸네일 텍스트</label>
-                    <input type="text" id="thumbnailText" th:field="*{thumbnailText}" placeholder="썸네일 텍스트를 입력하세요">
-                </div>
-                <div class="form-group">
-                    <button type="submit" class="button">작성</button>
-                </div>
-            </form>
+<head>
+    <meta charset="UTF-8">
+    <title>새 글 작성</title>
+    <link rel="stylesheet" href="/css/newpost.css">
+    <!-- SimpleMDE CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+</head>
+<body>
+<div class="container">
+    <header>
+        <div class="left">
+            <a th:href="@{/vlog}">V-log</a>
         </div>
-    </body>
+        <div class="right">
+            <div th:if="${session.user == null}">
+                <a th:href="@{/vlog/loginform}">로그인</a>
+            </div>
+            <div th:if="${session.user != null}">
+                <div class="dropdown">
+                    <button class="dropbtn">
+                        <img th:src="@{{profileImage}(profileImage=${session.user.profileImage})}" alt="Profile Image" class="profile-image"/>
+                    </button>
+                    <div class="dropdown-content">
+                        <a th:href="@{'/vlog/myblog/@' + ${session.user.username}}">내 블로그</a>
+                        <a th:href="@{/vlog/saves}">임시 글</a>
+                        <a th:href="@{/vlog/readlist}">읽기 목록</a>
+                        <a th:href="@{/vlog/settings}">설정</a>
+                        <a th:href="@{/vlog/logout}">로그아웃</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <form th:action="@{/vlog/newpost}" method="post" enctype="multipart/form-data" id="postForm">
+        <div class="form-group">
+            <label for="title">제목</label>
+            <input type="text" id="title" name="title" placeholder="제목을 입력하세요" required>
+        </div>
+        <div class="form-group">
+            <label for="content">내용</label>
+            <!-- 마크다운 에디터가 내용을 입력받는 영역 -->
+            <textarea id="editor" placeholder="내용을 입력하세요"></textarea>
+            <!-- 숨겨진 input 요소 -->
+            <input type="hidden" id="content" name="content">
+        </div>
+        <div class="check-group">
+            <div class="check-group2">
+                <label for="privacySetting">비공개 설정</label>
+                <input type="checkbox" id="privacySetting" name="privacySetting">
+            </div>
+            <div class="check-group2">
+                <label for="temporarySetting">임시 저장</label>
+                <input type="checkbox" id="temporarySetting" name="temporarySetting">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="thumbnailImageFile">썸네일 이미지</label>
+            <input type="file" id="thumbnailImageFile" name="thumbnailImageFile">
+        </div>
+        <div class="form-group">
+            <label for="thumbnailText">썸네일 텍스트</label>
+            <input type="text" id="thumbnailText" name="thumbnailText" placeholder="썸네일 텍스트를 입력하세요">
+        </div>
+        <div class="form-group">
+            <button type="button" class="button" id="submitBtn">작성</button>
+        </div>
+    </form>
+</div>
+<!-- SimpleMDE JS -->
+<script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+<script>
+    // 마크다운 에디터를 초기화
+    var simplemde = new SimpleMDE({ element: document.getElementById("editor") });
+
+    // 작성 버튼 클릭 시 처리
+    document.getElementById("submitBtn").addEventListener("click", function() {
+        // 마크다운 에디터의 내용을 숨겨진 input 요소에 설정
+        document.getElementById("content").value = simplemde.value();
+        // 폼을 직접 제출
+        document.getElementById("postForm").submit();
+    });
+</script>
+</body>
 </html>

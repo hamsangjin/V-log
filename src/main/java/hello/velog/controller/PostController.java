@@ -38,6 +38,7 @@ public class PostController {
     public String createNewPost(
             @ModelAttribute Post post,
             @RequestParam("thumbnailImageFile") MultipartFile thumbnailImageFile,
+            @RequestParam("content") String content,
             HttpSession session,
             RedirectAttributes redirectAttributes) {
 
@@ -66,6 +67,9 @@ public class PostController {
             }
         }
 
+        System.out.println(content);
+
+        post.setContent(content);
         post.setUserId(user.getId());
         post.setThumbnailImage(thumbnailImagePath);
 
