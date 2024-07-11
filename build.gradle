@@ -28,6 +28,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 
+	implementation 'org.commonmark:commonmark:0.18.2'
 	implementation 'com.vladsch.flexmark:flexmark-all:0.62.2'
 
 	compileOnly 'org.projectlombok:lombok'

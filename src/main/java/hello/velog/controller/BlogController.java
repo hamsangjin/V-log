@@ -5,6 +5,9 @@ import hello.velog.service.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.commonmark.node.*;
+import org.commonmark.parser.Parser;
+import org.commonmark.renderer.html.HtmlRenderer;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +18,6 @@ import java.util.*;
 @Controller
 @RequestMapping("/vlog")
 @RequiredArgsConstructor
-
 public class BlogController {
     private final UserService userService;
     private final PostService postService;
@@ -64,9 +66,16 @@ public class BlogController {
             }
         }
 
+        // 마크다운 내용을 HTML로 변환
+        Parser parser = Parser.builder().build();
+        Node document = parser.parse(post.getContent());
+        HtmlRenderer renderer = HtmlRenderer.builder().build();
+        String htmlContent = renderer.render(document);
+
         model.addAttribute("user", user);
         model.addAttribute("post", post);
         model.addAttribute("blogOwner", postService.getUserById(findUser.getId()));
+        model.addAttribute("htmlContent", htmlContent);
 
         return "postDetail";
     }
