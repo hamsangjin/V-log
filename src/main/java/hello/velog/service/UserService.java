@@ -1,15 +1,13 @@
 package hello.velog.service;
 
 import hello.velog.domain.*;
+import hello.velog.exception.*;
 import hello.velog.repository.*;
-import jakarta.servlet.http.*;
-import lombok.*;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.*;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -19,55 +17,65 @@ public class UserService {
     private final UserRoleRepository userRoleRepository;
     private final BlogRepository blogRepository;
 
-    public void login(String username, String password, HttpServletRequest request) {
+    // 로그인 로직 개선: 세션 관리 제거
+    public User login(String username, String password) {
         User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new NoSuchElementException("존재하지 않는 아이디입니다."));
-        if (!user.getPassword().equals(password))       throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
-        HttpSession session = request.getSession();
-        session.setAttribute("user", user);
-    }
-
-    public User findByUsername(String username) {
-        return userRepository.findByUsername(username).orElseThrow(NoSuchElementException::new);
+                .orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 아이디입니다."));
+        if (!user.getPassword().equals(password)) {
+            throw new PasswordMismatchException("비밀번호가 일치하지 않습니다.");
+        }
+        return user;
     }
 
     // 사용자 등록 메서드
     @Transactional
     public User register(User user) {
-        // 아이디 중복 확인
-        if (isUsernameTaken(user.getUsername()))    throw new IllegalArgumentException("아이디가 이미 존재합니다.");
-        // 이메일 중복 확인
-        if (isEmailTaken(user.getEmail()))          throw new IllegalArgumentException("이메일이 이미 존재합니다.");
+        validateUsernameAndEmail(user.getUsername(), user.getEmail());
 
-        Blog blog = new Blog(user, user.getName()); // 블로그 엔티티 생성 및 설정
-        user.setBlog(blog);                         // User 엔티티 설정
-        User savedUser = userRepository.save(user); // User 엔티티를 먼저 저장
+        Blog blog = new Blog(user, user.getName());
+        user.setBlog(blog);
+        User savedUser = userRepository.save(user);
 
-        blogRepository.save(blog);                      // Blog 엔티티를 그 다음에 저장
+        blogRepository.save(blog);
 
-        // 역할을 ROLE_USER로 설정
-        Optional<Role> role = roleRepository.findByName("ROLE_USER");
-        if (role.isPresent()) {
-            UserRole userRole = new UserRole(savedUser, role.get());
-            userRoleRepository.save(userRole);
-        }
+        assignRoleToUser(savedUser, "ROLE_USER");
 
         return savedUser;
     }
 
-    // 아이디 중복 확인 메서드
-    public boolean isUsernameTaken(String username) {
-        Optional<User> user = userRepository.findByUsername(username);  // 주어진 아이디로 사용자 검색
-        return user.isPresent();                                        // 사용자가 존재하면 true 반환
+    // 중복 체크 및 예외 처리
+    private void validateUsernameAndEmail(String username, String email) {
+        if (userRepository.findByUsername(username).isPresent()) {
+            throw new IllegalArgumentException("아이디가 이미 존재합니다.");
+        }
+        if (userRepository.findByEmail(email).isPresent()) {
+            throw new IllegalArgumentException("이메일이 이미 존재합니다.");
+        }
     }
 
-    // 이메일 중복 확인 메서드
+    // 사용자에게 역할 할당
+    private void assignRoleToUser(User user, String roleName) {
+        Optional<Role> role = roleRepository.findByName(roleName);
+        role.ifPresent(r -> {
+            UserRole userRole = new UserRole(user, r);
+            userRoleRepository.save(userRole);
+        });
+    }
+
+    // 기존의 아이디와 이메일 중복 확인 메소드는 그대로 유지합니다.
+    public boolean isUsernameTaken(String username) {
+        return userRepository.findByUsername(username).isPresent();
+    }
+
     public boolean isEmailTaken(String email) {
-        Optional<User> user = userRepository.findByEmail(email);        // 주어진 이메일로 사용자 검색
-        return user.isPresent();                                        // 사용자가 존재하면 true 반환
+        return userRepository.findByEmail(email).isPresent();
     }
 
     public User findById(Long id) {
-        return userRepository.findById(id).orElse(null);
+        return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("사용자를 찾을 수 없습니다."));
+    }
+
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException("사용자를 찾을 수 없습니다."));
     }
 }

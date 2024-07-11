@@ -23,6 +23,11 @@ public class BlogController {
     private final PostService postService;
     private final BlogService blogService;
 
+    @GetMapping
+    public String home() {
+        return "home";
+    }
+
     @GetMapping("/myblog/@{username}")
     public String myBlog(@PathVariable String username, HttpServletRequest request, Model model) {
         HttpSession session = request.getSession();

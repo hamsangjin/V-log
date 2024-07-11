@@ -12,29 +12,25 @@ import org.springframework.web.bind.annotation.*;
 public class UserRestController {
     private final UserService userService;
 
-    // 사용자 등록 엔드포인트
     @PostMapping("/userreg")
     public ResponseEntity<?> registerUser(@RequestBody User user) {
         try {
             User registeredUser = userService.register(user);
             return ResponseEntity.ok(registeredUser);
-        // 아이디 및 이메일이 중복된 경우 예외 처리
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
-    // 아이디 중복 확인 엔드포인트
     @GetMapping("/api/users/check-username")
-    public boolean checkUsername(@RequestParam String username) {
-        // 아이디 중복 확인 로직 호출
-        return userService.isUsernameTaken(username);
+    public ResponseEntity<?> checkUsername(@RequestParam String username) {
+        boolean isTaken = userService.isUsernameTaken(username);
+        return ResponseEntity.ok(isTaken);
     }
 
-    // 이메일 중복 확인 엔드포인트
     @GetMapping("/api/users/check-email")
-    public boolean checkEmail(@RequestParam String email) {
-        // 이메일 중복 확인 로직 호출
-        return userService.isEmailTaken(email);
+    public ResponseEntity<?> checkEmail(@RequestParam String email) {
+        boolean isTaken = userService.isEmailTaken(email);
+        return ResponseEntity.ok(isTaken);
     }
 }

@@ -1,25 +1,20 @@
 package hello.velog.controller;
 
 import hello.velog.domain.User;
+import hello.velog.exception.*;
 import hello.velog.service.UserService;
 import jakarta.servlet.http.*;
-import lombok.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import java.util.NoSuchElementException;
+import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequestMapping("/vlog")
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
-
-    @GetMapping
-    public String home() {
-        return "home";
-    }
 
     @GetMapping("/loginform")
     public String loginForm(Model model) {
@@ -29,23 +24,23 @@ public class UserController {
 
     @PostMapping("/login")
     public String login(@ModelAttribute User user, RedirectAttributes redirectAttributes, HttpServletRequest request) {
-        // 로그인할 때 아이디 및 비밀번호 확인 로직
         try {
-            userService.login(user.getUsername(), user.getPassword(), request);     // 유저 정보 넘겨줌
-        } catch (NoSuchElementException e) {
-            redirectAttributes.addFlashAttribute("errorMSG", e.getMessage());
-            return "redirect:/vlog/loginform";
-        } catch (IllegalArgumentException e) {
+            User loggedInUser = userService.login(user.getUsername(), user.getPassword());
+            HttpSession session = request.getSession();
+            session.setAttribute("user", loggedInUser);
+            return "redirect:/vlog";
+        } catch (UsernameNotFoundException | PasswordMismatchException e) {
             redirectAttributes.addFlashAttribute("errorMSG", e.getMessage());
             return "redirect:/vlog/loginform";
         }
-        return "redirect:/vlog";
     }
 
     @GetMapping("/logout")
     public String logout(HttpServletRequest request) {
-        HttpSession session = request.getSession();
-        session.invalidate();       // 세션 무효화
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.invalidate();
+        }
         return "redirect:/vlog";
     }
 
