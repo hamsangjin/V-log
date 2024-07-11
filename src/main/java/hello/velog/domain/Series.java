@@ -1,11 +1,12 @@
 package hello.velog.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import java.util.*;
 
 @Entity
-@Table(name = "likes")
+@Table(name = "series")
 @Getter @Setter
 @NoArgsConstructor @AllArgsConstructor
 public class Series {

@@ -40,10 +40,18 @@
         </div>
         <div class="form-group">
             <label for="content">내용</label>
-            <!-- 마크다운 에디터가 내용을 입력받는 영역 -->
             <textarea id="editor" placeholder="내용을 입력하세요"></textarea>
-            <!-- 숨겨진 input 요소 -->
             <input type="hidden" id="content" name="content">
+        </div>
+        <div class="form-group">
+            <label for="series">시리즈 선택</label>
+            <select id="series" name="seriesId">
+                <option value="">시리즈를 선택하세요</option>
+                <!-- 기존 시리즈 목록을 반복해서 보여줍니다 -->
+                <option th:each="series : ${seriesList}" th:value="${series.id}" th:text="${series.title}"></option>
+            </select>
+            <input type="text" id="newSeries" name="newSeries" placeholder="새 시리즈명 입력">
+            <button type="button" id="createSeriesBtn">시리즈 생성</button>
         </div>
         <div class="check-group">
             <div class="check-group2">
@@ -71,15 +79,46 @@
 <!-- SimpleMDE JS -->
 <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
 <script>
-    // 마크다운 에디터를 초기화
     var simplemde = new SimpleMDE({ element: document.getElementById("editor") });
 
-    // 작성 버튼 클릭 시 처리
     document.getElementById("submitBtn").addEventListener("click", function() {
-        // 마크다운 에디터의 내용을 숨겨진 input 요소에 설정
         document.getElementById("content").value = simplemde.value();
-        // 폼을 직접 제출
         document.getElementById("postForm").submit();
+    });
+
+    document.getElementById("createSeriesBtn").addEventListener("click", function() {
+        var newSeries = document.getElementById("newSeries").value.trim();
+        if (newSeries !== "") {
+            fetch('/vlog/createseries', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ title: newSeries })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data); // 응답 데이터를 콘솔에 출력
+                    if (data.success) {
+                        alert('시리즈가 생성되었습니다.');
+                        var seriesSelect = document.getElementById("series");
+                        var option = document.createElement("option");
+                        option.value = data.series.id;
+                        option.text = data.series.title;
+                        seriesSelect.add(option);
+                        // 새로 생성된 시리즈를 선택
+                        seriesSelect.value = data.series.id;
+                        // 새 시리즈명 입력란 초기화
+                        document.getElementById("newSeries").value = '';
+                    } else {
+                        if (data.message === "시리즈가 중복되었습니다.") {
+                            alert('중복된 시리즈 이름입니다. 다른 이름을 입력하세요.');
+                        } else {
+                            alert('시리즈 생성에 실패했습니다.');
+                        }
+                    }
+                });
+        }
     });
 </script>
 </body>
