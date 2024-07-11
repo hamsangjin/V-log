@@ -173,9 +173,10 @@ button {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    /*background: #f0f0f0;  !* 배경색 추가 *!*/
+    background: transparent;  /* 배경색 추가 */
     border-radius: 5px;    /* 경계 둥글게 처리 */
     min-height: 32px;      /* 세로 폭 조정 */
+    border: none;          /* 테두리 제거 */
 }
 
 .tags-input {
@@ -189,11 +190,13 @@ button {
 
 .tag {
     display: inline-block;
-    padding: 4px 8px;
-    background-color: #ccc;
-    border-radius: 3px;
-    margin-right: 5px;
-    font-size: 14px;
+    padding: 8px 16px; /* 패딩 증가 */
+    background-color: #1e1e1e;
+    border-radius: 20px;
+    margin-right: 10px; /* 오른쪽 마진 증가 */
+    font-size: 16px; /* 글꼴 크기 증가 */
+    font-weight: 400;
     cursor: pointer;
+    color: #96f2d7;
 }
 /**/
