@@ -16,10 +16,15 @@ public class Tag {
     @Column(nullable = false)
     private String name;
 
+    @ManyToMany(mappedBy = "tags", fetch = FetchType.LAZY)
+    private Set<Post> posts = new HashSet<>();
+
     @ManyToOne
     @JoinColumn(name = "blog_id")
     private Blog blog;
 
     @OneToMany(mappedBy = "tag")
     private Set<PostTag> postTags = new HashSet<>();
+
+
 }

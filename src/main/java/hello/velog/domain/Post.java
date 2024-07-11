@@ -51,6 +51,14 @@ public class Post {
     @OneToMany(mappedBy = "post")
     private Set<PostTag> postTags = new HashSet<>();
 
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "post_tags",
+            joinColumns = @JoinColumn(name = "post_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id")
+    )
+    private Set<Tag> tags = new HashSet<>();
+
     @ManyToOne
     @JoinColumn(name = "series_id")
     private Series series;

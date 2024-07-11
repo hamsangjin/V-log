@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <title>새 글 작성</title>
     <link rel="stylesheet" href="/css/newpost.css">
-    <!-- SimpleMDE CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
 </head>
 <body>
@@ -39,6 +38,12 @@
             <input type="text" id="title" name="title" placeholder="제목을 입력하세요" required>
         </div>
         <div class="form-group">
+            <label for="tagsInput">태그 (쉼표나 엔터로 구분)</label>
+            <div id="tagsContainer" class="tags-input-container">
+                <input type="text" id="tagsInput" placeholder="태그 입력" class="tags-input">
+            </div>
+        </div>
+        <div class="form-group">
             <label for="content">내용</label>
             <textarea id="editor" placeholder="내용을 입력하세요"></textarea>
             <input type="hidden" id="content" name="content">
@@ -53,6 +58,7 @@
             <input type="text" id="newSeries" name="newSeries" placeholder="새 시리즈명 입력">
             <button type="button" id="createSeriesBtn">시리즈 생성</button>
         </div>
+
         <div class="check-group">
             <div class="check-group2">
                 <label for="privacySetting">비공개 설정</label>
@@ -78,48 +84,6 @@
 </div>
 <!-- SimpleMDE JS -->
 <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
-<script>
-    var simplemde = new SimpleMDE({ element: document.getElementById("editor") });
-
-    document.getElementById("submitBtn").addEventListener("click", function() {
-        document.getElementById("content").value = simplemde.value();
-        document.getElementById("postForm").submit();
-    });
-
-    document.getElementById("createSeriesBtn").addEventListener("click", function() {
-        var newSeries = document.getElementById("newSeries").value.trim();
-        if (newSeries !== "") {
-            fetch('/vlog/createseries', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ title: newSeries })
-            })
-                .then(response => response.json())
-                .then(data => {
-                    console.log(data); // 응답 데이터를 콘솔에 출력
-                    if (data.success) {
-                        alert('시리즈가 생성되었습니다.');
-                        var seriesSelect = document.getElementById("series");
-                        var option = document.createElement("option");
-                        option.value = data.series.id;
-                        option.text = data.series.title;
-                        seriesSelect.add(option);
-                        // 새로 생성된 시리즈를 선택
-                        seriesSelect.value = data.series.id;
-                        // 새 시리즈명 입력란 초기화
-                        document.getElementById("newSeries").value = '';
-                    } else {
-                        if (data.message === "시리즈가 중복되었습니다.") {
-                            alert('중복된 시리즈 이름입니다. 다른 이름을 입력하세요.');
-                        } else {
-                            alert('시리즈 생성에 실패했습니다.');
-                        }
-                    }
-                });
-        }
-    });
-</script>
+<script src="/js/newpost.js"></script>
 </body>
 </html>
