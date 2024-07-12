@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Fragment Header</title>
+</head>
+<body>
+<div th:fragment="header1">
+    <header>
+        <div class="left">
+            <a th:href="@{/vlog}">V-log</a>
+        </div>
+        <div class="right">
+            <div th:if="${session.user == null}">
+                <a th:href="@{/vlog/loginform}">로그인</a>
+            </div>
+            <div th:if="${session.user != null}">
+                <a th:href="@{/vlog/newpost}" class="button">새 글 작성</a>
+                <div class="dropdown">
+                    <button class="dropbtn">
+                        <img th:src="@{${session.user.profileImage}}" alt="Profile Image" class="profile-image"/>
+                    </button>
+                    <div class="dropdown-content">
+                        <a th:href="@{'/vlog/myblog/@' + ${session.user.username}}">내 블로그</a>
+                        <a th:href="@{/vlog/saves}">임시 글</a>
+                        <a th:href="@{/vlog/readlist}">읽기 목록</a>
+                        <a th:href="@{/vlog/settings}">설정</a>
+                        <a th:href="@{/vlog/logout}">로그아웃</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+</div>
+</body>
+</html>

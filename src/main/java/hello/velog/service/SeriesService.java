@@ -4,6 +4,7 @@ import hello.velog.domain.Series;
 import hello.velog.repository.SeriesRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -20,6 +21,7 @@ public class SeriesService {
         return seriesRepository.findById(id).orElse(null);
     }
 
+    @Transactional
     public Series saveSeries(Series series) {
         if (seriesRepository.existsByTitle(series.getTitle())) {
             throw new IllegalArgumentException("시리즈가 중복되었습니다.");

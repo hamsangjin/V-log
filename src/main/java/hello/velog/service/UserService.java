@@ -3,6 +3,7 @@ package hello.velog.service;
 import hello.velog.domain.*;
 import hello.velog.exception.*;
 import hello.velog.repository.*;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,13 +18,14 @@ public class UserService {
     private final UserRoleRepository userRoleRepository;
     private final BlogRepository blogRepository;
 
-    // 로그인 로직 개선: 세션 관리 제거
-    public User login(String username, String password) {
+    @Transactional(readOnly = true)
+    public User login(String username, String password, HttpSession session) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 아이디입니다."));
         if (!user.getPassword().equals(password)) {
             throw new PasswordMismatchException("비밀번호가 일치하지 않습니다.");
         }
+        session.setAttribute("user", user);
         return user;
     }
 

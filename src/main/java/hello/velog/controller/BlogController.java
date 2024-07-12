@@ -22,6 +22,7 @@ public class BlogController {
     private final UserService userService;
     private final PostService postService;
     private final BlogService blogService;
+    private final MarkdownService markdownService;
 
     @GetMapping
     public String home() {
@@ -52,33 +53,26 @@ public class BlogController {
     }
 
     @GetMapping("/myblog/@{username}/{id}")
-    public String getPost(@PathVariable String username, @PathVariable Long id,
-                          HttpServletRequest request, Model model){
-
+    public String getPost(@PathVariable String username, @PathVariable Long id, HttpServletRequest request, Model model) {
         User findUser = userService.findByUsername(username);
-
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
-
         Post post = postService.getPostById(id);
+        Blog blog = blogService.findBlogByUserId(findUser.getId());
 
-        // 일반적으론 게시물 클릭을 통해 접속해 아래 if문이 필요없지만, url을 통한 접속을 제한하는 것이다.
         // 게시물 권한 확인
         if (post.getPrivacySetting() || post.getTemporarySetting()) {
-            // 로그아웃 상태이거나 다른 유저의 블로그를 보는 경우
             if (user == null || !user.getId().equals(findUser.getId())) {
-                return "redirect:/vlog/myblog/@" + findUser.getUsername();      // 접근할 수 없으면 다시 게시글 목록으로
+                return "redirect:/vlog/myblog/@" + findUser.getUsername(); // 접근 제한
             }
         }
 
         // 마크다운 내용을 HTML로 변환
-        Parser parser = Parser.builder().build();
-        Node document = parser.parse(post.getContent());
-        HtmlRenderer renderer = HtmlRenderer.builder().build();
-        String htmlContent = renderer.render(document);
+        String htmlContent = markdownService.convertMarkdownToHtml(post.getContent());
 
         model.addAttribute("user", user);
         model.addAttribute("post", post);
+        model.addAttribute("blog", blog);
         model.addAttribute("blogOwner", postService.getUserById(findUser.getId()));
         model.addAttribute("htmlContent", htmlContent);
 

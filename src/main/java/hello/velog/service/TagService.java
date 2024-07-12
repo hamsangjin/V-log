@@ -27,6 +27,7 @@ public class TagService {
                 });
     }
 
+    @Transactional
     public Tag saveTag(Tag tag) {
         return tagRepository.save(tag);
     }

@@ -23,26 +23,25 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String login(@ModelAttribute User user, RedirectAttributes redirectAttributes, HttpServletRequest request) {
+    public String login(@RequestParam String username, @RequestParam String password,
+                        HttpSession session, RedirectAttributes redirectAttributes) {
         try {
-            User loggedInUser = userService.login(user.getUsername(), user.getPassword());
-            HttpSession session = request.getSession();
-            session.setAttribute("user", loggedInUser);
+            userService.login(username, password, session);
             return "redirect:/vlog";
-        } catch (UsernameNotFoundException | PasswordMismatchException e) {
+        } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMSG", e.getMessage());
             return "redirect:/vlog/loginform";
         }
     }
 
     @GetMapping("/logout")
-    public String logout(HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
+    public String logout(HttpSession session) {
         if (session != null) {
             session.invalidate();
         }
         return "redirect:/vlog";
     }
+
 
     @GetMapping("/userregform")
     public String userRegForm(Model model) {

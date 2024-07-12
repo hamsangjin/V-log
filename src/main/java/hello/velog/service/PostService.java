@@ -4,6 +4,8 @@ import hello.velog.domain.*;
 import hello.velog.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 
 @Service
@@ -12,6 +14,7 @@ public class PostService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
 
+    @Transactional
     public void savePost(Post post) {
         postRepository.save(post);
     }
