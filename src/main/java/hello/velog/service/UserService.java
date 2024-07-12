@@ -38,7 +38,7 @@ public class UserService {
 
         blogRepository.save(blog);
 
-        assignRoleToUser(savedUser, "ROLE_USER");
+        assignRoleToUser(savedUser, "USER");
 
         return savedUser;
     }

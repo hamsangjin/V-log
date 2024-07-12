@@ -10,8 +10,8 @@ public class InitRole{
     @Bean
     ApplicationRunner init(RoleRepository roleRepository) {
         return args -> {
-            roleRepository.save(new Role(1L, "ROLE_USER"));
-            roleRepository.save(new Role(2L, "ROLE_ADMIN"));
+            roleRepository.save(new Role(1L, "USER"));
+            roleRepository.save(new Role(2L, "ADMIN"));
         };
     }
 }

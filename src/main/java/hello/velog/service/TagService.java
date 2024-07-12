@@ -1,18 +1,17 @@
 package hello.velog.service;
 
-import hello.velog.domain.Blog;
-import hello.velog.domain.Tag;
+import hello.velog.domain.*;
 import hello.velog.repository.TagRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
 public class TagService {
     private final TagRepository tagRepository;
 
+    @Transactional
     public Tag findOrCreateTag(String name, Long blogId) {
         // Optional 객체에서 태그를 찾거나, 없다면 새 태그를 생성합니다.
         return tagRepository.findByNameAndBlogId(name, blogId)

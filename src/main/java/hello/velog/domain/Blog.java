@@ -21,7 +21,6 @@ public class Blog {
     @Column(nullable = false)
     private String title;
 
-    @Column(nullable = true)
     private String intro = "소개를 입력해주세요.";
 
     @OneToMany(mappedBy = "blog")
