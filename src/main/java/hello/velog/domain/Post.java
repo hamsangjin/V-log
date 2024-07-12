@@ -72,4 +72,8 @@ public class Post {
         this.thumbnailImage = thumbnailImage;
         this.thumbnailText = thumbnailText;
     }
+
+    public Post(Long postId) {
+        this.id = postId;
+    }
 }

@@ -40,9 +40,12 @@ public class PostController {
             @RequestParam("title") String title,
             @RequestParam("content") String content,
             @RequestParam("thumbnailImageFile") MultipartFile thumbnailImageFile,
+            @RequestParam("thumbnailText") String thumbnailText,
             @RequestParam(value = "seriesId", required = false) Long seriesId,
             @RequestParam(value = "newSeries", required = false) String newSeries,
             @RequestParam("tags") String tagsString,
+            @RequestParam(value = "privacySetting", required = false, defaultValue = "false") boolean privacySetting,
+            @RequestParam(value = "temporarySetting", required = false, defaultValue = "false") boolean temporarySetting,
             HttpSession session,
             RedirectAttributes redirectAttributes) {
 
@@ -55,6 +58,9 @@ public class PostController {
         Post post = new Post();
         post.setTitle(title);
         post.setContent(content);
+        post.setThumbnailText(thumbnailText);
+        post.setPrivacySetting(privacySetting);
+        post.setTemporarySetting(temporarySetting);
 
         if (newSeries != null && !newSeries.trim().isEmpty()) {
             Series series = new Series();

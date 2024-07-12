@@ -8,14 +8,7 @@
     </head>
     <body>
         <div class="container">
-            <header>
-                <div class="left">
-                    <a th:href="@{/vlog}">V-log</a>
-                </div>
-                <div class="right">
-                        <a th:href="@{/vlog/loginform}">로그인</a>
-                </div>
-            </header>
+            <div th:replace="~{fragments/header1 :: header1}"></div>
 
             <form th:action="@{/vlog/userreg}" method="post" th:object="${user}" onsubmit="submitForm(event)">
                 <div class="form-group">

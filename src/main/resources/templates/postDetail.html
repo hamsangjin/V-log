@@ -7,38 +7,35 @@
 </head>
 <body>
 <div class="container">
-    <div th:replace="fragments/header2 :: header2"></div>
-
-    <!--1. 제목 가운데 정렬로 크게 -->
+    <div th:replace="~{fragments/header2 :: header2}"></div>
     <h1 class="post-title" th:text="${post.title}">게시물 제목</h1>
 
-    <!--2-1. 유저 이름, 게시물 작성 시간 왼쪽 정렬-->
-    <!-- 2-2. 통계, 수정, 삭제 버튼 오른쪽 정렬 -->
+    <!-- 태그 목록 표시 -->
+    <div class="tags-container">
+        <span th:each="tag : ${post.tags}">
+            <a href="#" th:text="${tag.name}" class="tag-link"></a>
+        </span>
+    </div>
+
     <div class="post-meta-actions">
         <div class="post-meta">
             <span class="author" th:text="${blogOwner.name}">유저 이름</span>
             <span class="created-date" th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd')}">게시물 작성 시간</span>
         </div>
-        <div class="post-actions" th:if="${session.user != null} and ${session.user.id == blogOwner.id}">
-            <button th:onclick="|window.location.href='@{/vlog/post/stats/{postId}(postId=${post.id})}'|">통계</button>
-            <button th:onclick="|window.location.href='@{/vlog/post/edit/{postId}(postId=${post.id})}'|">수정</button>
-            <button th:onclick="|window.location.href='@{/vlog/post/delete/{postId}(postId=${post.id})}'|">삭제</button>
+        <div class="post-actions">
+            <div th:if="${session.user != null} and ${session.user.id == blogOwner.id}">
+                <button th:onclick="|window.location.href='@{/vlog/post/stats/{postId}(postId=${post.id})}'|">통계</button>
+                <button th:onclick="|window.location.href='@{/vlog/post/edit/{postId}(postId=${post.id})}'|">수정</button>
+                <button th:onclick="|window.location.href='@{/vlog/post/delete/{postId}(postId=${post.id})}'|">삭제</button>
+            </div>
+            <button id="likeBtn" th:if="${session.user != null}" th:data-post-id="${post.id}" th:onclick="'toggleLike(\'' + ${post.id} + '\');'">Like</button>
         </div>
     </div>
-
-    <!--3. 게시물 썸네일 이미지 출력 가운데 정렬-->
     <div class="thumbnail-container">
         <img class="post-thumbnail" th:src="@{${post.thumbnailImage}}" alt="Thumbnail"/>
     </div>
-
-    <!--4. 게시물 내용들 출력 가운데 정렬-->
     <div class="post-content" th:utext="${htmlContent}"></div>
-
-    <!--5. 취소, 저장 버튼 오른쪽 정렬-->
-    <!--            <div class="form-actions">-->
-    <!--                <button th:onclick="|window.location.href='@{/vlog}'|">취소</button>-->
-    <!--                <button th:onclick="|window.location.href='@{/vlog/post/save}'|">저장</button>-->
-    <!--            </div>-->
 </div>
+<script th:src="@{/js/postDetail.js}"></script>
 </body>
 </html>

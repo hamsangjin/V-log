@@ -8,7 +8,7 @@
 </head>
 <body>
 <div class="container">
-    <div th:replace="fragments/header1 :: header1"></div>
+    <div th:replace="~{fragments/header1 :: header1}"></div>
     <form th:action="@{/vlog/newpost}" method="post" enctype="multipart/form-data" id="postForm">
         <div class="form-group">
             <label for="title">제목</label>
@@ -41,6 +41,7 @@
                 <label for="privacySetting">비공개 설정</label>
                 <input type="checkbox" id="privacySetting" name="privacySetting">
             </div>
+
             <div class="check-group2">
                 <label for="temporarySetting">임시 저장</label>
                 <input type="checkbox" id="temporarySetting" name="temporarySetting">

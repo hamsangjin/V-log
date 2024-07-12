@@ -25,6 +25,4 @@ public class Tag {
 
     @OneToMany(mappedBy = "tag")
     private Set<PostTag> postTags = new HashSet<>();
-
-
 }

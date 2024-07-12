@@ -110,6 +110,17 @@ header a:hover {
 /* -- */
 
 /* 게시글 목록을 위한 css */
+.post-title-link h2 {
+    margin-bottom: 5px; /* 기존 값보다 작은 값으로 조정 */
+    font-size: 1.5em; /* 필요에 따라 폰트 크기 조정 */
+}
+
+.post-content {
+    margin-top: 5px; /* 콘텐츠 텍스트의 상단 마진을 줄임 */
+    font-size: 1em; /* 필요에 따라 폰트 크기 조정 */
+    color: #ccc; /* 글씨 색상 */
+}
+
 .post-list {
     display: flex;
     flex-direction: column;
@@ -152,3 +163,47 @@ header a:hover {
     border-radius: 8px;
 }
 /**/
+
+/* 태그, 좋아요*/
+
+/* 좋아요 수와 날짜 스타일 조정 */
+.like-count, .post-date {
+    color: #ccc; /* 밝은 회색 */
+    font-size: 0.9em;
+    margin-bottom: 5px; /* 좋아요와 태그 사이 간격 */
+}
+
+/* 태그 컨테이너 스타일 */
+.tags-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0; /* 태그 간의 간격을 제거 */
+    padding-left: 0; /* 컨테이너의 왼쪽 패딩 제거 */
+    list-style: none; /* 리스트 스타일 제거 */
+    align-items: center; /* 태그를 수직으로 중앙에 배치 */
+    margin-bottom: 10px; /* 하단 여백 추가 */
+}
+
+/* 태그 링크 스타일 */
+a.tag-link {
+    background-color: #1e1e1e; /* 어두운 배경 */
+    color: #96f2d7; /* 밝은 텍스트 색상 */
+    padding: 8px 16px; /* 상하 8px, 좌우 16px 패딩 */
+    border-radius: 20px; /* 둥근 모서리 */
+    text-decoration: none; /* 밑줄 제거 */
+    font-size: 0.9em; /* 폰트 크기 */
+    font-weight: 400; /* 글씨 두께 */
+    transition: background-color 0.3s; /* 배경색 변경 애니메이션 */
+    margin-right: 5px; /* 오른쪽 여백 */
+    display: inline-block; /* 인라인 블록 요소로 변경 */
+    white-space: nowrap; /* 공백이 있는 경우 줄바꿈 방지 */
+}
+
+a.tag-link:hover {
+    background-color: #555; /* 호버 시 배경 색상 변경 */
+}
+
+a[href="/vlog/myblog/*/*"] {
+    display: none;
+}
+

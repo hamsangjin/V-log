@@ -117,8 +117,34 @@ header a:hover {
     margin-bottom: 20px;
 }
 
+/* 태그 */
+.tags-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px; /* 태그 간의 간격 */
+    margin: 20px 0; /* 상하 여백 */
+    /*justify-content: center; !* 중앙 정렬 *!*/
+    padding: 10px 0;
+}
+
+.tag-link {
+    background-color: #1e1e1e;
+    color: #96f2d7;
+    padding: 8px 16px; /* 상하 8px, 좌우 16px 패딩 */
+    border-radius: 20px; /* 둥근 모서리 */
+    text-decoration: none; /* 밑줄 없음 */
+    font-size: 0.9em; /* 폰트 크기 */
+    font-weight: 400;
+    transition: background-color 0.3s; /* 배경색 변경 애니메이션 */
+}
+
+.tag-link:hover {
+    background-color: #555; /* 호버 시 더 어두운 회색으로 변경 */
+}
+
+
 /* 2. 유저 이름, 게시물 작성 시간 */
-/* 통계, 수정, 삭제 버튼 */
+/* 통계, 수정, 삭제, 좋아요 버튼 */
 .post-meta-actions {
     display: flex;
     justify-content: space-between;
@@ -133,6 +159,10 @@ header a:hover {
 
 .author, .created-date {
     font-size: 1em;
+}
+
+.post-actions{
+    display: flex;
 }
 
 .post-actions button {

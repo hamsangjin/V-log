@@ -7,7 +7,7 @@
 </head>
 <body>
 <div class="container">
-    <div th:replace="fragments/header3 :: header3"></div>
+    <div th:replace="~{fragments/header3 :: header3}"></div>
     <section>
         <div class="post-list">
             <div th:each="post : ${posts}" class="post-item">
