@@ -75,4 +75,8 @@ public class PostService {
         // post 삭제
         postRepository.delete(post);
     }
+
+    public List<Post> getLikedPosts(Long userId) {
+        return likeRepository.findLikedPostsByUserId(userId);
+    }
 }

@@ -86,4 +86,17 @@ public class BlogController {
         model.addAttribute("posts", posts);
         return "saves";
     }
+
+    @GetMapping("/liked")
+    public String liked(HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            redirectAttributes.addFlashAttribute("errorMSG", "로그인이 필요한 기능입니다.");
+            return "redirect:/vlog/loginform";
+        }
+        List<Post> likedPosts = postService.getLikedPosts(user.getId());
+        model.addAttribute("posts", likedPosts);
+        return "liked";
+    }
 }

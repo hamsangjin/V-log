@@ -2,12 +2,12 @@
 <html xmlns:th="http://www.thymeleaf.org/" lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>Drafts</title>
-    <link rel="stylesheet" href="/css/saves.css">
+    <title>Liked Posts</title>
+    <link rel="stylesheet" href="/css/liked.css">
 </head>
 <body>
 <div class="container">
-    <div th:replace="~{fragments/header3 :: header3}"></div>
+    <div th:replace="~{fragments/header4 :: header4}"></div>
     <section>
         <div class="post-list">
             <div th:each="post : ${posts}" class="post-item">
