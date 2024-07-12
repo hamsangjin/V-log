@@ -1,12 +1,8 @@
 package hello.velog.global;
 
 import hello.velog.exception.*;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
-
+import org.springframework.http.*;
+import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 @RestControllerAdvice
@@ -30,5 +26,11 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public ResponseEntity<String> handlePasswordMismatch(PasswordMismatchException ex) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 실패: " + ex.getMessage());
+    }
+
+    @ExceptionHandler(PostNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ResponseEntity<String> handlePostNotFound(PostNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 }

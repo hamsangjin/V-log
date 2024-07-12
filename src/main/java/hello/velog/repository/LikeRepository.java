@@ -8,4 +8,5 @@ import java.util.List;
 public interface LikeRepository extends JpaRepository<Like, Long> {
     Like findByPostIdAndUserId(Long postId, Long userId);
     List<Like> findByPostId(Long postId);
+    void deleteByPostId(Long postId);
 }

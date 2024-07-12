@@ -20,6 +20,7 @@ public class PostController {
     private final PostService postService;
     private final SeriesService seriesService;
     private final TagService tagService;
+    private final PostTagService postTagService;
 
     @GetMapping("/newpost")
     public String newPostForm(HttpSession session, Model model, RedirectAttributes redirectAttributes) {
@@ -75,7 +76,7 @@ public class PostController {
 
         // 태그 처리 로직
         String[] tags = tagsString.split(","); // 콤마로 태그 분리
-        Set<Tag> tagSet = new HashSet<>();
+        List<Tag> tagSet = new ArrayList<>();
         for (String tag : tags) {
             tag = tag.trim();
             if (!tag.isEmpty()) {
@@ -91,6 +92,7 @@ public class PostController {
                 }
             }
         }
+        Collections.reverse(tagSet);
         post.setTags(tagSet); // Post 객체에 태그 설정
 
         String thumbnailImagePath = "/images/post/default-image.png";
@@ -118,5 +120,18 @@ public class PostController {
         postService.savePost(post);
         redirectAttributes.addFlashAttribute("message", "글이 성공적으로 작성되었습니다.");
         return "redirect:/vlog/myblog/@" + user.getUsername();
+    }
+
+    @PostMapping("/myblog/{username}/delete/{postId}")
+    public String deletePost(@PathVariable String username, @PathVariable Long postId, HttpSession session, RedirectAttributes redirectAttributes) {
+        User user = (User) session.getAttribute("user");
+        if (user == null || !user.getUsername().equals(username)) {
+            redirectAttributes.addFlashAttribute("errorMSG", "삭제 권한이 없습니다.");
+            return "redirect:/vlog/loginform";
+        }
+
+        postService.deletePost(postId);
+        redirectAttributes.addFlashAttribute("message", "글이 성공적으로 삭제되었습니다.");
+        return "redirect:/vlog/myblog/@" + username;
     }
 }

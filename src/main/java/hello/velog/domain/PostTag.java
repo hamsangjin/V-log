@@ -19,4 +19,8 @@ public class PostTag {
     @ManyToOne
     @JoinColumn(name = "tag_id")
     private Tag tag;
+
+    public Long getTagId() {
+        return tag.getId();
+    }
 }

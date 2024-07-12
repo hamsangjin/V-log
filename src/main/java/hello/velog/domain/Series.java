@@ -1,6 +1,5 @@
 package hello.velog.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import java.util.*;
@@ -21,5 +20,5 @@ public class Series {
     private Blog blog;
 
     @OneToMany(mappedBy = "series")
-    private Set<Post> posts = new HashSet<>();
+    private List<Post> posts = new ArrayList<>();
 }

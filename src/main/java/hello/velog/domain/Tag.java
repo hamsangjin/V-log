@@ -17,12 +17,12 @@ public class Tag {
     private String name;
 
     @ManyToMany(mappedBy = "tags", fetch = FetchType.LAZY)
-    private Set<Post> posts = new HashSet<>();
+    private List<Post> posts = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "blog_id")
     private Blog blog;
 
-    @OneToMany(mappedBy = "tag")
-    private Set<PostTag> postTags = new HashSet<>();
+    @OneToMany(mappedBy = "tag", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PostTag> postTags = new ArrayList<>();
 }

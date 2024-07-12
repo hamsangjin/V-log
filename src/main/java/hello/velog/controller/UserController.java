@@ -1,7 +1,6 @@
 package hello.velog.controller;
 
 import hello.velog.domain.User;
-import hello.velog.exception.*;
 import hello.velog.service.UserService;
 import jakarta.servlet.http.*;
 import org.springframework.stereotype.Controller;

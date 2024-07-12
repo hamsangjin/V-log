@@ -24,9 +24,11 @@
         </div>
         <div class="post-actions">
             <div th:if="${session.user != null} and ${session.user.id == blogOwner.id}">
-                <button th:onclick="|window.location.href='@{/vlog/post/stats/{postId}(postId=${post.id})}'|">통계</button>
-                <button th:onclick="|window.location.href='@{/vlog/post/edit/{postId}(postId=${post.id})}'|">수정</button>
-                <button th:onclick="|window.location.href='@{/vlog/post/delete/{postId}(postId=${post.id})}'|">삭제</button>
+                <button th:onclick="|window.location.href='@{/vlog/myblog/{username}(sessions.user.username)/stats/{postId}(postId=${post.id})}'|">통계</button>
+                <button th:onclick="|window.location.href='@{/vlog/myblog/{username}(sessions.user.username)/edit/{postId}(postId=${post.id})}'|">수정</button>
+                <form th:action="@{/vlog/myblog/{username}/delete/{postId}(username=${session.user.username}, postId=${post.id})}" method="post" style="display: inline;">
+                    <button type="submit">삭제</button>
+                </form>
             </div>
             <button id="likeBtn" th:if="${session.user != null}" th:data-post-id="${post.id}" th:onclick="'toggleLike(\'' + ${post.id} + '\');'">Like</button>
         </div>

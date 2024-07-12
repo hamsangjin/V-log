@@ -24,10 +24,10 @@ public class Blog {
     private String intro = "소개를 입력해주세요.";
 
     @OneToMany(mappedBy = "blog")
-    private Set<Tag> tags = new HashSet<>();
+    private List<Tag> tags = new ArrayList<>();
 
     @OneToMany(mappedBy = "blog")
-    private Set<Series> series = new HashSet<>();
+    private List<Series> series = new ArrayList<>();
 
     public Blog(User user, String title) {
         this.user = user;

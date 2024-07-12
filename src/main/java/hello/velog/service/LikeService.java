@@ -1,8 +1,6 @@
 package hello.velog.service;
 
-import hello.velog.domain.Like;
-import hello.velog.domain.Post;
-import hello.velog.domain.User;
+import hello.velog.domain.*;
 import hello.velog.repository.LikeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
