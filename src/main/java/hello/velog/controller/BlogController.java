@@ -26,39 +26,44 @@ public class BlogController {
 
     @GetMapping("/myblog/@{username}")
     public String myBlog(@PathVariable String username, HttpServletRequest request, Model model) {
-        HttpSession session = request.getSession();
-        User sessionUser = (User) session.getAttribute("user");
+        // 세션을 통해 로그인 정보 얻기
+        User user = userService.getSessionUser(request);
+
+        // 블로그 주인의 유저 정보 획득
+        User blogOwner = userService.findByUsername(username);
+
+        // 현재 접속하는 정보에 따라 게시물 정보를 다르게 표시
         List<Post> posts;
-
-        User findUser = userService.findByUsername(username);
-
-        if (sessionUser != null && sessionUser.getId().equals(findUser.getId())) {
+        if (user != null && user.getId().equals(blogOwner.getId())) {
             // 로그인한 유저가 자신의 블로그를 보는 경우
-            posts = postService.getUserPosts(findUser.getId(), null, false);
+            posts = postService.getUserPosts(blogOwner.getId(), null, false);
         } else {
             // 로그아웃 상태이거나 다른 유저의 블로그를 보는 경우
-            posts = postService.getUserPosts(findUser.getId(), false, false);
+            posts = postService.getUserPosts(blogOwner.getId(), false, false);
         }
 
-        Blog blog = blogService.findBlogByUserId(findUser.getId());
+        // 블로그 주인의 blog, user 정보 모델에 전달
+        Blog blog = blogService.findBlogByUserId(blogOwner.getId());
         model.addAttribute("blog", blog);
         model.addAttribute("posts", posts);
-        model.addAttribute("blogOwner", postService.getUserById(findUser.getId()));
+        model.addAttribute("blogOwner", blogOwner);
         return "myblog";
     }
 
     @GetMapping("/myblog/@{username}/{id}")
     public String getPost(@PathVariable String username, @PathVariable Long id, HttpServletRequest request, Model model) {
-        User findUser = userService.findByUsername(username);
-        HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("user");
-        Post post = postService.getPostById(id);
-        Blog blog = blogService.findBlogByUserId(findUser.getId());
+        // 세션을 통해 로그인 정보 얻기
+        User user = userService.getSessionUser(request);
 
-        // 게시물 권한 확인
+        User blogOwner = userService.findByUsername(username);          // 블로그 주인의 유저 정보
+        Blog blog = blogService.findBlogByUserId(blogOwner.getId());    // 블로그 주인의 블로그 정보
+        Post post = postService.getPostById(id);                        // 요청한 게시물의 정보
+
+        // 게시물이 비공개거나 임시글인지 확인
         if (post.getPrivacySetting() || post.getTemporarySetting()) {
-            if (user == null || !user.getId().equals(findUser.getId())) {
-                return "redirect:/vlog/myblog/@" + findUser.getUsername(); // 접근 제한
+            // 둘 중에 하나라도 해당되면 본인의 게시물이 아닌 이상 안보이므로, 다시 게시물 리스트로 이동
+            if (user == null || !user.getId().equals(blogOwner.getId())) {
+                return "redirect:/vlog/myblog/@" + blogOwner.getUsername(); // 접근 제한
             }
         }
 
@@ -68,7 +73,7 @@ public class BlogController {
         model.addAttribute("user", user);
         model.addAttribute("post", post);
         model.addAttribute("blog", blog);
-        model.addAttribute("blogOwner", postService.getUserById(findUser.getId()));
+        model.addAttribute("blogOwner", blogOwner);
         model.addAttribute("htmlContent", htmlContent);
 
         return "postDetail";
@@ -76,12 +81,16 @@ public class BlogController {
 
     @GetMapping("/saves")
     public String save(HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
-        HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("user");
+        // 세션을 통해 로그인 정보 얻기
+        User user = userService.getSessionUser(request);
+
+        // 로그인이 되어 있지 않으면 접속할 수 없음 -> 시큐리티로 바꾸면 없애도 될듯
         if (user == null) {
             redirectAttributes.addFlashAttribute("errorMSG", "로그인이 필요한 기능입니다.");
             return "redirect:/vlog/loginform";
         }
+
+        // 비공개 여부와 상관없이 임시글이면 다 불러오기
         List<Post> posts = postService.getUserPosts(user.getId(), null, true);
         model.addAttribute("posts", posts);
         return "saves";
@@ -89,12 +98,16 @@ public class BlogController {
 
     @GetMapping("/liked")
     public String liked(HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
-        HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("user");
+        // 세션을 통해 로그인 정보 얻기
+        User user = userService.getSessionUser(request);
+
+        // 로그인이 되어 있지 않으면 접속할 수 없음 -> 시큐리티로 바꾸면 없애도 될듯
         if (user == null) {
             redirectAttributes.addFlashAttribute("errorMSG", "로그인이 필요한 기능입니다.");
             return "redirect:/vlog/loginform";
         }
+
+        // 본인이 좋아요한 게시물들의 목록을 불러옴
         List<Post> likedPosts = postService.getLikedPosts(user.getId());
         model.addAttribute("posts", likedPosts);
         return "liked";

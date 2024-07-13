@@ -3,6 +3,7 @@ package hello.velog.service;
 import hello.velog.domain.*;
 import hello.velog.exception.*;
 import hello.velog.repository.*;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -79,4 +80,10 @@ public class UserService {
     public User findByUsername(String username) {
         return userRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException("사용자를 찾을 수 없습니다."));
     }
+
+    public User getSessionUser(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        return (session != null) ? (User) session.getAttribute("user") : null;
+    }
+
 }
