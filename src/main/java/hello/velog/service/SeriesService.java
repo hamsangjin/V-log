@@ -1,10 +1,13 @@
 package hello.velog.service;
 
 import hello.velog.domain.*;
+import hello.velog.exception.SeriesAlreadyExistsException;
 import hello.velog.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -25,8 +28,13 @@ public class SeriesService {
     @Transactional
     public Series saveSeries(Series series) {
         if (seriesRepository.existsByTitle(series.getTitle())) {
-            throw new IllegalArgumentException("시리즈가 중복되었습니다.");
+            throw new SeriesAlreadyExistsException("시리즈가 중복되었습니다.");
         }
+        return seriesRepository.save(series);
+    }
+
+    @Transactional
+    public Series updateSeries(Series series) {
         return seriesRepository.save(series);
     }
 
@@ -39,7 +47,10 @@ public class SeriesService {
             saveSeries(series);
             return series;
         } else if (seriesId != null) {
-            return findById(seriesId);
+            Series series = findById(seriesId);
+            series.setLastUpdated(LocalDateTime.now());
+            updateSeries(series);
+            return series;
         }
         return null;
     }

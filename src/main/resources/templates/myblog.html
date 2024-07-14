@@ -8,6 +8,7 @@
 <body>
 <div class="container">
     <div th:replace="~{fragments/header2 :: header2}"></div>
+
     <section>
         <nav>
             <ul class="nav-tabs">
@@ -47,12 +48,15 @@
         <div th:if="${activeTab == 'series'}">
             <div class="series-list">
                 <div th:each="seriesMap : ${seriesList}" class="series-item">
-                    <h3 th:text="${seriesMap.series.title}">Series Title</h3>
                     <div class="thumbnail-container">
                         <img th:src="@{${seriesMap.thumbnailImage}}" alt="Thumbnail Image" class="series-thumbnail"/>
                     </div>
-                    <p th:text="${seriesMap.series.posts.size()} + '개의 포스트'">Post Count</p>
-                    <p th:text="'마지막 업데이트 ' + ${#temporals.format(seriesMap.series.lastUpdated, 'yyyy-MM-dd')}">Last Updated</p>
+                    <h3 th:text="${seriesMap.series.title}">Series Title</h3>
+                    <div class="series-info">
+                        <p th:text="${seriesMap.series.posts.size()} + '개의 포스트'">Post Count</p>
+                        <p>·</p>
+                        <p class="light-font" th:text="'마지막 업데이트 ' + ${#temporals.format(seriesMap.series.lastUpdated, 'yyyy-MM-dd')}">Last Updated</p>
+                    </div>
                 </div>
             </div>
         </div>

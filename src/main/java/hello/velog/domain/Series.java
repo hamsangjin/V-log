@@ -2,6 +2,8 @@ package hello.velog.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Entity
@@ -16,7 +18,7 @@ public class Series {
     private String title;
 
     @Temporal(TemporalType.TIMESTAMP)
-    private Date lastUpdated;
+    private LocalDateTime lastUpdated;
 
     @ManyToOne
     @JoinColumn(name = "blog_id")
