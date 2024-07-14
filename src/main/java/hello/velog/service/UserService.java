@@ -82,4 +82,12 @@ public class UserService {
         HttpSession session = request.getSession(false);
         return (session != null) ? (User) session.getAttribute("user") : null;
     }
+
+    public long getFollowerCount(Long userId) {
+        return userRepository.countByFollowers_Id(userId);
+    }
+
+    public long getFollowingCount(Long userId) {
+        return userRepository.countByFollowing_Id(userId);
+    }
 }

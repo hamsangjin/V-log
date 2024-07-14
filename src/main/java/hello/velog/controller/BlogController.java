@@ -19,6 +19,7 @@ public class BlogController {
     private final BlogService blogService;
     private final SeriesService seriesService;
     private final MarkdownService markdownService;
+    private final FollowService followService;
 
     @GetMapping
     public String home() {
@@ -42,17 +43,26 @@ public class BlogController {
             posts = postService.getUserPosts(blogOwner.getId(), false, false);
         }
 
+        long followerCount = followService.getFollowerCount(blogOwner.getId());
+        long followingCount = followService.getFollowingCount(blogOwner.getId());
+
         Blog blog = blogService.findBlogByUserId(blogOwner.getId());
         model.addAttribute("blog", blog);
         model.addAttribute("posts", posts);
         model.addAttribute("blogOwner", blogOwner);
+        model.addAttribute("followerCount", followerCount);
+        model.addAttribute("followingCount", followingCount);
         model.addAttribute("activeTab", "posts");
+        model.addAttribute("isBlogOwner", user != null && user.getId().equals(blogOwner.getId()));
+        model.addAttribute("sessionUser", user); // 세션 사용자 추가
         return "myblog";
     }
 
     @GetMapping("/myblog/@{username}/series")
     public String myBlogSeries(@PathVariable String username, HttpServletRequest request, Model model) {
+        User user = userService.getSessionUser(request);
         User blogOwner = userService.findByUsername(username);
+
         List<Series> seriesList = seriesService.findAllSeriesByBlogId(blogOwner.getBlog().getId());
         List<Map<String, Object>> seriesWithThumbnails = new ArrayList<>();
 
@@ -65,11 +75,18 @@ public class BlogController {
             seriesWithThumbnails.add(seriesMap);
         }
 
+        long followerCount = followService.getFollowerCount(blogOwner.getId());
+        long followingCount = followService.getFollowingCount(blogOwner.getId());
+
         Blog blog = blogService.findBlogByUserId(blogOwner.getId());
         model.addAttribute("blog", blog);
         model.addAttribute("seriesList", seriesWithThumbnails);
         model.addAttribute("blogOwner", blogOwner);
+        model.addAttribute("followerCount", followerCount);
+        model.addAttribute("followingCount", followingCount);
         model.addAttribute("activeTab", "series");
+        model.addAttribute("isBlogOwner", user != null && user.getId().equals(blogOwner.getId()));
+        model.addAttribute("sessionUser", user); // 세션 사용자 추가
         return "myblog";
     }
 
@@ -79,11 +96,17 @@ public class BlogController {
         User user = userService.getSessionUser(request);
         boolean isBlogOwner = user != null && user.getUsername().equals(username);
 
+        long followerCount = followService.getFollowerCount(blog.getUser().getId());
+        long followingCount = followService.getFollowingCount(blog.getUser().getId());
+
         model.addAttribute("blog", blog);
         model.addAttribute("blogOwner", blog.getUser());
         model.addAttribute("isBlogOwner", isBlogOwner);
         model.addAttribute("username", username); // username 추가
+        model.addAttribute("followerCount", followerCount);
+        model.addAttribute("followingCount", followingCount);
         model.addAttribute("activeTab", "about");
+        model.addAttribute("sessionUser", user); // 세션 사용자 추가
         return "myblog";
     }
 
@@ -124,9 +147,11 @@ public class BlogController {
         model.addAttribute("blog", blog);
         model.addAttribute("blogOwner", blogOwner);
         model.addAttribute("htmlContent", htmlContent);
+        model.addAttribute("sessionUser", user); // 세션 사용자 추가
 
         return "postDetail";
     }
+
 
     @GetMapping("/saves")
     public String save(HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
