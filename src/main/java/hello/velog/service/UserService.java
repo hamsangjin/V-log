@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -29,7 +30,6 @@ public class UserService {
         return user;
     }
 
-    // 사용자 등록 메서드
     @Transactional
     public User register(User user) {
         validateUsernameAndEmail(user.getUsername(), user.getEmail());
@@ -45,17 +45,15 @@ public class UserService {
         return savedUser;
     }
 
-    // 중복 체크 및 예외 처리
     private void validateUsernameAndEmail(String username, String email) {
         if (userRepository.findByUsername(username).isPresent()) {
-            throw new IllegalArgumentException("아이디가 이미 존재합니다.");
+            throw new UsernameAlreadyExistsException("아이디가 이미 존재합니다.");
         }
         if (userRepository.findByEmail(email).isPresent()) {
-            throw new IllegalArgumentException("이메일이 이미 존재합니다.");
+            throw new EmailAlreadyExistsException("이메일이 이미 존재합니다.");
         }
     }
 
-    // 사용자에게 역할 할당
     private void assignRoleToUser(User user, String roleName) {
         Optional<Role> role = roleRepository.findByName(roleName);
         role.ifPresent(r -> {
@@ -64,7 +62,6 @@ public class UserService {
         });
     }
 
-    // 기존의 아이디와 이메일 중복 확인 메소드는 그대로 유지합니다.
     public boolean isUsernameTaken(String username) {
         return userRepository.findByUsername(username).isPresent();
     }
@@ -85,5 +82,4 @@ public class UserService {
         HttpSession session = request.getSession(false);
         return (session != null) ? (User) session.getAttribute("user") : null;
     }
-
 }

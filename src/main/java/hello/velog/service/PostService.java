@@ -6,6 +6,8 @@ import hello.velog.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -17,7 +19,6 @@ public class PostService {
     private final TagRepository tagRepository;
     private final LikeRepository likeRepository;
     private final PostTagRepository postTagRepository;
-
 
     @Transactional
     public void savePost(Post post) {
@@ -78,5 +79,22 @@ public class PostService {
 
     public List<Post> getLikedPosts(Long userId) {
         return likeRepository.findLikedPostsByUserId(userId);
+    }
+
+    @Transactional
+    public String handleThumbnailImageUpload(MultipartFile thumbnailImageFile) throws IOException {
+        String thumbnailImagePath = "/images/post/default-image.png";
+        if (!thumbnailImageFile.isEmpty()) {
+            String uploadDir = "/Users/sangjin/Desktop/likelion/velog/src/main/resources/static/images/post/";
+            String uuid = UUID.randomUUID().toString();
+            String originalFilename = thumbnailImageFile.getOriginalFilename();
+            String storedFilename = uuid + "_" + originalFilename;
+
+            File destFile = new File(uploadDir + storedFilename);
+            thumbnailImageFile.transferTo(destFile);
+
+            thumbnailImagePath = "/images/post/" + storedFilename;
+        }
+        return thumbnailImagePath;
     }
 }

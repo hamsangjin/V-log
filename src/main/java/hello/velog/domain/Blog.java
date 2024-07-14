@@ -21,7 +21,8 @@ public class Blog {
     @Column(nullable = false)
     private String title;
 
-    private String intro = "소개를 입력해주세요.";
+    @Column(columnDefinition = "longtext")
+    private String intro;
 
     @OneToMany(mappedBy = "blog")
     private List<Tag> tags = new ArrayList<>();

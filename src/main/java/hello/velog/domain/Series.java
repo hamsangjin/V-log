@@ -15,6 +15,9 @@ public class Series {
     @Column(nullable = false, unique = true)
     private String title;
 
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastUpdated;
+
     @ManyToOne
     @JoinColumn(name = "blog_id")
     private Blog blog;

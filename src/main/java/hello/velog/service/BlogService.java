@@ -23,4 +23,20 @@ public class BlogService {
         return blogRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("블로그를 찾을 수 없습니다."));
     }
+
+    @Transactional(readOnly = true)
+    public Blog findBlogByUsername(String username) {
+        // 먼저 해당 사용자가 존재하는지 확인합니다.
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new EntityNotFoundException("사용자를 찾을 수 없습니다."));
+
+        // 사용자가 존재하면 사용자의 블로그를 찾습니다.
+        return blogRepository.findById(user.getId())
+                .orElseThrow(() -> new EntityNotFoundException("블로그를 찾을 수 없습니다."));
+    }
+
+    @Transactional
+    public Blog saveBlog(Blog blog) {
+        return blogRepository.save(blog);
+    }
 }
