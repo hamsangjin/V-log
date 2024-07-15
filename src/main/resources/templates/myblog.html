@@ -8,16 +8,6 @@
 <body>
 <div class="container">
     <div th:replace="~{fragments/header2 :: header2}"></div>
-
-    <div class="follow-info">
-        <span class="follower-count" th:text="${followerCount} + ' 팔로워'">팔로워 수</span>
-        <span class="following-count" th:text="${followingCount} + ' 팔로잉'">팔로잉 수</span>
-    </div>
-
-    <div th:if="${isBlogOwner == false and sessionUser != null}" class="follow-btn-container">
-        <button id="followBtn" th:data-username="${blogOwner.username}">Follow</button>
-    </div>
-
     <section>
         <nav>
             <ul class="nav-tabs">
@@ -57,15 +47,12 @@
         <div th:if="${activeTab == 'series'}">
             <div class="series-list">
                 <div th:each="seriesMap : ${seriesList}" class="series-item">
+                    <h3 th:text="${seriesMap.series.title}">Series Title</h3>
                     <div class="thumbnail-container">
                         <img th:src="@{${seriesMap.thumbnailImage}}" alt="Thumbnail Image" class="series-thumbnail"/>
                     </div>
-                    <h3 th:text="${seriesMap.series.title}">Series Title</h3>
-                    <div class="series-info">
-                        <p th:text="${seriesMap.series.posts.size()} + '개의 포스트'">Post Count</p>
-                        <p>·</p>
-                        <p class="light-font" th:text="'마지막 업데이트 ' + ${#temporals.format(seriesMap.series.lastUpdated, 'yyyy-MM-dd')}">Last Updated</p>
-                    </div>
+                    <p th:text="${seriesMap.series.posts.size()} + '개의 포스트'">Post Count</p>
+                    <p th:text="'마지막 업데이트 ' + ${#temporals.format(seriesMap.series.lastUpdated, 'yyyy-MM-dd')}">Last Updated</p>
                 </div>
             </div>
         </div>
@@ -98,7 +85,6 @@
         const introFormContainer = document.querySelector(".intro-form-container");
         const introText = document.querySelector(".intro-text");
         const noIntro = document.querySelector(".no-intro");
-        const followBtn = document.getElementById("followBtn");
 
         editIntroBtns.forEach(function(editIntroBtn) {
             editIntroBtn.addEventListener("click", function() {
@@ -108,59 +94,7 @@
                 editIntroBtn.style.display = "none";
             });
         });
-
-        if (followBtn) {
-            const username = followBtn.getAttribute("data-username");
-            checkFollowStatus(username);
-
-            followBtn.addEventListener("click", function() {
-                toggleFollow(username);
-            });
-        }
     });
-
-    function checkFollowStatus(username) {
-        fetch(`/vlog/follow/status?username=${username}`, {
-            method: 'GET',
-            credentials: 'include'
-        })
-            .then(response => response.json())
-            .then(data => {
-                const followButton = document.getElementById("followBtn");
-                followButton.textContent = data.following ? 'Unfollow' : 'Follow';
-            })
-            .catch(error => console.error('Error:', error));
-    }
-
-    function toggleFollow(username) {
-        fetch(`/vlog/follow?username=${username}`, {
-            method: 'POST',
-            credentials: 'include',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-            .then(response => response.json())
-            .then(data => {
-                const followButton = document.getElementById("followBtn");
-                followButton.textContent = data.status === 'Following' ? 'Unfollow' : 'Follow';
-
-                // Fetch updated follower and following counts
-                fetch(`/vlog/follow/counts?username=${username}`, {
-                    method: 'GET',
-                    credentials: 'include'
-                })
-                    .then(response => response.json())
-                    .then(counts => {
-                        const followerCountElement = document.querySelector(".follow-info .follower-count");
-                        const followingCountElement = document.querySelector(".follow-info .following-count");
-
-                        followerCountElement.textContent = `${counts.followerCount} 팔로워`;
-                        followingCountElement.textContent = `${counts.followingCount} 팔로잉`;
-                    });
-            })
-            .catch(error => console.error('Error:', error));
-    }
 </script>
 </body>
 </html>
