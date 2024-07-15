@@ -97,4 +97,10 @@ public class PostService {
         }
         return thumbnailImagePath;
     }
+
+    @Transactional(readOnly = true)
+    public String getUsernameByUserId(Long userId) {
+        User user = userRepository.findById(userId).orElse(null);
+        return user != null ? user.getUsername() : null;
+    }
 }

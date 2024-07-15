@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/vlog")
@@ -130,9 +131,14 @@ public class BlogController {
     public String getPost(@PathVariable String username, @PathVariable Long id, HttpServletRequest request, Model model) {
         User user = userService.getSessionUser(request);
 
-        User blogOwner = userService.findByUsername(username);
-        Blog blog = blogService.findBlogByUserId(blogOwner.getId());
         Post post = postService.getPostById(id);
+        User blogOwner = userService.findById(post.getUserId());
+        Blog blog = blogService.findBlogByUserId(blogOwner.getId());
+
+        // URL의 사용자명과 게시물 소유자가 일치하지 않는 경우 리다이렉트
+        if (!blogOwner.getUsername().equals(username)) {
+            return "redirect:/vlog/myblog/@" + username; // 일치하지 않으면 리다이렉트
+        }
 
         if (post.getPrivacySetting() || post.getTemporarySetting()) {
             if (user == null || !user.getId().equals(blogOwner.getId())) {
@@ -177,7 +183,11 @@ public class BlogController {
         }
 
         List<Post> likedPosts = postService.getLikedPosts(user.getId());
+        Map<Long, String> postUsernames = likedPosts.stream()
+                .collect(Collectors.toMap(Post::getId, post -> postService.getUsernameByUserId(post.getUserId())));
+
         model.addAttribute("posts", likedPosts);
+        model.addAttribute("postUsernames", postUsernames);
         return "liked";
     }
 }

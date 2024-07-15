@@ -13,11 +13,11 @@
             <div th:each="post : ${posts}" class="post-item">
                 <!-- 하이퍼링크를 제목과 이미지에만 적용 -->
                 <div class="thumbnail-container">
-                    <a th:href="@{'/vlog/myblog/@' + ${session.user.username} + '/' + ${post.id}}">
+                    <a th:href="@{'/vlog/myblog/@' + ${postUsernames[post.id]} + '/' + ${post.id}}">
                         <img class="post-thumbnail" th:src="@{${post.thumbnailImage}}" alt="Thumbnail Image"/>
                     </a>
                 </div>
-                <a th:href="@{'/vlog/myblog/@' + ${session.user.username} + '/' + ${post.id}}" class="post-title-link">
+                <a th:href="@{'/vlog/myblog/@' + ${postUsernames[post.id]} + '/' + ${post.id}}" class="post-title-link">
                     <h2 th:text="${post.title}">Post Title</h2>
                 </a>
                 <p th:text="${post.thumbnailText}" class="post-content">Post Content</p>

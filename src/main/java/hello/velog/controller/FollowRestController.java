@@ -1,15 +1,12 @@
 package hello.velog.controller;
 
 import hello.velog.domain.User;
-import hello.velog.service.FollowService;
-import hello.velog.service.UserService;
+import hello.velog.service.*;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("/vlog")
