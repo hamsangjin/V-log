@@ -1,46 +1,46 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org/" lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <title>게시글 상세보기</title>
-    <link rel="stylesheet" href="/css/postDetail.css">
-</head>
-<body>
-<div class="container">
-    <div th:replace="~{fragments/header2 :: header2}"></div>
-    <h1 class="post-title" th:text="${post.title}">게시물 제목</h1>
+    <head>
+        <meta charset="UTF-8">
+        <title>게시글 상세보기</title>
+        <link rel="stylesheet" href="/css/postDetail.css">
+    </head>
+    <body>
+        <div class="container">
+            <div th:replace="~{fragments/header2 :: header2}"></div>
+            <h1 class="post-title" th:text="${post.title}">게시물 제목</h1>
 
-    <!-- 태그 목록 표시 -->
-    <div class="tags-container">
-        <span th:each="tag : ${post.tags}">
-            <a href="#" th:text="${tag.name}" class="tag-link"></a>
-        </span>
-    </div>
+            <!-- 태그 목록 표시 -->
+            <div class="tags-container">
+                <span th:each="tag : ${post.tags}">
+                    <a href="#" th:text="${tag.name}" class="tag-link"></a>
+                </span>
+            </div>
 
-    <div class="post-meta-actions">
-        <div class="post-meta">
-            <span class="author" th:text="${blogOwner.name}">유저 이름</span>
-            <span class="created-date" th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd')}">게시물 작성 시간</span>
-        </div>
-        <div class="post-actions">
-            <div th:if="${sessionUser != null and sessionUser.id == blogOwner.id}">
-                <button th:onclick="|window.location.href='@{/vlog/myblog/{username}(sessionUser.username)/stats/{postId}(postId=${post.id})}'|">통계</button>
-                <button th:onclick="|window.location.href='@{/vlog/myblog/{username}(sessionUser.username)/edit/{postId}(postId=${post.id})}'|">수정</button>
-                <form th:action="@{/vlog/myblog/{username}/delete/{postId}(username=${sessionUser.username}, postId=${post.id})}" method="post" style="display: inline;">
-                    <button type="submit">삭제</button>
-                </form>
+            <div class="post-meta-actions">
+                <div class="post-meta">
+                    <span class="author" th:text="${blogOwner.name}">유저 이름</span>
+                    <span class="created-date" th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd')}">게시물 작성 시간</span>
+                </div>
+                <div class="post-actions">
+                    <div th:if="${sessionUser != null and sessionUser.id == blogOwner.id}">
+                        <button th:onclick="|window.location.href='@{/vlog/myblog/{username}(sessionUser.username)/stats/{postId}(postId=${post.id})}'|">통계</button>
+                        <button th:onclick="|window.location.href='@{/vlog/myblog/{username}(sessionUser.username)/edit/{postId}(postId=${post.id})}'|">수정</button>
+                        <form th:action="@{/vlog/myblog/{username}/delete/{postId}(username=${sessionUser.username}, postId=${post.id})}" method="post" style="display: inline;">
+                            <button type="submit">삭제</button>
+                        </form>
+                    </div>
+                    <button id="likeBtn" th:if="${sessionUser != null}" th:data-post-id="${post.id}" th:onclick="'toggleLike(\'' + ${post.id} + '\');'">Like</button>
+                    <div th:if="${sessionUser != null and !(sessionUser.id == blogOwner.id)}">
+                        <button id="followBtn" th:data-username="${blogOwner.username}">Follow</button>
+                    </div>
+                </div>
             </div>
-            <button id="likeBtn" th:if="${sessionUser != null}" th:data-post-id="${post.id}" th:onclick="'toggleLike(\'' + ${post.id} + '\');'">Like</button>
-            <div th:if="${sessionUser != null and !(sessionUser.id == blogOwner.id)}">
-                <button id="followBtn" th:data-username="${blogOwner.username}">Follow</button>
+            <div class="thumbnail-container">
+                <img class="post-thumbnail" th:src="@{${post.thumbnailImage}}" alt="Thumbnail"/>
             </div>
+            <div class="post-content" th:utext="${htmlContent}"></div>
         </div>
-    </div>
-    <div class="thumbnail-container">
-        <img class="post-thumbnail" th:src="@{${post.thumbnailImage}}" alt="Thumbnail"/>
-    </div>
-    <div class="post-content" th:utext="${htmlContent}"></div>
-</div>
-<script th:src="@{/js/postDetail.js}"></script>
-</body>
+    <script th:src="@{/js/postDetail.js}"></script>
+    </body>
 </html>

@@ -1,38 +1,37 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org/" lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <title>Liked Posts</title>
-    <link rel="stylesheet" href="/css/liked.css">
-</head>
-<body>
-<div class="container">
-    <div th:replace="~{fragments/header4 :: header4}"></div>
-    <section>
-        <div class="post-list">
-            <div th:each="post : ${posts}" class="post-item">
-                <!-- 하이퍼링크를 제목과 이미지에만 적용 -->
-                <div class="thumbnail-container">
-                    <a th:href="@{'/vlog/myblog/@' + ${postUsernames[post.id]} + '/' + ${post.id}}">
-                        <img class="post-thumbnail" th:src="@{${post.thumbnailImage}}" alt="Thumbnail Image"/>
-                    </a>
-                </div>
-                <a th:href="@{'/vlog/myblog/@' + ${postUsernames[post.id]} + '/' + ${post.id}}" class="post-title-link">
-                    <h2 th:text="${post.title}">Post Title</h2>
-                </a>
-                <p th:text="${post.thumbnailText}" class="post-content">Post Content</p>
-                <!-- 태그 표시 -->
-                <div class="tags-container">
-                    <a th:each="tag : ${post.tags}" href="#" th:text="${tag.name}" class="tag-link"></a>
-                </div>
-                <p th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd')}" class="post-date">Post Date</p>
-                <!-- 좋아요 수 표시 -->
-                <div class="like-count">
-                    <span th:text="${#lists.size(post.likes)} + ' likes'">Likes</span>
-                </div>
-            </div>
+    <head>
+        <meta charset="UTF-8">
+        <title>Liked Posts</title>
+        <link rel="stylesheet" href="/css/liked.css">
+    </head>
+    <body>
+        <div class="container">
+            <div th:replace="~{fragments/header4 :: header4}"></div>
+                <section>
+                    <div class="post-list">
+                        <div th:each="post : ${posts}" class="post-item">
+                            <div class="thumbnail-container">
+                                <a th:href="@{'/vlog/myblog/@' + ${postUsernames[post.id]} + '/' + ${post.id}}">
+                                    <img class="post-thumbnail" th:src="@{${post.thumbnailImage}}" alt="Thumbnail Image"/>
+                                </a>
+                            </div>
+                            <a th:href="@{'/vlog/myblog/@' + ${postUsernames[post.id]} + '/' + ${post.id}}" class="post-title-link">
+                                <h2 th:text="${post.title}">Post Title</h2>
+                            </a>
+                            <p th:text="${post.thumbnailText}" class="post-content">Post Content</p>
+                            <!-- 태그 표시 -->
+                            <div class="tags-container">
+                                <a th:each="tag : ${post.tags}" href="#" th:text="${tag.name}" class="tag-link"></a>
+                            </div>
+                            <p th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd')}" class="post-date">Post Date</p>
+                            <!-- 좋아요 수 표시 -->
+                            <div class="like-count">
+                                <span th:text="${#lists.size(post.likes)} + ' likes'">Likes</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
         </div>
-    </section>
-</div>
-</body>
+    </body>
 </html>
