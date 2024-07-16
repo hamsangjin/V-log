@@ -30,7 +30,6 @@ header a {
     padding: 5px 10px;
     border-radius: 5px;
     background-color: #121212; /* 검은색 배경 */
-
 }
 
 header a:hover {
@@ -94,3 +93,115 @@ header a:hover {
 }
 
 /* -- */
+
+.nav-tabs {
+    display: flex;
+    justify-content: space-around;
+    list-style-type: none;
+    padding: 0;
+    margin-bottom: 20px;
+}
+
+.nav-tabs li {
+    margin: 0;
+}
+
+.nav-tabs li a {
+    display: block;
+    padding: 10px 20px;
+    text-decoration: none;
+    color: #FFFFFF;
+    border-bottom: 2px solid transparent;
+    transition: all 0.3s;
+}
+
+.nav-tabs li.active a,
+.nav-tabs li a:hover {
+    border-bottom: 2px solid #63e6be;
+}
+
+.post-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.post-item {
+    background-color: #1e1e1e;
+    padding: 20px;
+    border-radius: 8px;
+    transition: background-color 0.3s;
+}
+
+.post-item:hover {
+    background-color: #333333;
+}
+
+.thumbnail-container {
+    text-align: center;
+    margin-bottom: 20px;
+    overflow: hidden; /* 컨테이너에 맞춰서 이미지를 자름 */
+    border-radius: 8px;
+    width: 100%; /* 썸네일 컨테이너의 너비를 고정 */
+    height: 200px; /* 썸네일 컨테이너의 높이를 고정 */
+}
+
+.post-thumbnail {
+    width: 100%;
+    height: 100%; /* 썸네일 컨테이너의 높이에 맞춤 */
+    object-fit: fill; /* 이미지 비율을 무시하고 컨테이너에 맞게 조정 */
+}
+
+.post-title-link h2 {
+    margin-bottom: 5px; /* 기존 값보다 작은 값으로 조정 */
+    font-size: 1.5em; /* 필요에 따라 폰트 크기 조정 */
+    text-align: left; /* 텍스트 왼쪽 정렬 */
+}
+
+.post-title-link {
+    text-decoration: none; /* 링크 장식 제거 */
+    color: inherit; /* 텍스트 색상 상속 */
+    cursor: default; /* 마우스 커서를 기본 화살표로 설정 */
+}
+
+.post-title-link h2:hover {
+    color: inherit; /* 호버 시 색상 변화 없음 */
+}
+
+.post-content {
+    margin-top: 5px; /* 콘텐츠 텍스트의 상단 마진을 줄임 */
+    font-size: 1em; /* 필요에 따라 폰트 크기 조정 */
+    color: #ccc; /* 글씨 색상 */
+    text-align: left; /* 텍스트 왼쪽 정렬 */
+}
+
+.feed-message {
+    text-align: center;
+    margin-top: 50px;
+}
+
+.feed-message img {
+    max-width: 50%;
+    height: auto;
+}
+
+.feed-message p {
+    font-size: 1.5em;
+    color: #FFFFFF;
+    margin-top: 20px;
+}
+
+.create-post-button {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #96f2d7;
+    color: #121212;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.create-post-button:hover {
+    background-color: #63e6be;
+}

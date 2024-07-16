@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class FollowService {
@@ -39,5 +41,10 @@ public class FollowService {
     @Transactional(readOnly = true)
     public int getFollowingCount(Long userId) {
         return followRepository.countFollowingByUserId(userId);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Follow> findByFollower(User follower) {
+        return followRepository.findByFollower(follower);
     }
 }

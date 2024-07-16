@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -23,7 +24,55 @@ public class BlogController {
     private final FollowService followService;
 
     @GetMapping
-    public String home() {
+    public String home(Model model, HttpServletRequest request) {
+        User user = userService.getSessionUser(request);
+        model.addAttribute("sessionUser", user);
+        return "redirect:/vlog/trending";
+    }
+
+    @GetMapping("/trending")
+    public String trending(Model model) {
+        List<Post> posts = postService.getTrendingPosts();
+        Map<Long, String> postUsernames = posts.stream()
+                .collect(Collectors.toMap(Post::getId, post -> postService.getUsernameByUserId(post.getUserId())));
+        model.addAttribute("posts", posts);
+        model.addAttribute("postUsernames", postUsernames);
+        model.addAttribute("activeTab", "trending");
+        return "home";
+    }
+
+    @GetMapping("/latest")
+    public String latest(Model model) {
+        List<Post> posts = postService.getLatestPosts();
+        Map<Long, String> postUsernames = posts.stream()
+                .collect(Collectors.toMap(Post::getId, post -> postService.getUsernameByUserId(post.getUserId())));
+        model.addAttribute("posts", posts);
+        model.addAttribute("postUsernames", postUsernames);
+        model.addAttribute("activeTab", "latest");
+        return "home";
+    }
+
+    @GetMapping("/feed")
+    public String feed(Model model, HttpServletRequest request) {
+        User user = userService.getSessionUser(request);
+        if (user == null) {
+            model.addAttribute("requiresLogin", true);
+        } else {
+            List<Follow> follows = followService.findByFollower(user);
+            if (follows.isEmpty()) {
+                model.addAttribute("noFeeds", true);
+            } else {
+                List<Long> followedUserIds = follows.stream()
+                        .map(follow -> follow.getFollowee().getId())
+                        .collect(Collectors.toList());
+                List<Post> posts = postService.getPostsFromFollowedUsers(followedUserIds);
+                Map<Long, String> postUsernames = posts.stream()
+                        .collect(Collectors.toMap(Post::getId, post -> postService.getUsernameByUserId(post.getUserId())));
+                model.addAttribute("posts", posts);
+                model.addAttribute("postUsernames", postUsernames);
+            }
+        }
+        model.addAttribute("activeTab", "feed");
         return "home";
     }
 
@@ -113,7 +162,6 @@ public class BlogController {
 
     @PostMapping("/myblog/@{username}/about/update")
     public String updateBlogIntro(@PathVariable String username, HttpServletRequest request, @RequestParam String intro) {
-        System.out.println(username);
         User user = userService.getSessionUser(request);
         User blogOwner = userService.findByUsername(username);
 
@@ -157,7 +205,6 @@ public class BlogController {
 
         return "postDetail";
     }
-
 
     @GetMapping("/saves")
     public String save(HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {

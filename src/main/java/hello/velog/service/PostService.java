@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+
 import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -35,7 +36,7 @@ public class PostService {
         if (privacySetting != null) {
             posts = postRepository.findByUserIdAndPrivacySettingAndTemporarySetting(
                     userId, privacySetting, temporarySetting);
-        } else{
+        } else {
             posts = postRepository.findByUserIdAndTemporarySetting(userId, temporarySetting);
         }
 
@@ -99,8 +100,24 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
+    public List<Post> getTrendingPosts() {
+        return postRepository.findAllByOrderByLikesDesc();
+    }
+
+    @Transactional(readOnly = true)
+    public List<Post> getLatestPosts() {
+        return postRepository.findAllByOrderByCreatedAtDesc();
+    }
+
+    @Transactional(readOnly = true)
+    public List<Post> getPostsFromFollowedUsers(List<Long> followedUserIds) {
+        return postRepository.findByUserIdInAndOrderByCreatedAtDesc(followedUserIds);
+    }
+
+    @Transactional(readOnly = true)
     public String getUsernameByUserId(Long userId) {
         User user = userRepository.findById(userId).orElse(null);
         return user != null ? user.getUsername() : null;
     }
+
 }
