@@ -14,7 +14,7 @@ public class Series {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String title;
 
     @Temporal(TemporalType.TIMESTAMP)

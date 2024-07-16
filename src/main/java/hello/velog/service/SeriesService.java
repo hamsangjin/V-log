@@ -27,7 +27,7 @@ public class SeriesService {
 
     @Transactional
     public Series saveSeries(Series series) {
-        if (seriesRepository.existsByTitle(series.getTitle())) {
+        if (seriesRepository.existsByTitleAndBlogId(series.getTitle(), series.getBlog().getId())) {
             throw new SeriesAlreadyExistsException("시리즈가 중복되었습니다.");
         }
         return seriesRepository.save(series);

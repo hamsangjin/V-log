@@ -28,7 +28,7 @@ public class PostController {
 
         model.addAttribute("user", user);
         model.addAttribute("post", new Post());
-        model.addAttribute("seriesList", seriesService.findAllSeries());
+        model.addAttribute("seriesList", seriesService.findAllSeriesByBlogId(user.getBlog().getId()));
         return "newpost";
     }
 
