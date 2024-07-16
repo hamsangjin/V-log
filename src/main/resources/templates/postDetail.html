@@ -23,15 +23,15 @@
                     <span class="created-date" th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd')}">게시물 작성 시간</span>
                 </div>
                 <div class="post-actions">
-                    <div th:if="${sessionUser != null and sessionUser.id == blogOwner.id}">
-                        <button th:onclick="|window.location.href='@{/vlog/myblog/{username}(sessionUser.username)/stats/{postId}(postId=${post.id})}'|">통계</button>
-                        <button th:onclick="|window.location.href='@{/vlog/myblog/{username}(sessionUser.username)/edit/{postId}(postId=${post.id})}'|">수정</button>
-                        <form th:action="@{/vlog/myblog/{username}/delete/{postId}(username=${sessionUser.username}, postId=${post.id})}" method="post" style="display: inline;">
+                    <div th:if="${user != null && user.id == blogOwner.id}">
+                        <button th:onclick="|window.location.href='@{/vlog/myblog/{username}(user.username)/stats/{postId}(postId=${post.id})}'|">통계</button>
+                        <button th:onclick="|window.location.href='@{/vlog/myblog/{username}(user.username)/edit/{postId}(postId=${post.id})}'|">수정</button>
+                        <form th:action="@{/vlog/myblog/{username}/delete/{postId}(username=${user.username}, postId=${post.id})}" method="post" style="display: inline;">
                             <button type="submit">삭제</button>
                         </form>
                     </div>
-                    <button id="likeBtn" th:if="${sessionUser != null}" th:data-post-id="${post.id}" th:onclick="'toggleLike(\'' + ${post.id} + '\');'">Like</button>
-                    <div th:if="${sessionUser != null and !(sessionUser.id == blogOwner.id)}">
+                    <button id="likeBtn" th:if="${user != null}" th:data-post-id="${post.id}" th:onclick="'toggleLike(\'' + ${post.id} + '\');'">Like</button>
+                    <div th:if="${user != null && !(user.id == blogOwner.id)}">
                         <button id="followBtn" th:data-username="${blogOwner.username}">Follow</button>
                     </div>
                 </div>

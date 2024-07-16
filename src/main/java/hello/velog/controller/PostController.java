@@ -2,7 +2,6 @@ package hello.velog.controller;
 
 import hello.velog.domain.*;
 import hello.velog.service.*;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,9 +21,8 @@ public class PostController {
     private final UserService userService;
 
     @GetMapping("/newpost")
-    public String newPostForm(Model model, HttpServletRequest request, RedirectAttributes redirectAttributes) {
-        User user = getSessionUser(request, redirectAttributes);
-        if (user == null) return "redirect:/vlog/loginform";
+    public String newPostForm(Model model) {
+        User user = userService.getCurrentUser();
 
         model.addAttribute("user", user);
         model.addAttribute("post", new Post());
@@ -43,11 +41,9 @@ public class PostController {
             @RequestParam("tags") String tagsString,
             @RequestParam(value = "privacySetting", required = false, defaultValue = "false") boolean privacySetting,
             @RequestParam(value = "temporarySetting", required = false, defaultValue = "false") boolean temporarySetting,
-            HttpServletRequest request,
             RedirectAttributes redirectAttributes) {
 
-        User user = getSessionUser(request, redirectAttributes);
-        if (user == null) return "redirect:/vlog/loginform";
+        User user = userService.getCurrentUser();
 
         Post post = new Post();
         post.setTitle(title);
@@ -78,23 +74,9 @@ public class PostController {
     }
 
     @PostMapping("/myblog/{username}/delete/{postId}")
-    public String deletePost(@PathVariable String username, @PathVariable Long postId, HttpServletRequest request, RedirectAttributes redirectAttributes) {
-        User user = userService.getSessionUser(request);
-        if (user == null || !user.getUsername().equals(username)) {
-            redirectAttributes.addFlashAttribute("errorMSG", "삭제 권한이 없습니다.");
-            return "redirect:/vlog/loginform";
-        }
-
+    public String deletePost(@PathVariable String username, @PathVariable Long postId, RedirectAttributes redirectAttributes) {
         postService.deletePost(postId);
         redirectAttributes.addFlashAttribute("message", "글이 성공적으로 삭제되었습니다.");
         return "redirect:/vlog/myblog/@" + username;
-    }
-
-    private User getSessionUser(HttpServletRequest request, RedirectAttributes redirectAttributes) {
-        User user = userService.getSessionUser(request);
-        if (user == null) {
-            redirectAttributes.addFlashAttribute("errorMSG", "로그인이 필요한 기능입니다.");
-        }
-        return user;
     }
 }

@@ -3,14 +3,14 @@ package hello.velog.service;
 import hello.velog.domain.*;
 import hello.velog.exception.*;
 import hello.velog.repository.*;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -62,11 +62,6 @@ public class UserService {
         return userRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException("사용자를 찾을 수 없습니다."));
     }
 
-    public User getSessionUser(HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        return (session != null) ? (User) session.getAttribute("user") : null;
-    }
-
     @Transactional(readOnly = true)
     public long getFollowerCount(Long userId) {
         return userRepository.countByFollowers_Id(userId);
@@ -75,5 +70,14 @@ public class UserService {
     @Transactional(readOnly = true)
     public long getFollowingCount(Long userId) {
         return userRepository.countByFollowing_Id(userId);
+    }
+
+    public User getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            return findByUsername(userDetails.getUsername());
+        }
+        return null;
     }
 }

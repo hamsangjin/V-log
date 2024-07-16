@@ -2,7 +2,6 @@ package hello.velog.controller;
 
 import hello.velog.domain.User;
 import hello.velog.service.*;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,8 +16,8 @@ public class FollowRestController {
     private final UserService userService;
 
     @PostMapping("/follow")
-    public ResponseEntity<?> handleFollow(@RequestParam String username, HttpServletRequest request) {
-        User follower = userService.getSessionUser(request);
+    public ResponseEntity<?> handleFollow(@RequestParam String username) {
+        User follower = userService.getCurrentUser();
         if (follower == null) return ResponseEntity.status(403).body("{\"error\": \"User must be logged in\"}");
 
         User followed = userService.findByUsername(username);
@@ -28,8 +27,8 @@ public class FollowRestController {
     }
 
     @GetMapping("/follow/status")
-    public ResponseEntity<?> checkFollowStatus(@RequestParam String username, HttpServletRequest request) {
-        User follower = userService.getSessionUser(request);
+    public ResponseEntity<?> checkFollowStatus(@RequestParam String username) {
+        User follower = userService.getCurrentUser();
         if (follower == null) return ResponseEntity.status(401).body("{\"status\": \"Not Logged In\"}");
 
         User followed = userService.findByUsername(username);

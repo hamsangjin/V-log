@@ -2,8 +2,7 @@ package hello.velog.controller;
 
 import hello.velog.domain.*;
 import hello.velog.dto.SeriesDTO;
-import hello.velog.service.SeriesService;
-import jakarta.servlet.http.HttpSession;
+import hello.velog.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import java.util.*;
@@ -13,11 +12,12 @@ import java.util.*;
 @RequiredArgsConstructor
 public class PostRestController {
     private final SeriesService seriesService;
+    private final UserService userService;
 
     @PostMapping("/createseries")
     @ResponseBody
-    public Map<String, Object> createSeries(@RequestBody Series series, HttpSession session) {
-        User user = (User) session.getAttribute("user");
+    public Map<String, Object> createSeries(@RequestBody Series series) {
+        User user = userService.getCurrentUser();
         Map<String, Object> response = new HashMap<>();
 
         if (user == null) {

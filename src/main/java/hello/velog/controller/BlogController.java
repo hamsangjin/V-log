@@ -3,13 +3,9 @@ package hello.velog.controller;
 import hello.velog.domain.*;
 import hello.velog.service.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -24,15 +20,6 @@ public class BlogController {
     private final SeriesService seriesService;
     private final MarkdownService markdownService;
     private final FollowService followService;
-
-    private User getCurrentUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
-            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-            return userService.findByUsername(userDetails.getUsername());
-        }
-        return null;
-    }
 
     // home에 관한 코드 시작
 
@@ -54,7 +41,7 @@ public class BlogController {
     @GetMapping("/trending")
     public String trending(Model model) {
         List<Post> posts = postService.getTrendingPosts();
-        User user = getCurrentUser();
+        User user = userService.getCurrentUser();
         addCommonAttributes(model, user, posts, "trending");
         return "home";
     }
@@ -62,14 +49,14 @@ public class BlogController {
     @GetMapping("/latest")
     public String latest(Model model) {
         List<Post> posts = postService.getLatestPosts();
-        User user = getCurrentUser();
+        User user = userService.getCurrentUser();
         addCommonAttributes(model, user, posts, "latest");
         return "home";
     }
 
     @GetMapping("/feed")
     public String feed(Model model) {
-        User user = getCurrentUser();
+        User user = userService.getCurrentUser();
         if (user == null) {
             model.addAttribute("user", null);
             model.addAttribute("posts", Collections.emptyList());
@@ -108,7 +95,7 @@ public class BlogController {
 
     @GetMapping("/myblog/@{username}/posts")
     public String myBlogPosts(@PathVariable String username, Model model) {
-        User user = getCurrentUser();
+        User user = userService.getCurrentUser();
         User blogOwner = userService.findByUsername(username);
         Blog blog = blogService.findBlogByUserId(blogOwner.getId());
 
@@ -123,7 +110,7 @@ public class BlogController {
 
     @GetMapping("/myblog/@{username}/series")
     public String myBlogSeries(@PathVariable String username, Model model) {
-        User user = getCurrentUser();
+        User user = userService.getCurrentUser();
         User blogOwner = userService.findByUsername(username);
         Blog blog = blogService.findBlogByUserId(blogOwner.getId());
 
@@ -146,7 +133,7 @@ public class BlogController {
 
     @GetMapping("/myblog/@{username}/about")
     public String getBlogAbout(@PathVariable String username, Model model) {
-        User user = getCurrentUser();
+        User user = userService.getCurrentUser();
         Blog blog = blogService.findBlogByUsername(username);
 
         addCommonAttributes(model, user, blog.getUser(), blog, "about");
@@ -156,7 +143,7 @@ public class BlogController {
 
     @PostMapping("/myblog/@{username}/about/update")
     public String updateBlogIntro(@PathVariable String username, @RequestParam String intro) {
-        User user = getCurrentUser();
+        User user = userService.getCurrentUser();
         User blogOwner = userService.findByUsername(username);
         boolean isBlogOwner = user != null && user.getId().equals(blogOwner.getId());
 
@@ -170,15 +157,11 @@ public class BlogController {
 
     @GetMapping("/myblog/@{username}/{id}")
     public String getPost(@PathVariable String username, @PathVariable Long id, Model model) {
-        User user = getCurrentUser();
+        User user = userService.getCurrentUser();
 
         Post post = postService.getPostById(id);
         User blogOwner = userService.findById(post.getUserId());
         Blog blog = blogService.findBlogByUserId(blogOwner.getId());
-
-        if (!blogOwner.getUsername().equals(username)) {
-            return "redirect:/vlog/myblog/@" + username;
-        }
 
         if (post.getPrivacySetting() || post.getTemporarySetting()) {
             if (user == null || !user.getId().equals(blogOwner.getId())) {
@@ -193,38 +176,30 @@ public class BlogController {
         model.addAttribute("blog", blog);
         model.addAttribute("blogOwner", blogOwner);
         model.addAttribute("htmlContent", htmlContent);
-        model.addAttribute("sessionUser", user);
+        model.addAttribute("user", user);
 
         return "postDetail";
     }
 
     @GetMapping("/saves")
-    public String save(Model model, RedirectAttributes redirectAttributes) {
-        User user = getCurrentUser();
-
-        if (user == null) {
-            redirectAttributes.addFlashAttribute("errorMSG", "로그인이 필요한 기능입니다.");
-            return "redirect:/vlog/loginform";
-        }
+    public String save(Model model) {
+        User user = userService.getCurrentUser();
 
         List<Post> posts = postService.getUserPosts(user.getId(), null, true);
+        model.addAttribute("user", user);
         model.addAttribute("posts", posts);
         return "saves";
     }
 
     @GetMapping("/liked")
-    public String liked(Model model, RedirectAttributes redirectAttributes) {
-        User user = getCurrentUser();
-
-        if (user == null) {
-            redirectAttributes.addFlashAttribute("errorMSG", "로그인이 필요한 기능입니다.");
-            return "redirect:/vlog/loginform";
-        }
+    public String liked(Model model) {
+        User user = userService.getCurrentUser();
 
         List<Post> likedPosts = postService.getLikedPosts(user.getId());
         Map<Long, String> postUsernames = likedPosts.stream()
                 .collect(Collectors.toMap(Post::getId, post -> postService.getUsernameByUserId(post.getUserId())));
 
+        model.addAttribute("user", user);
         model.addAttribute("posts", likedPosts);
         model.addAttribute("postUsernames", postUsernames);
         return "liked";
