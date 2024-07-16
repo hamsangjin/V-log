@@ -6,9 +6,9 @@
         <link rel="stylesheet" href="/css/loginform.css">
         <script th:inline="javascript">
             /*<![CDATA[*/
-            var errorMSG = /*[[${errorMSG}]]*/ '';
+            var errorMSG = /*[[${param.error}]]*/ '';
             if (errorMSG) {
-                alert(errorMSG);
+                alert("로그인에 실패했습니다. 다시 시도해주세요.");
             }
             /*]]>*/
         </script>
@@ -20,12 +20,12 @@
                     <a th:href="@{/vlog}">V-log</a>
                 </div>
             </header>
-            <form th:action="@{/vlog/login}" method="post" th:object="${user}">
+            <form th:action="@{/vlog/login}" method="post">
                 <div class="form-group">
-                    <input type="text" id="username" name="username" placeholder="아이디" th:field="*{username}" required>
+                    <input type="text" id="username" name="username" placeholder="아이디" required>
                 </div>
                 <div class="form-group">
-                    <input type="password" id="password" name="password" placeholder="비밀번호" th:field="*{password}" required>
+                    <input type="password" id="password" name="password" placeholder="비밀번호" required>
                 </div>
                 <div class="form-group buttons">
                     <button type="submit" class="button">로그인</button>

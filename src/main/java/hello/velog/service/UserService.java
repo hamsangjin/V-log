@@ -6,10 +6,12 @@ import hello.velog.repository.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import java.util.*;
+
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -18,15 +20,11 @@ public class UserService {
     private final RoleRepository roleRepository;
     private final UserRoleRepository userRoleRepository;
     private final BlogRepository blogRepository;
-    private final PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    @Transactional
     public User register(User user) {
-        validateUsernameAndEmail(user.getUsername(), user.getEmail());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        User savedUser = userRepository.save(user);
-        assignRoleToUser(savedUser, "USER");
-        return savedUser;
+        return userRepository.save(user);
     }
 
     private void validateUsernameAndEmail(String username, String email) {
@@ -46,32 +44,38 @@ public class UserService {
         });
     }
 
+    @Transactional(readOnly = true)
     public boolean isUsernameTaken(String username) {
         return userRepository.findByUsername(username).isPresent();
     }
 
+    @Transactional(readOnly = true)
     public boolean isEmailTaken(String email) {
         return userRepository.findByEmail(email).isPresent();
     }
 
+    @Transactional(readOnly = true)
     public User findById(Long id) {
         return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("사용자를 찾을 수 없습니다."));
     }
 
+    @Transactional(readOnly = true)
     public User findByUsername(String username) {
         return userRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException("사용자를 찾을 수 없습니다."));
-    }
-
-    public long getFollowerCount(Long userId) {
-        return userRepository.countByFollowers_Id(userId);
-    }
-
-    public long getFollowingCount(Long userId) {
-        return userRepository.countByFollowing_Id(userId);
     }
 
     public User getSessionUser(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         return (session != null) ? (User) session.getAttribute("user") : null;
+    }
+
+    @Transactional(readOnly = true)
+    public long getFollowerCount(Long userId) {
+        return userRepository.countByFollowers_Id(userId);
+    }
+
+    @Transactional(readOnly = true)
+    public long getFollowingCount(Long userId) {
+        return userRepository.countByFollowing_Id(userId);
     }
 }

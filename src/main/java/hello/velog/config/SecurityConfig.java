@@ -1,18 +1,26 @@
 package hello.velog.config;
 
-import hello.velog.repository.UserRepository;
 import hello.velog.service.UserDetailsServiceImpl;
 import org.springframework.context.annotation.*;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
+    private final UserDetailsServiceImpl userDetailsService;
+    private final PasswordEncoder passwordEncoder;
+
+    @Autowired
+    public SecurityConfig(UserDetailsServiceImpl userDetailsService, PasswordEncoder passwordEncoder) {
+        this.userDetailsService = userDetailsService;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -24,11 +32,8 @@ public class SecurityConfig {
                                 "/vlog/latest",
                                 "/vlog/feed",
                                 "/vlog/loginform",
-                                "/vlog/login",
                                 "/vlog/userregform",
                                 "/vlog/userreg",
-                                "/vlog/api/users/check-username",
-                                "/vlog/api/users/check-email",
                                 "/css/**",
                                 "/images/**",
                                 "/js/**").permitAll()
@@ -38,6 +43,7 @@ public class SecurityConfig {
                         .loginPage("/vlog/loginform")
                         .loginProcessingUrl("/vlog/login")
                         .defaultSuccessUrl("/vlog")
+                        .failureUrl("/vlog/loginform?error=true")
                         .permitAll()
                 )
                 .logout((logout) -> logout
@@ -45,18 +51,14 @@ public class SecurityConfig {
                         .logoutSuccessUrl("/vlog")
                         .permitAll()
                 )
-                .csrf().disable(); // 필요시 주석 처리하여 활성화 해볼 수 있습니다
+                .csrf().disable(); // CSRF 보호 비활성화
 
         return http.build();
     }
 
-    @Bean
-    public UserDetailsService userDetailsService(UserRepository userRepository) {
-        return new UserDetailsServiceImpl(userRepository);
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userDetailsService)
+                .passwordEncoder(passwordEncoder);
     }
 }
