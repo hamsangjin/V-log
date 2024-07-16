@@ -36,7 +36,8 @@ public class SecurityConfig {
                                 "/vlog/userreg",
                                 "/css/**",
                                 "/images/**",
-                                "/js/**").permitAll()
+                                "/js/**",
+                                "/fragments/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin((form) -> form

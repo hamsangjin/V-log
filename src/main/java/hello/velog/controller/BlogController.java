@@ -2,8 +2,10 @@ package hello.velog.controller;
 
 import hello.velog.domain.*;
 import hello.velog.service.*;
-import jakarta.servlet.http.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -23,67 +25,72 @@ public class BlogController {
     private final MarkdownService markdownService;
     private final FollowService followService;
 
+    private User getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            return userService.findByUsername(userDetails.getUsername());
+        }
+        return null;
+    }
+
+    private void addCommonAttributes(Model model, User user, List<Post> posts, String activeTab) {
+        Map<Long, String> postUsernames = posts.stream()
+                .collect(Collectors.toMap(Post::getId, post -> postService.getUsernameByUserId(post.getUserId())));
+
+        model.addAttribute("user", user);
+        model.addAttribute("posts", posts);
+        model.addAttribute("postUsernames", postUsernames);
+        model.addAttribute("activeTab", activeTab);
+    }
+
     @GetMapping
-    public String home(Model model, HttpServletRequest request) {
-        User user = userService.getSessionUser(request);
-        model.addAttribute("sessionUser", user);
+    public String home() {
         return "redirect:/vlog/trending";
     }
 
     @GetMapping("/trending")
     public String trending(Model model) {
         List<Post> posts = postService.getTrendingPosts();
-        Map<Long, String> postUsernames = posts.stream()
-                .collect(Collectors.toMap(Post::getId, post -> postService.getUsernameByUserId(post.getUserId())));
-        model.addAttribute("posts", posts);
-        model.addAttribute("postUsernames", postUsernames);
-        model.addAttribute("activeTab", "trending");
+        User user = getCurrentUser();
+        addCommonAttributes(model, user, posts, "trending");
         return "home";
     }
 
     @GetMapping("/latest")
     public String latest(Model model) {
         List<Post> posts = postService.getLatestPosts();
-        Map<Long, String> postUsernames = posts.stream()
-                .collect(Collectors.toMap(Post::getId, post -> postService.getUsernameByUserId(post.getUserId())));
-        model.addAttribute("posts", posts);
-        model.addAttribute("postUsernames", postUsernames);
-        model.addAttribute("activeTab", "latest");
+        User user = getCurrentUser();
+        addCommonAttributes(model, user, posts, "latest");
         return "home";
     }
 
     @GetMapping("/feed")
-    public String feed(Model model, HttpServletRequest request) {
-        User user = userService.getSessionUser(request);
+    public String feed(Model model) {
+        User user = getCurrentUser();
         if (user == null) {
-            model.addAttribute("requiresLogin", true);
+            model.addAttribute("user", null);
+            model.addAttribute("posts", Collections.emptyList());
+            model.addAttribute("activeTab", "feed");
         } else {
             List<Follow> follows = followService.findByFollower(user);
-            if (follows.isEmpty()) {
-                model.addAttribute("noFeeds", true);
-            } else {
-                List<Long> followedUserIds = follows.stream()
-                        .map(follow -> follow.getFollowee().getId())
-                        .collect(Collectors.toList());
-                List<Post> posts = postService.getPostsFromFollowedUsers(followedUserIds);
-                Map<Long, String> postUsernames = posts.stream()
-                        .collect(Collectors.toMap(Post::getId, post -> postService.getUsernameByUserId(post.getUserId())));
-                model.addAttribute("posts", posts);
-                model.addAttribute("postUsernames", postUsernames);
-            }
+            List<Long> followedUserIds = follows.stream()
+                    .map(follow -> follow.getFollowee().getId())
+                    .collect(Collectors.toList());
+            List<Post> posts = postService.getPostsFromFollowedUsers(followedUserIds);
+            addCommonAttributes(model, user, posts, "feed");
         }
-        model.addAttribute("activeTab", "feed");
         return "home";
     }
 
     @GetMapping("/myblog/@{username}")
-    public String myBlog(@PathVariable String username, HttpServletRequest request, Model model) {
+    public String myBlog(@PathVariable String username, Model model) {
         return "redirect:/vlog/myblog/@" + username + "/posts";
     }
 
     @GetMapping("/myblog/@{username}/posts")
-    public String myBlogPosts(@PathVariable String username, HttpServletRequest request, Model model) {
-        User user = userService.getSessionUser(request);
+    public String myBlogPosts(@PathVariable String username, Model model) {
+        User user = getCurrentUser();
         User blogOwner = userService.findByUsername(username);
 
         List<Post> posts;
@@ -104,13 +111,13 @@ public class BlogController {
         model.addAttribute("followingCount", followingCount);
         model.addAttribute("activeTab", "posts");
         model.addAttribute("isBlogOwner", user != null && user.getId().equals(blogOwner.getId()));
-        model.addAttribute("sessionUser", user); // 세션 사용자 추가
+        model.addAttribute("sessionUser", user);
         return "myblog";
     }
 
     @GetMapping("/myblog/@{username}/series")
-    public String myBlogSeries(@PathVariable String username, HttpServletRequest request, Model model) {
-        User user = userService.getSessionUser(request);
+    public String myBlogSeries(@PathVariable String username, Model model) {
+        User user = getCurrentUser();
         User blogOwner = userService.findByUsername(username);
 
         List<Series> seriesList = seriesService.findAllSeriesByBlogId(blogOwner.getBlog().getId());
@@ -136,14 +143,14 @@ public class BlogController {
         model.addAttribute("followingCount", followingCount);
         model.addAttribute("activeTab", "series");
         model.addAttribute("isBlogOwner", user != null && user.getId().equals(blogOwner.getId()));
-        model.addAttribute("sessionUser", user); // 세션 사용자 추가
+        model.addAttribute("sessionUser", user);
         return "myblog";
     }
 
     @GetMapping("/myblog/@{username}/about")
-    public String getBlogAbout(@PathVariable String username, Model model, HttpServletRequest request) {
+    public String getBlogAbout(@PathVariable String username, Model model) {
         Blog blog = blogService.findBlogByUsername(username);
-        User user = userService.getSessionUser(request);
+        User user = getCurrentUser();
         boolean isBlogOwner = user != null && user.getUsername().equals(username);
 
         long followerCount = followService.getFollowerCount(blog.getUser().getId());
@@ -152,17 +159,17 @@ public class BlogController {
         model.addAttribute("blog", blog);
         model.addAttribute("blogOwner", blog.getUser());
         model.addAttribute("isBlogOwner", isBlogOwner);
-        model.addAttribute("username", username); // username 추가
+        model.addAttribute("username", username);
         model.addAttribute("followerCount", followerCount);
         model.addAttribute("followingCount", followingCount);
         model.addAttribute("activeTab", "about");
-        model.addAttribute("sessionUser", user); // 세션 사용자 추가
+        model.addAttribute("sessionUser", user);
         return "myblog";
     }
 
     @PostMapping("/myblog/@{username}/about/update")
-    public String updateBlogIntro(@PathVariable String username, HttpServletRequest request, @RequestParam String intro) {
-        User user = userService.getSessionUser(request);
+    public String updateBlogIntro(@PathVariable String username, @RequestParam String intro) {
+        User user = getCurrentUser();
         User blogOwner = userService.findByUsername(username);
 
         if (user == null || !user.getId().equals(blogOwner.getId())) {
@@ -176,16 +183,15 @@ public class BlogController {
     }
 
     @GetMapping("/myblog/@{username}/{id}")
-    public String getPost(@PathVariable String username, @PathVariable Long id, HttpServletRequest request, Model model) {
-        User user = userService.getSessionUser(request);
+    public String getPost(@PathVariable String username, @PathVariable Long id, Model model) {
+        User user = getCurrentUser();
 
         Post post = postService.getPostById(id);
         User blogOwner = userService.findById(post.getUserId());
         Blog blog = blogService.findBlogByUserId(blogOwner.getId());
 
-        // URL의 사용자명과 게시물 소유자가 일치하지 않는 경우 리다이렉트
         if (!blogOwner.getUsername().equals(username)) {
-            return "redirect:/vlog/myblog/@" + username; // 일치하지 않으면 리다이렉트
+            return "redirect:/vlog/myblog/@" + username;
         }
 
         if (post.getPrivacySetting() || post.getTemporarySetting()) {
@@ -201,14 +207,14 @@ public class BlogController {
         model.addAttribute("blog", blog);
         model.addAttribute("blogOwner", blogOwner);
         model.addAttribute("htmlContent", htmlContent);
-        model.addAttribute("sessionUser", user); // 세션 사용자 추가
+        model.addAttribute("sessionUser", user);
 
         return "postDetail";
     }
 
     @GetMapping("/saves")
-    public String save(HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
-        User user = userService.getSessionUser(request);
+    public String save(Model model, RedirectAttributes redirectAttributes) {
+        User user = getCurrentUser();
 
         if (user == null) {
             redirectAttributes.addFlashAttribute("errorMSG", "로그인이 필요한 기능입니다.");
@@ -221,8 +227,8 @@ public class BlogController {
     }
 
     @GetMapping("/liked")
-    public String liked(HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
-        User user = userService.getSessionUser(request);
+    public String liked(Model model, RedirectAttributes redirectAttributes) {
+        User user = getCurrentUser();
 
         if (user == null) {
             redirectAttributes.addFlashAttribute("errorMSG", "로그인이 필요한 기능입니다.");

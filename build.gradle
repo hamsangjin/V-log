@@ -29,7 +29,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 
 	implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation 'org.springframework.security:spring-security-test'
+	testImplementation 'org.springframework.security:spring-security-test'
 
 	implementation 'org.commonmark:commonmark:0.18.2'
 	implementation 'com.vladsch.flexmark:flexmark-all:0.62.2'
