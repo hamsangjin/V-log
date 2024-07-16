@@ -34,6 +34,8 @@ public class BlogController {
         return null;
     }
 
+    // home에 관한 코드 시작
+
     private void addCommonAttributes(Model model, User user, List<Post> posts, String activeTab) {
         Map<Long, String> postUsernames = posts.stream()
                 .collect(Collectors.toMap(Post::getId, post -> postService.getUsernameByUserId(post.getUserId())));
@@ -83,8 +85,24 @@ public class BlogController {
         return "home";
     }
 
+    // myblog에 관한 코드 시작
+
+    private void addCommonAttributes(Model model, User user, User blogOwner, Blog blog, String activeTab) {
+        long followerCount = followService.getFollowerCount(blogOwner.getId());
+        long followingCount = followService.getFollowingCount(blogOwner.getId());
+        boolean isBlogOwner = user != null && user.getId().equals(blogOwner.getId());
+
+        model.addAttribute("blog", blog);
+        model.addAttribute("blogOwner", blogOwner);
+        model.addAttribute("followerCount", followerCount);
+        model.addAttribute("followingCount", followingCount);
+        model.addAttribute("activeTab", activeTab);
+        model.addAttribute("isBlogOwner", isBlogOwner);
+        model.addAttribute("user", user);
+    }
+
     @GetMapping("/myblog/@{username}")
-    public String myBlog(@PathVariable String username, Model model) {
+    public String myBlog(@PathVariable String username) {
         return "redirect:/vlog/myblog/@" + username + "/posts";
     }
 
@@ -92,26 +110,14 @@ public class BlogController {
     public String myBlogPosts(@PathVariable String username, Model model) {
         User user = getCurrentUser();
         User blogOwner = userService.findByUsername(username);
-
-        List<Post> posts;
-        if (user != null && user.getId().equals(blogOwner.getId())) {
-            posts = postService.getUserPosts(blogOwner.getId(), null, false);
-        } else {
-            posts = postService.getUserPosts(blogOwner.getId(), false, false);
-        }
-
-        long followerCount = followService.getFollowerCount(blogOwner.getId());
-        long followingCount = followService.getFollowingCount(blogOwner.getId());
-
         Blog blog = blogService.findBlogByUserId(blogOwner.getId());
-        model.addAttribute("blog", blog);
+
+        boolean isBlogOwner = user != null && user.getId().equals(blogOwner.getId());
+        List<Post> posts = postService.getUserPosts(blogOwner.getId(), isBlogOwner ? null : false, false);
+
+        addCommonAttributes(model, user, blogOwner, blog, "posts");
         model.addAttribute("posts", posts);
-        model.addAttribute("blogOwner", blogOwner);
-        model.addAttribute("followerCount", followerCount);
-        model.addAttribute("followingCount", followingCount);
-        model.addAttribute("activeTab", "posts");
-        model.addAttribute("isBlogOwner", user != null && user.getId().equals(blogOwner.getId()));
-        model.addAttribute("sessionUser", user);
+
         return "myblog";
     }
 
@@ -119,10 +125,10 @@ public class BlogController {
     public String myBlogSeries(@PathVariable String username, Model model) {
         User user = getCurrentUser();
         User blogOwner = userService.findByUsername(username);
+        Blog blog = blogService.findBlogByUserId(blogOwner.getId());
 
-        List<Series> seriesList = seriesService.findAllSeriesByBlogId(blogOwner.getBlog().getId());
+        List<Series> seriesList = seriesService.findAllSeriesByBlogId(blog.getId());
         List<Map<String, Object>> seriesWithThumbnails = new ArrayList<>();
-
         for (Series series : seriesList) {
             Post firstPost = seriesService.findFirstPostBySeriesId(series.getId());
             String thumbnailImage = firstPost != null ? firstPost.getThumbnailImage() : "/images/post/default-image.png";
@@ -132,38 +138,19 @@ public class BlogController {
             seriesWithThumbnails.add(seriesMap);
         }
 
-        long followerCount = followService.getFollowerCount(blogOwner.getId());
-        long followingCount = followService.getFollowingCount(blogOwner.getId());
-
-        Blog blog = blogService.findBlogByUserId(blogOwner.getId());
-        model.addAttribute("blog", blog);
+        addCommonAttributes(model, user, blogOwner, blog, "series");
         model.addAttribute("seriesList", seriesWithThumbnails);
-        model.addAttribute("blogOwner", blogOwner);
-        model.addAttribute("followerCount", followerCount);
-        model.addAttribute("followingCount", followingCount);
-        model.addAttribute("activeTab", "series");
-        model.addAttribute("isBlogOwner", user != null && user.getId().equals(blogOwner.getId()));
-        model.addAttribute("sessionUser", user);
+
         return "myblog";
     }
 
     @GetMapping("/myblog/@{username}/about")
     public String getBlogAbout(@PathVariable String username, Model model) {
-        Blog blog = blogService.findBlogByUsername(username);
         User user = getCurrentUser();
-        boolean isBlogOwner = user != null && user.getUsername().equals(username);
+        Blog blog = blogService.findBlogByUsername(username);
 
-        long followerCount = followService.getFollowerCount(blog.getUser().getId());
-        long followingCount = followService.getFollowingCount(blog.getUser().getId());
+        addCommonAttributes(model, user, blog.getUser(), blog, "about");
 
-        model.addAttribute("blog", blog);
-        model.addAttribute("blogOwner", blog.getUser());
-        model.addAttribute("isBlogOwner", isBlogOwner);
-        model.addAttribute("username", username);
-        model.addAttribute("followerCount", followerCount);
-        model.addAttribute("followingCount", followingCount);
-        model.addAttribute("activeTab", "about");
-        model.addAttribute("sessionUser", user);
         return "myblog";
     }
 
@@ -171,10 +158,9 @@ public class BlogController {
     public String updateBlogIntro(@PathVariable String username, @RequestParam String intro) {
         User user = getCurrentUser();
         User blogOwner = userService.findByUsername(username);
+        boolean isBlogOwner = user != null && user.getId().equals(blogOwner.getId());
 
-        if (user == null || !user.getId().equals(blogOwner.getId())) {
-            return "redirect:/vlog/myblog/@" + username + "/about";
-        }
+        if (!isBlogOwner)   return "redirect:/vlog/myblog/@" + username + "/about";
 
         Blog blog = blogService.findBlogByUsername(username);
         blog.setIntro(intro);

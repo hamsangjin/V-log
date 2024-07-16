@@ -30,15 +30,4 @@ public class UserController {
         model.addAttribute("user", new User());
         return "userregform";
     }
-
-    @PostMapping("/register")
-    public String register(User user, RedirectAttributes redirectAttributes) {
-        try {
-            userService.register(user);
-            return "redirect:/vlog/loginform";
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("errorMSG", e.getMessage());
-            return "redirect:/vlog/userregform";
-        }
-    }
 }

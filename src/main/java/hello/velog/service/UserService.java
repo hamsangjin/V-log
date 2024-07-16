@@ -24,16 +24,14 @@ public class UserService {
 
     public User register(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userRepository.save(user);
-    }
+        Blog blog = new Blog(user, user.getName());
+        user.setBlog(blog);
+        User savedUser = userRepository.save(user);
 
-    private void validateUsernameAndEmail(String username, String email) {
-        if (userRepository.findByUsername(username).isPresent()) {
-            throw new UsernameAlreadyExistsException("아이디가 이미 존재합니다.");
-        }
-        if (userRepository.findByEmail(email).isPresent()) {
-            throw new EmailAlreadyExistsException("이메일이 이미 존재합니다.");
-        }
+        blogRepository.save(blog);
+
+        assignRoleToUser(savedUser, "USER");
+        return savedUser;
     }
 
     private void assignRoleToUser(User user, String roleName) {

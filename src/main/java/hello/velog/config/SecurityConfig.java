@@ -31,13 +31,15 @@ public class SecurityConfig {
                                 "/vlog/trending",
                                 "/vlog/latest",
                                 "/vlog/feed",
-                                "/vlog/loginform",
-                                "/vlog/userregform",
-                                "/vlog/userreg",
                                 "/css/**",
                                 "/images/**",
                                 "/js/**",
-                                "/fragments/**").permitAll()
+                                "/fragments/**",
+                                "/vlog/api/**").permitAll()
+                        .requestMatchers(
+                                "/vlog/loginform",
+                                "/vlog/userregform",
+                                "/vlog/userreg").not().authenticated()
                         .anyRequest().authenticated()
                 )
                 .formLogin((form) -> form

@@ -15,7 +15,7 @@
                 <span class="following-count" th:text="${followingCount} + ' 팔로잉'">팔로잉 수</span>
             </div>
 
-            <div th:if="${isBlogOwner == false and sessionUser != null}" class="follow-btn-container">
+            <div th:if="${!isBlogOwner && user != null}" class="follow-btn-container">
                 <button id="followBtn" th:data-username="${blogOwner.username}">Follow</button>
             </div>
 

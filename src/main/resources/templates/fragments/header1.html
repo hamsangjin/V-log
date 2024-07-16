@@ -18,8 +18,7 @@
                         <a th:href="@{/vlog/newpost}" class="button">새 글 작성</a>
                         <div class="dropdown">
                             <button class="dropbtn">
-                                <img th:if="${user.profileImage != null}" th:src="@{${user.profileImage}}" alt="Profile Image" class="profile-image"/>
-                                <img th:if="${user.profileImage == null}" src="/default-profile.png" alt="Default Profile Image" class="profile-image"/>
+                                <img th:src="@{${user.profileImage}}" alt="Profile Image" class="profile-image"/>
                             </button>
                             <div class="dropdown-content">
                                 <a th:href="@{'/vlog/myblog/@' + ${user.username}}">내 블로그</a>
