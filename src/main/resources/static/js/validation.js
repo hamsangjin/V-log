@@ -5,7 +5,6 @@ let isPasswordChecked = false;
 // 아이디 중복 확인 함수
 function checkUsername() {
     const username = document.getElementById("username").value;
-    // 아이디 중복 확인 API 호출
     return fetch(`/vlog/api/users/check-username?username=${username}`)
         .then(response => response.json())
         .then(data => {
@@ -16,7 +15,6 @@ function checkUsername() {
 // 이메일 중복 확인 함수
 function checkEmail() {
     const email = document.getElementById("email").value;
-    // 이메일 중복 확인 API 호출
     return fetch(`/vlog/api/users/check-email?email=${email}`)
         .then(response => response.json())
         .then(data => {
@@ -68,7 +66,11 @@ function submitForm(event) {
         })
             .then(response => response.json())
             .then(data => {
-                window.location.href = '/vlog/loginform'; // 회원가입 완료 후 로그인 페이지로 이동
+                if (data.error) {
+                    alert(data.error);
+                } else {
+                    window.location.href = '/vlog/loginform'; // 회원가입 완료 후 로그인 페이지로 이동
+                }
             })
             .catch(error => {
                 alert("회원가입 중 오류가 발생했습니다.");

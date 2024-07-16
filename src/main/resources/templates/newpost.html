@@ -1,67 +1,67 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org/" lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <title>새 글 작성</title>
-    <link rel="stylesheet" href="/css/newpost.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
-</head>
-<body>
-<div class="container">
-    <div th:replace="~{fragments/header1 :: header1}"></div>
-    <form th:action="@{/vlog/newpost}" method="post" enctype="multipart/form-data" id="postForm">
-        <div class="form-group">
-            <label for="title">제목</label>
-            <input type="text" id="title" name="title" placeholder="제목을 입력하세요" required>
-        </div>
-        <div class="form-group">
-            <label for="tagsInput">태그 (쉼표나 엔터로 구분)</label>
-            <div id="tagsContainer" class="tags-input-container">
-                <input type="text" id="tagsInput" placeholder="태그를 입력하세요" class="tags-input">
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="content">내용</label>
-            <textarea id="editor" placeholder="내용을 입력하세요"></textarea>
-            <input type="hidden" id="content" name="content">
-        </div>
-        <div class="form-group">
-            <label for="series">시리즈 선택</label>
-            <select id="series" name="seriesId">
-                <option value="">시리즈를 선택하세요</option>
-                <!-- 기존 시리즈 목록을 반복해서 보여줍니다 -->
-                <option th:each="series : ${seriesList}" th:value="${series.id}" th:text="${series.title}"></option>
-            </select>
-            <input type="text" id="newSeries" name="newSeries" placeholder="새 시리즈명 입력">
-            <button type="button" id="createSeriesBtn">시리즈 생성</button>
-        </div>
+    <head>
+        <meta charset="UTF-8">
+        <title>새 글 작성</title>
+        <link rel="stylesheet" href="/css/newpost.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+    </head>
+    <body>
+        <div class="container">
+            <div th:replace="~{fragments/header1 :: header1}"></div>
+            <form th:action="@{/vlog/newpost}" method="post" enctype="multipart/form-data" id="postForm">
+                <div class="form-group">
+                    <label for="title">제목</label>
+                    <input type="text" id="title" name="title" placeholder="제목을 입력하세요" required>
+                </div>
+                <div class="form-group">
+                    <label for="tagsInput">태그 (쉼표나 엔터로 구분)</label>
+                    <div id="tagsContainer" class="tags-input-container">
+                        <input type="text" id="tagsInput" placeholder="태그를 입력하세요" class="tags-input">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="content">내용</label>
+                    <textarea id="editor" placeholder="내용을 입력하세요"></textarea>
+                    <input type="hidden" id="content" name="content">
+                </div>
+                <div class="form-group">
+                    <label for="series">시리즈 선택</label>
+                    <select id="series" name="seriesId">
+                        <option value="">시리즈를 선택하세요</option>
+                        <!-- 기존 시리즈 목록을 반복해서 보여줍니다 -->
+                        <option th:each="series : ${seriesList}" th:value="${series.id}" th:text="${series.title}"></option>
+                    </select>
+                    <input type="text" id="newSeries" name="newSeries" placeholder="새 시리즈명 입력">
+                    <button type="button" id="createSeriesBtn">시리즈 생성</button>
+                </div>
 
-        <div class="check-group">
-            <div class="check-group2">
-                <label for="privacySetting">비공개 설정</label>
-                <input type="checkbox" id="privacySetting" name="privacySetting">
-            </div>
+                <div class="check-group">
+                    <div class="check-group2">
+                        <label for="privacySetting">비공개 설정</label>
+                        <input type="checkbox" id="privacySetting" name="privacySetting">
+                    </div>
 
-            <div class="check-group2">
-                <label for="temporarySetting">임시 저장</label>
-                <input type="checkbox" id="temporarySetting" name="temporarySetting">
-            </div>
+                    <div class="check-group2">
+                        <label for="temporarySetting">임시 저장</label>
+                        <input type="checkbox" id="temporarySetting" name="temporarySetting">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="thumbnailImageFile">썸네일 이미지</label>
+                    <input type="file" id="thumbnailImageFile" name="thumbnailImageFile">
+                </div>
+                <div class="form-group">
+                    <label for="thumbnailText">썸네일 텍스트</label>
+                    <input type="text" id="thumbnailText" name="thumbnailText" placeholder="썸네일 텍스트를 입력하세요">
+                </div>
+                <div class="form-group">
+                    <button type="button" class="button" id="submitBtn">작성</button>
+                </div>
+            </form>
         </div>
-        <div class="form-group">
-            <label for="thumbnailImageFile">썸네일 이미지</label>
-            <input type="file" id="thumbnailImageFile" name="thumbnailImageFile">
-        </div>
-        <div class="form-group">
-            <label for="thumbnailText">썸네일 텍스트</label>
-            <input type="text" id="thumbnailText" name="thumbnailText" placeholder="썸네일 텍스트를 입력하세요">
-        </div>
-        <div class="form-group">
-            <button type="button" class="button" id="submitBtn">작성</button>
-        </div>
-    </form>
-</div>
-<!-- SimpleMDE JS -->
-<script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
-<script src="/js/newpost.js"></script>
-</body>
+        <!-- SimpleMDE JS -->
+        <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+        <script src="/js/newpost.js"></script>
+    </body>
 </html>

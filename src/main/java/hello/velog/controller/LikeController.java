@@ -1,10 +1,9 @@
 package hello.velog.controller;
 
 import hello.velog.domain.User;
-import hello.velog.service.LikeService;
-import hello.velog.service.UserService;
+import hello.velog.service.*;
 import jakarta.servlet.http.*;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 

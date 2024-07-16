@@ -1,8 +1,8 @@
 package hello.velog.controller;
 
 import hello.velog.domain.User;
-import hello.velog.exception.EmailAlreadyExistsException;
 import hello.velog.exception.UsernameAlreadyExistsException;
+import hello.velog.exception.EmailAlreadyExistsException;
 import hello.velog.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +21,8 @@ public class UserRestController {
             return ResponseEntity.ok(registeredUser);
         } catch (UsernameAlreadyExistsException | EmailAlreadyExistsException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Internal Server Error");
         }
     }
 
