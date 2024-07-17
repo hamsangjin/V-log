@@ -68,3 +68,30 @@ function toggleFollow(username) {
         })
         .catch(error => console.error('Error:', error));
 }
+
+function toggleReplies(commentId) {
+    const repliesDiv = document.getElementById('replies-' + commentId);
+    if (repliesDiv.style.display === 'none' || repliesDiv.style.display === '') {
+        repliesDiv.style.display = 'block';
+    } else {
+        repliesDiv.style.display = 'none';
+    }
+}
+
+function showReplyForm(commentId) {
+    const replyForm = document.querySelector(`#reply-form-${commentId}`);
+    if (replyForm) {
+        replyForm.style.display = 'block';
+    } else {
+        console.error('Reply form not found for commentId:', commentId);
+    }
+}
+
+function hideReplyForm(commentId) {
+    const replyForm = document.querySelector(`#reply-form-${commentId}`);
+    if (replyForm) {
+        replyForm.style.display = 'none';
+    } else {
+        console.error('Reply form not found for commentId:', commentId);
+    }
+}
