@@ -38,5 +38,4 @@ public interface PostRepository extends JpaRepository<Post, Long> {
             "AND (:isBlogOwner = true OR p.privacySetting = false) " +
             "GROUP BY t.id, t.name")
     List<TagCount> findTagsWithCountByUserId(@Param("userId") Long userId, @Param("isBlogOwner") boolean isBlogOwner);
-
 }

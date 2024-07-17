@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-
 @Controller
 @RequestMapping("/vlog")
 @RequiredArgsConstructor
@@ -29,8 +28,15 @@ public class CommentController {
 
     @PostMapping("/comments/delete")
     public String deleteComment(@RequestParam Long commentId, @RequestParam Long postId) {
-        commentService.deleteComment(commentId);
-        User user = userService.getCurrentUser();
-        return "redirect:/vlog/myblog/@" + user.getUsername() + "/" + postId;
+        User currentUser = userService.getCurrentUser();
+        Comment comment = commentService.getCommentById(commentId);
+
+        if (currentUser.getId().equals(comment.getUser().getId()) || currentUser.getId().equals(comment.getPost().getUserId())) {
+            commentService.deleteComment(commentId);
+        } else {
+            throw new RuntimeException("Unauthorized action");
+        }
+
+        return "redirect:/vlog/myblog/@" + currentUser.getUsername() + "/" + postId;
     }
 }

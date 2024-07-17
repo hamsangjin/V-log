@@ -2,11 +2,9 @@ package hello.velog.service;
 
 import hello.velog.domain.*;
 import hello.velog.repository.CommentRepository;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 
 @Service
@@ -26,7 +24,15 @@ public class CommentService {
 
     @Transactional
     public void deleteComment(Long commentId) {
-        commentRepository.deleteById(commentId);
+        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new RuntimeException("Comment not found"));
+        deleteCommentRecursively(comment);
+    }
+
+    private void deleteCommentRecursively(Comment comment) {
+        for (Comment reply : comment.getReplies()) {
+            deleteCommentRecursively(reply);
+        }
+        commentRepository.delete(comment);
     }
 
     @Transactional(readOnly = true)
