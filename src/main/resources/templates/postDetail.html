@@ -10,16 +10,10 @@
             <div th:replace="~{fragments/header2 :: header2}"></div>
             <h1 class="post-title" th:text="${post.title}">게시물 제목</h1>
 
-            <!-- 태그 목록 표시 -->
-            <div class="tags-container">
-                <span th:each="tag : ${post.tags}">
-                    <a href="#" th:text="${tag.name}" class="tag-link"></a>
-                </span>
-            </div>
-
             <div class="post-meta-actions">
                 <div class="post-meta">
-                    <span class="author" th:text="${blogOwner.name}">유저 이름</span>
+                    <span class="author" th:text="${blogOwner.name}">유저 이름 </span>
+                    <span> · </span>
                     <span class="created-date" th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd')}">게시물 작성 시간</span>
                 </div>
                 <div class="post-actions">
@@ -38,6 +32,15 @@
                     </div>
                 </div>
             </div>
+
+            <!-- 태그 목록 표시 -->
+            <div class="tags-container">
+                <span th:each="tag : ${post.tags}">
+                    <a th:href="@{'/vlog/myblog/@' + ${blogOwner.username} + '/posts/tag/' + ${tag.name}}" th:text="${tag.name}" class="tag-link"></a>
+                </span>
+
+            </div>
+
             <div class="thumbnail-container">
                 <img class="post-thumbnail" th:src="@{${post.thumbnailImage}}" alt="Thumbnail"/>
             </div>

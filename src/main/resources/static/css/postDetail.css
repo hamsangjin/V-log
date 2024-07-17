@@ -111,7 +111,6 @@ header a:hover {
 /* 게시물을 위한 css 부분 */
 /* 1. 제목 */
 .post-title {
-    text-align: center;
     font-size: 2.5em;
     margin-bottom: 20px;
 }
@@ -156,8 +155,14 @@ header a:hover {
     gap: 10px;
 }
 
-.author, .created-date {
-    font-size: 1em;
+.author{
+    color: #ECECEC;
+    font-weight: bold;
+}
+
+.created-date{
+    color: #D9D9D9;
+    font-weight: 100;
 }
 
 .post-actions{
@@ -166,10 +171,10 @@ header a:hover {
 
 .post-actions button {
     background-color: #121212;
-    color: #FFFFFF;
+    color: #D9D9D9;
     border: none;
-    padding: 10px;
-    margin-left: 10px;
+    padding: 5px;
+    margin-left: 5px;
     border-radius: 5px;
     cursor: pointer;
 }
