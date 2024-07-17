@@ -10,8 +10,8 @@ import java.util.List;
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long> {
     List<Post> findByUserId(Long userId);
-    List<Post> findByUserIdAndPrivacySettingAndTemporarySetting(Long userId, boolean privacySetting, boolean temporarySetting);
-    List<Post> findByUserIdAndTemporarySetting(Long userId, boolean temporarySetting);
+    List<Post> findByUserIdAndPrivacySettingAndTemporarySettingOrderByCreatedAtDesc(Long userId, boolean privacySetting, boolean temporarySetting);
+    List<Post> findByUserIdAndTemporarySettingOrderByCreatedAtDesc(Long userId, boolean temporarySetting);
     Post findFirstBySeriesOrderByCreatedAtAsc(Series series);
     List<Post> findByUserIdIn(List<Long> userIds);
     @Query("SELECT p FROM Post p WHERE p.privacySetting = false AND p.temporarySetting = false ORDER BY size(p.likes) DESC")

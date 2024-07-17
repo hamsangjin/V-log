@@ -200,7 +200,7 @@ header a {
 
 /* 4. 게시물 내용들 */
 .post-content {
-    text-align: center;
+    text-align: left;
     font-size: 1.2em;
     line-height: 1.6;
     margin-bottom: 20px;

@@ -23,6 +23,7 @@ public class PostService {
     private final PostTagRepository postTagRepository;
     private final SeriesService seriesService;
     private final TagService tagService;
+    private final CommentRepository commentRepository;
 
 
     @Transactional
@@ -38,10 +39,10 @@ public class PostService {
     public List<Post> getUserPosts(Long userId, Boolean privacySetting, Boolean temporarySetting) {
         List<Post> posts;
         if (privacySetting != null) {
-            posts = postRepository.findByUserIdAndPrivacySettingAndTemporarySetting(
+            posts = postRepository.findByUserIdAndPrivacySettingAndTemporarySettingOrderByCreatedAtDesc(
                     userId, privacySetting, temporarySetting);
         } else {
-            posts = postRepository.findByUserIdAndTemporarySetting(userId, temporarySetting);
+            posts = postRepository.findByUserIdAndTemporarySettingOrderByCreatedAtDesc(userId, temporarySetting);
         }
 
         return posts.stream().peek(post -> {
@@ -63,6 +64,8 @@ public class PostService {
     public void deletePost(Long postId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new PostNotFoundException("Invalid post ID"));
+
+        commentRepository.deleteByPostId(postId);
 
         // likes 삭제
         likeRepository.deleteByPostId(postId);
