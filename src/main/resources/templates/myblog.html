@@ -64,9 +64,14 @@
                                         <a th:each="tag : ${post.tags}" th:href="@{'/vlog/myblog/@' + ${blogOwner.username} + '/posts/tag/' + ${tag.name}}"
                                            th:text="${tag.name}" class="tag-link"></a>
                                     </div>
-                                    <p th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd')}" class="post-date">Post Date</p>
-                                    <div class="like-count">
-                                        <span th:text="${#lists.size(post.likes)} + ' likes'">Likes</span>
+                                    <div class="flex-center">
+                                        <p th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd')}" class="post-date">Post Date</p>
+                                        <p style="margin-right: 8px">.</p>
+                                        <div class="like-count">
+                                            <span th:text="${#lists.size(post.likes)} + ' likes'">Likes</span>
+                                        </div>
+                                        <p style="margin-right: 8px">.</p>
+                                        <p class="comment-count"><span th:text="${post.comments.size()}"></span>개의 댓글</p>
                                     </div>
                                 </div>
                             </div>
