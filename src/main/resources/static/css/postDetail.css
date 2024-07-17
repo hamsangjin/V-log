@@ -201,23 +201,23 @@ header a:hover {
     margin-bottom: 20px;
 }
 
+/* 추가된 CSS 코드 */
+.profile-container {
+    display: flex;
+    align-items: center;
+    margin-top: 300px; /* 위쪽 여백 */
+    padding-bottom: 20px;
+    border-bottom: 1px solid #444444;
+}
 
-/* 5. 취소, 저장 버튼 */
-/*.form-actions {*/
-/*    text-align: right;*/
-/*    margin-top: 20px;*/
-/*}*/
+.profile-container img {
+    width: 100px; /* 이미지 너비 */
+    height: 100px; /* 이미지 높이 */
+    border-radius: 50%; /* 이미지 둥글게 만들기 */
+    margin-right: 20px; /* 이미지와 이름 사이의 간격 */
+}
 
-/*.form-actions button {*/
-/*    background-color: #121212;*/
-/*    color: #FFFFFF;*/
-/*    border: none;*/
-/*    padding: 10px;*/
-/*    margin-left: 10px;*/
-/*    border-radius: 5px;*/
-/*    cursor: pointer;*/
-/*}*/
-
-/*.form-actions button:hover {*/
-/*    background-color: #333333;*/
-/*}*/
+.profile-container span {
+    font-size: 1.2em; /* 유저 이름 폰트 크기 */
+    color: #FFFFFF; /* 유저 이름 글자 색상 */
+}

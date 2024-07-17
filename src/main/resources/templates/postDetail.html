@@ -42,6 +42,13 @@
                 <img class="post-thumbnail" th:src="@{${post.thumbnailImage}}" alt="Thumbnail"/>
             </div>
             <div class="post-content" th:utext="${htmlContent}"></div>
+
+            <!--     추가한 부분       -->
+            <div class="profile-container">
+                <img th:src="@{${blogOwner.profileImage}}" alt="프로필 이미지"/>
+                <span th:text="${blogOwner.name}">유저 이름</span>
+            </div>
+
         </div>
     <script th:src="@{/js/postDetail.js}"></script>
     </body>
