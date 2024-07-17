@@ -31,6 +31,7 @@ public class SecurityConfig {
                                 "/vlog/trending",
                                 "/vlog/latest",
                                 "/vlog/feed",
+                                "/vlog/myblog/**",
                                 "/vlog/like/status/**",
                                 "/vlog/follow/status/**",
                                 "/vlog/follow/counts/**",

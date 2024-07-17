@@ -1,6 +1,7 @@
 package hello.velog.service;
 
 import hello.velog.domain.*;
+import hello.velog.dto.TagCount;
 import hello.velog.exception.*;
 import hello.velog.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -168,5 +169,17 @@ public class PostService {
         }
 
         savePost(post);
+    }
+
+    public List<Post> getUserPostsByTag(Long userId, String tagName, Boolean privacySetting, Boolean temporarySetting) {
+        return postRepository.findByUserIdAndTagName(userId, tagName, privacySetting, temporarySetting);
+    }
+
+    public List<String> getTagsByUser(Long userId) {
+        return postRepository.findTagsByUserId(userId);
+    }
+
+    public List<TagCount> getTagsWithCountByUser(Long userId, boolean isBlogOwner) {
+        return postRepository.findTagsWithCountByUserId(userId, isBlogOwner);
     }
 }

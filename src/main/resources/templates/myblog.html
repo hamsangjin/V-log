@@ -4,94 +4,114 @@
         <meta charset="UTF-8">
         <title>My Blog</title>
         <link rel="stylesheet" href="/css/myblog.css">
-        <script src="/js/newpost.js"></script>
+        <script src="/js/myblog.js"></script>
     </head>
     <body>
         <div class="container">
             <div th:replace="~{fragments/header2 :: header2}"></div>
 
-            <div class="follow-info">
-                <span class="follower-count" th:text="${followerCount} + ' 팔로워'">팔로워 수</span>
-                <span class="following-count" th:text="${followingCount} + ' 팔로잉'">팔로잉 수</span>
-            </div>
+            <div class="main-content">
+                <!-- 태그 목록을 특정 경로에서만 표시 -->
+                <div th:if="${activeTab == 'posts'}" class="sidebar">
+                    <p>태그 목록</p>
+                    <div class="tag-list">
+                        <a th:href="@{'/vlog/myblog/@' + ${blogOwner.username} + '/posts'}"
+                           th:text="'전체보기 (' + ${postSize} + ')'"
+                           th:classappend="${selectedTag == null} ? 'selected' : ''"></a>
+                        <a th:each="tagCount : ${tagsWithCount}" th:href="@{'/vlog/myblog/@' + ${blogOwner.username} + '/posts/tag/' + ${tagCount.name}}"
+                           th:text="${tagCount.name} + ' (' + ${tagCount.count} + ')'" th:classappend="${selectedTag == tagCount.name} ? 'selected' : ''"></a>
+                    </div>
+                </div>
 
-            <div th:if="${!isBlogOwner && user != null}" class="follow-btn-container">
-                <button id="followBtn" th:data-username="${blogOwner.username}">Follow</button>
-            </div>
+                <div class="content">
+                    <div class="follow-info">
+                        <span class="follower-count" th:text="${followerCount} + ' 팔로워'">팔로워 수</span>
+                        <span class="following-count" th:text="${followingCount} + ' 팔로잉'">팔로잉 수</span>
+                    </div>
 
-            <section>
-                <nav>
-                    <ul class="nav-tabs">
-                        <li th:classappend="${activeTab} == 'posts' ? 'active'">
-                            <a th:href="@{'/vlog/myblog/@' + ${blogOwner.username} + '/posts'}">글</a>
-                        </li>
-                        <li th:classappend="${activeTab} == 'series' ? 'active'">
-                            <a th:href="@{'/vlog/myblog/@' + ${blogOwner.username} + '/series'}">시리즈</a>
-                        </li>
-                        <li th:classappend="${activeTab} == 'about' ? 'active'">
-                            <a th:href="@{'/vlog/myblog/@' + ${blogOwner.username} + '/about'}">소개</a>
-                        </li>
-                    </ul>
-                </nav>
-                <div th:if="${activeTab == 'posts'}">
-                    <div class="post-list">
-                        <div th:each="post : ${posts}" class="post-item">
-                            <div class="thumbnail-container">
-                                <a th:href="@{'/vlog/myblog/@' + ${blogOwner.username} + '/' + ${post.id}}">
-                                    <img class="post-thumbnail" th:src="@{${post.thumbnailImage}}" alt="Thumbnail Image"/>
-                                </a>
-                            </div>
-                            <a th:href="@{'/vlog/myblog/@' + ${blogOwner.username} + '/' + ${post.id}}" class="post-title-link">
-                                <h2 th:text="${post.title}">Post Title</h2>
-                            </a>
-                            <p th:text="${post.thumbnailText}" class="post-content">Post Content</p>
-                            <div class="tags-container">
-                                <a th:each="tag : ${post.tags}" href="#" th:text="${tag.name}" class="tag-link"></a>
-                            </div>
-                            <p th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd')}" class="post-date">Post Date</p>
-                            <div class="like-count">
-                                <span th:text="${#lists.size(post.likes)} + ' likes'">Likes</span>
-                            </div>
-                        </div>
+                    <div th:if="${!isBlogOwner && user != null}" class="follow-btn-container">
+                        <button id="followBtn" th:data-username="${blogOwner.username}">Follow</button>
                     </div>
-                </div>
-                <div th:if="${activeTab == 'series'}">
-                    <div class="series-list">
-                        <div th:each="seriesMap : ${seriesList}" class="series-item">
-                            <div class="thumbnail-container">
-                                <img th:src="@{${seriesMap.thumbnailImage}}" alt="Thumbnail Image" class="series-thumbnail"/>
+
+                    <section>
+                        <nav>
+                            <ul class="nav-tabs">
+                                <li th:classappend="${activeTab} == 'posts' ? 'active'">
+                                    <a th:href="@{'/vlog/myblog/@' + ${blogOwner.username} + '/posts'}">글</a>
+                                </li>
+                                <li th:classappend="${activeTab} == 'series' ? 'active'">
+                                    <a th:href="@{'/vlog/myblog/@' + ${blogOwner.username} + '/series'}">시리즈</a>
+                                </li>
+                                <li th:classappend="${activeTab} == 'about' ? 'active'">
+                                    <a th:href="@{'/vlog/myblog/@' + ${blogOwner.username} + '/about'}">소개</a>
+                                </li>
+                            </ul>
+                        </nav>
+
+                        <div th:if="${activeTab == 'posts'}">
+                            <div class="post-list">
+                                <div th:each="post : ${posts}" class="post-item">
+                                    <div class="thumbnail-container">
+                                        <a th:href="@{'/vlog/myblog/@' + ${blogOwner.username} + '/' + ${post.id}}">
+                                            <img class="post-thumbnail" th:src="@{${post.thumbnailImage}}" alt="Thumbnail Image"/>
+                                        </a>
+                                    </div>
+                                    <a th:href="@{'/vlog/myblog/@' + ${blogOwner.username} + '/' + ${post.id}}" class="post-title-link">
+                                        <h2 th:text="${post.title}">Post Title</h2>
+                                    </a>
+                                    <p th:text="${post.thumbnailText}" class="post-content">Post Content</p>
+                                    <div class="tags-container">
+                                        <a th:each="tag : ${post.tags}" th:href="@{'/vlog/myblog/@' + ${blogOwner.username} + '/posts/tag/' + ${tag.name}}"
+                                           th:text="${tag.name}" class="tag-link"></a>
+                                    </div>
+                                    <p th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd')}" class="post-date">Post Date</p>
+                                    <div class="like-count">
+                                        <span th:text="${#lists.size(post.likes)} + ' likes'">Likes</span>
+                                    </div>
+                                </div>
                             </div>
-                            <h3 th:text="${seriesMap.series.title}">Series Title</h3>
-                            <div class="series-info">
-                                <p th:text="${seriesMap.series.posts.size()} + '개의 포스트'">Post Count</p>
-                                <p>·</p>
-                                <p class="light-font" th:text="'마지막 업데이트 ' + ${#temporals.format(seriesMap.series.lastUpdated, 'yyyy-MM-dd')}">Last Updated</p>
+                        </div>
+
+                        <div th:if="${activeTab == 'series'}">
+                            <div class="series-list">
+                                <div th:each="seriesMap : ${seriesList}" class="series-item">
+                                    <div class="thumbnail-container">
+                                        <img th:src="@{${seriesMap.thumbnailImage}}" alt="Thumbnail Image" class="series-thumbnail"/>
+                                    </div>
+                                    <h3 th:text="${seriesMap.series.title}">Series Title</h3>
+                                    <div class="series-info">
+                                        <p th:text="${seriesMap.series.posts.size()} + '개의 포스트'">Post Count</p>
+                                        <p>·</p>
+                                        <p class="light-font" th:text="'마지막 업데이트 ' + ${#temporals.format(seriesMap.series.lastUpdated, 'yyyy-MM-dd')}">Last Updated</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <div th:if="${activeTab == 'about'}">
-                    <div class="about-section">
-                        <div th:if="${blog.intro == null || blog.intro.isEmpty()}" class="no-intro">
-                            <img src="/images/no-intro.png" alt="No Intro Image"/>
-                            <p>소개가 작성되지 않았습니다.</p>
-                            <button th:if="${isBlogOwner}" class="edit-intro-btn">소개글 작성하기</button>
-                        </div>
-                        <div th:if="${blog.intro != null && !blog.intro.isEmpty()}">
-                            <p class="intro-text" th:text="${blog.intro}"></p>
-                            <div class="right-align">
-                                <button th:if="${isBlogOwner}" class="edit-intro-btn">수정하기</button>
+
+                        <div th:if="${activeTab == 'about'}">
+                            <div class="about-section">
+                                <div th:if="${blog.intro == null || blog.intro.isEmpty()}" class="no-intro">
+                                    <img src="/images/no-intro.png" alt="No Intro Image"/>
+                                    <p>소개가 작성되지 않았습니다.</p>
+                                    <button th:if="${isBlogOwner}" class="edit-intro-btn">소개글 작성하기</button>
+                                </div>
+                                <div th:if="${blog.intro != null && !blog.intro.isEmpty()}">
+                                    <p class="intro-text" th:text="${blog.intro}"></p>
+                                    <div class="right-align">
+                                        <button th:if="${isBlogOwner}" class="edit-intro-btn">수정하기</button>
+                                    </div>
+                                </div>
+                                <div class="intro-form-container" style="display: none;">
+                                    <form th:action="@{'/vlog/myblog/@' + ${blogOwner.username} + '/about/update'}" method="post">
+                                        <textarea name="intro" th:attr="placeholder='당신은 어떤 사람인가요? 당신에 대해서 알려주세요.'" th:text="${blog.intro}"></textarea>
+                                        <button type="submit">저장하기</button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
-                        <div class="intro-form-container" style="display: none;">
-                            <form th:action="@{'/vlog/myblog/@' + ${blogOwner.username} + '/about/update'}" method="post">
-                                <textarea name="intro" th:attr="placeholder='당신은 어떤 사람인가요? 당신에 대해서 알려주세요.'" th:text="${blog.intro}"></textarea>
-                                <button type="submit">저장하기</button>
-                            </form>
-                        </div>
-                    </div>
+                    </section>
                 </div>
-            </section>
+            </div>
         </div>
         <script src="/js/myblog.js"></script>
     </body>

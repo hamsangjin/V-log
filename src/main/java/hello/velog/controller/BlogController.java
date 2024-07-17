@@ -1,6 +1,7 @@
 package hello.velog.controller;
 
 import hello.velog.domain.*;
+import hello.velog.dto.TagCount;
 import hello.velog.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -101,9 +102,36 @@ public class BlogController {
 
         boolean isBlogOwner = user != null && user.getId().equals(blogOwner.getId());
         List<Post> posts = postService.getUserPosts(blogOwner.getId(), isBlogOwner ? null : false, false);
+        List<TagCount> tagsWithCount = postService.getTagsWithCountByUser(blogOwner.getId(), isBlogOwner);
+        int postSize = postService.getUserPosts(blogOwner.getId(), isBlogOwner ? null : false, false).size();
+
+        addCommonAttributes(model, user, blogOwner, blog, "posts");
+        model.addAttribute("tags", postService.getTagsByUser(blogOwner.getId()));  // 태그 목록 추가
+        model.addAttribute("tagsWithCount", tagsWithCount);  // 태그와 게시물 개수 추가
+        model.addAttribute("posts", posts);
+        model.addAttribute("postSize", postSize);
+
+        return "myblog";
+    }
+
+    @GetMapping("/myblog/@{username}/posts/tag/{tagName}")
+    public String getPostsByTag(@PathVariable String username, @PathVariable String tagName, Model model) {
+        User user = userService.getCurrentUser();
+        User blogOwner = userService.findByUsername(username);
+        Blog blog = blogService.findBlogByUserId(blogOwner.getId());
+
+        boolean isBlogOwner = user != null && user.getId().equals(blogOwner.getId());
+        List<Post> posts = postService.getUserPostsByTag(blogOwner.getId(), tagName, isBlogOwner ? null : false, false);
+        int postSize = postService.getUserPosts(blogOwner.getId(), isBlogOwner ? null : false, false).size();
+
+        List<TagCount> tagsWithCount = postService.getTagsWithCountByUser(blogOwner.getId(), isBlogOwner);
 
         addCommonAttributes(model, user, blogOwner, blog, "posts");
         model.addAttribute("posts", posts);
+        model.addAttribute("postSize", postSize);
+        model.addAttribute("tags", postService.getTagsByUser(blogOwner.getId()));  // 태그 목록 추가
+        model.addAttribute("tagsWithCount", tagsWithCount);  // 태그와 게시물 개수 추가
+        model.addAttribute("selectedTag", tagName);
 
         return "myblog";
     }
