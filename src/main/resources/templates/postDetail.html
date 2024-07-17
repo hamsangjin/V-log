@@ -1,139 +1,64 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org/" lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <title>게시글 상세보기</title>
-    <link rel="stylesheet" href="/css/postDetail.css">
-</head>
-<body>
-<div class="container">
-    <div th:replace="~{fragments/header2 :: header2}"></div>
-    <h1 class="post-title" th:text="${post.title}">게시물 제목</h1>
-
-    <div class="post-meta-actions">
-        <div class="post-meta">
-            <span class="author" th:text="${blogOwner.name}">유저 이름 </span>
-            <span> · </span>
-            <span class="created-date" th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd')}">게시물 작성 시간</span>
-        </div>
-        <div class="post-actions">
-            <div th:if="${user != null && user.id == blogOwner.id}">
-                <button th:onclick="|window.location.href='@{/vlog/myblog/{username}(user.username)/stats/{postId}(postId=${post.id})}'|">통계</button>
-                <form th:action="@{/vlog/myblog/{username}/edit/{postId}(username=${user.username}, postId=${post.id})}" method="get" style="display: inline;">
-                    <button type="submit">수정</button>
-                </form>
-                <form th:action="@{/vlog/myblog/{username}/delete/{postId}(username=${user.username}, postId=${post.id})}" method="post" style="display: inline;">
-                    <button type="submit">삭제</button>
-                </form>
-            </div>
-            <button id="likeBtn" th:if="${user != null}" th:data-post-id="${post.id}" th:onclick="'toggleLike(\'' + ${post.id} + '\');'">Like</button>
-            <div th:if="${user != null && !(user.id == blogOwner.id)}">
-                <button id="followBtn" th:data-username="${blogOwner.username}">Follow</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="tags-container">
-        <span th:each="tag : ${post.tags}">
-            <a th:href="@{'/vlog/myblog/@' + ${blogOwner.username} + '/posts/tag/' + ${tag.name}}" th:text="${tag.name}" class="tag-link"></a>
-        </span>
-    </div>
-
-    <div class="thumbnail-container">
-        <img class="post-thumbnail" th:src="@{${post.thumbnailImage}}" alt="Thumbnail"/>
-    </div>
-    <div class="post-content" th:utext="${htmlContent}"></div>
-
-    <div class="profile-container">
-        <img th:src="@{${blogOwner.profileImage}}" alt="프로필 이미지"/>
-        <span th:text="${blogOwner.name}">유저 이름</span>
-    </div>
-
-    <!-- 댓글 섹션 추가 -->
-    <div class="comments-section">
-        <h4><span th:text="${post.comments.size()}"></span>개의 댓글</h4>
-        <form th:action="@{/vlog/comments}" method="post" class="comment-form">
-            <input type="hidden" name="postId" th:value="${post.id}"/>
-            <textarea name="content" placeholder="댓글을 작성하세요" class="comment-textarea"></textarea>
-            <div class="comment-form-actions">
-                <button type="button" class="cancel-btn" onclick="this.form.reset()">취소</button>
-                <button type="submit" class="submit-btn">댓글 작성</button>
-            </div>
-        </form>
-
-        <div th:each="comment : ${post.comments}">
-            <div th:if="${comment.parent == null}" class="comment">
-                <img th:src="@{${comment.user.profileImage}}" alt="프로필 이미지"/>
-                <div class="comment-content">
-                    <div class="comment-header">
-                        <span class="comment-author" th:text="${comment.user.name}">유저 이름</span>
-                        <span class="comment-date" th:text="${#temporals.format(comment.createdAt, 'yyyy-MM-dd')}">작성일자</span>
-                    </div>
-                    <p class="comment-body" th:text="${comment.content}">댓글 내용</p>
-                    <button th:if="${comment.replies.size() > 0}" th:text="${comment.replies.size()} + '개의 답글'" th:onclick="'toggleReplies(' + ${comment.id} + ');'">답글보기</button>
-                    <button th:onclick="'showReplyForm(' + ${comment.id} + ');'"> 답글 달기</button>
-
-                    <div class="reply-form" th:id="'reply-form-' + ${comment.id}" style="display:none;">
-                        <form th:action="@{/vlog/comments}" method="post">
-                            <input type="hidden" name="postId" th:value="${post.id}"/>
-                            <input type="hidden" name="parentId" th:value="${comment.id}"/>
-                            <textarea name="content" placeholder="답글을 작성하세요" class="comment-textarea"></textarea>
-                            <div class="comment-form-actions">
-                                <button type="button" class="cancel-btn" th:onclick="'hideReplyForm(' + ${comment.id} + ');'">취소</button>
-                                <button type="submit" class="submit-btn">작성</button>
-                            </div>
+    <head>
+        <meta charset="UTF-8">
+        <title>게시글 상세보기</title>
+        <link rel="stylesheet" href="/css/postDetail.css">
+    </head>
+    <body>
+        <div class="container">
+            <div th:replace="~{fragments/header2 :: header2}"></div>
+            <h1 class="post-title" th:text="${post.title}">게시물 제목</h1>
+            <div class="post-meta-actions">
+                <div class="post-meta">
+                    <span class="author" th:text="${blogOwner.name}">유저 이름 </span>
+                    <span> · </span>
+                    <span class="created-date" th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd')}">게시물 작성 시간</span>
+                </div>
+                <div class="post-actions">
+                    <div th:if="${user != null && user.id == blogOwner.id}">
+                        <button th:onclick="|window.location.href='@{/vlog/myblog/{username}(user.username)/stats/{postId}(postId=${post.id})}'|">통계</button>
+                        <form th:action="@{/vlog/myblog/{username}/edit/{postId}(username=${user.username}, postId=${post.id})}" method="get" style="display: inline;">
+                            <button type="submit">수정</button>
+                        </form>
+                        <form th:action="@{/vlog/myblog/{username}/delete/{postId}(username=${user.username}, postId=${post.id})}" method="post" style="display: inline;">
+                            <button type="submit">삭제</button>
                         </form>
                     </div>
-
-                    <div class="replies" th:id="'replies-' + ${comment.id}" style="display:none;">
-                        <div th:each="reply : ${comment.replies}">
-                            <div class="comment reply">
-                                <img th:src="@{${reply.user.profileImage}}" alt="프로필 이미지"/>
-                                <div class="comment-content">
-                                    <div class="comment-header">
-                                        <span class="comment-author" th:text="${reply.user.name}">유저 이름</span>
-                                        <span class="comment-date" th:text="${#temporals.format(reply.createdAt, 'yyyy-MM-dd')}">작성일자</span>
-                                    </div>
-                                    <p class="comment-body" th:text="${reply.content}">댓글 내용</p>
-                                    <button th:if="${reply.replies.size() > 0}" th:text="${reply.replies.size()} + '개의 답글'" th:onclick="'toggleReplies(' + ${reply.id} + ');'">답글보기</button>
-                                    <button th:onclick="'showReplyForm(' + ${reply.id} + ');'">답글 달기</button>
-
-                                    <div class="reply-form" th:id="'reply-form-' + ${reply.id}" style="display:none;">
-                                        <form th:action="@{/vlog/comments}" method="post">
-                                            <input type="hidden" name="postId" th:value="${post.id}"/>
-                                            <input type="hidden" name="parentId" th:value="${reply.id}"/>
-                                            <textarea name="content" placeholder="답글을 작성하세요" class="comment-textarea"></textarea>
-                                            <div class="comment-form-actions">
-                                                <button type="button" class="cancel-btn" th:onclick="'hideReplyForm(' + ${reply.id} + ');'">취소</button>
-                                                <button type="submit" class="submit-btn">작성</button>
-                                            </div>
-                                        </form>
-                                    </div>
-
-                                    <div class="replies" th:id="'replies-' + ${reply.id}" style="display:none;">
-                                        <div th:each="replyOfReply : ${reply.replies}">
-                                            <div class="comment reply">
-                                                <img th:src="@{${replyOfReply.user.profileImage}}" alt="프로필 이미지"/>
-                                                <div class="comment-content">
-                                                    <div class="comment-header">
-                                                        <span class="comment-author" th:text="${replyOfReply.user.name}">유저 이름</span>
-                                                        <span class="comment-date" th:text="${#temporals.format(replyOfReply.createdAt, 'yyyy-MM-dd')}">작성일자</span>
-                                                    </div>
-                                                    <p class="comment-body" th:text="${replyOfReply.content}">댓글 내용</p>
-                                                    <button th:onclick="'showReplyForm(' + ${replyOfReply.id} + ');'">답글 달기</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div> <!-- replies -->
-                                </div>
-                            </div>
-                        </div> <!-- replies -->
+                    <button id="likeBtn" th:if="${user != null}" th:data-post-id="${post.id}" th:onclick="'toggleLike(\'' + ${post.id} + '\');'">Like</button>
+                    <div th:if="${user != null && !(user.id == blogOwner.id)}">
+                        <button id="followBtn" th:data-username="${blogOwner.username}">Follow</button>
                     </div>
                 </div>
             </div>
+            <div class="tags-container">
+                    <span th:each="tag : ${post.tags}">
+                        <a th:href="@{'/vlog/myblog/@' + ${blogOwner.username} + '/posts/tag/' + ${tag.name}}" th:text="${tag.name}" class="tag-link"></a>
+                    </span>
+            </div>
+            <div class="thumbnail-container">
+                <img class="post-thumbnail" th:src="@{${post.thumbnailImage}}" alt="Thumbnail"/>
+            </div>
+            <div class="post-content" th:utext="${htmlContent}"></div>
+            <div class="profile-container">
+                <img th:src="@{${blogOwner.profileImage}}" alt="프로필 이미지"/>
+                <span th:text="${blogOwner.name}">유저 이름</span>
+            </div>
+
+            <div class="comments-section">
+                <h4><span th:text="${post.comments.size()}"></span>개의 댓글</h4>
+                <form th:action="@{/vlog/comments}" method="post" class="comment-form">
+                    <input type="hidden" name="postId" th:value="${post.id}"/>
+                    <textarea name="content" placeholder="댓글을 작성하세요" class="comment-textarea"></textarea>
+                    <div class="comment-form-actions">
+                        <button type="submit" class="submit-btn">댓글 작성</button>
+                    </div>
+                </form>
+                <div th:each="comment : ${post.comments}">
+                    <div th:if="${comment.parent == null}" th:insert="~{fragments/commentFragment :: commentFragment(comment=${comment})}"></div>
+                </div>
+            </div>
         </div>
-    </div>
-</div>
-<script th:src="@{/js/postDetail.js}"></script>
-</body>
+        <script th:src="@{/js/postDetail.js}"></script>
+    </body>
 </html>

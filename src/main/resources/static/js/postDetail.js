@@ -69,29 +69,29 @@ function toggleFollow(username) {
         .catch(error => console.error('Error:', error));
 }
 
-function toggleReplies(commentId) {
-    const repliesDiv = document.getElementById('replies-' + commentId);
-    if (repliesDiv.style.display === 'none' || repliesDiv.style.display === '') {
-        repliesDiv.style.display = 'block';
-    } else {
-        repliesDiv.style.display = 'none';
-    }
-}
-
-function showReplyForm(commentId) {
-    const replyForm = document.querySelector(`#reply-form-${commentId}`);
+function toggleReplyForm(commentId) {
+    const replyForm = document.getElementById('reply-form-' + commentId);
     if (replyForm) {
-        replyForm.style.display = 'block';
+        replyForm.style.display = (replyForm.style.display === 'none' || replyForm.style.display === '') ? 'block' : 'none';
     } else {
-        console.error('Reply form not found for commentId:', commentId);
+        console.error('Reply form not found for commentId: ' + commentId);
     }
 }
 
 function hideReplyForm(commentId) {
-    const replyForm = document.querySelector(`#reply-form-${commentId}`);
+    const replyForm = document.getElementById('reply-form-' + commentId);
     if (replyForm) {
         replyForm.style.display = 'none';
     } else {
-        console.error('Reply form not found for commentId:', commentId);
+        console.error('Reply form not found for commentId: ' + commentId);
+    }
+}
+
+function toggleReplies(commentId) {
+    const replies = document.getElementById('replies-' + commentId);
+    if (replies) {
+        replies.style.display = (replies.style.display === 'none' || replies.style.display === '') ? 'block' : 'none';
+    } else {
+        console.error('Replies not found for commentId: ' + commentId);
     }
 }

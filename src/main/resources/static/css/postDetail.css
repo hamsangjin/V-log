@@ -1,4 +1,4 @@
-/* header를 위한 css 부분*/
+/* header를 위한 css 부분 */
 
 html {
     background-color: #121212; /* 검은색 배경 */
@@ -106,8 +106,6 @@ header a:hover {
     display: block;
 }
 
-/* -- */
-
 /* 게시물을 위한 css 부분 */
 /* 1. 제목 */
 .post-title {
@@ -121,7 +119,6 @@ header a:hover {
     flex-wrap: wrap;
     gap: 10px; /* 태그 간의 간격 */
     margin: 20px 0; /* 상하 여백 */
-    /*justify-content: center; !* 중앙 정렬 *!*/
     padding: 10px 0;
 }
 
@@ -140,7 +137,6 @@ header a:hover {
     background-color: #555; /* 호버 시 더 어두운 회색으로 변경 */
 }
 
-
 /* 2. 유저 이름, 게시물 작성 시간 */
 /* 통계, 수정, 삭제, 좋아요 버튼 */
 .post-meta-actions {
@@ -155,17 +151,17 @@ header a:hover {
     gap: 10px;
 }
 
-.author{
+.author {
     color: #ECECEC;
     font-weight: bold;
 }
 
-.created-date{
+.created-date {
     color: #D9D9D9;
     font-weight: 100;
 }
 
-.post-actions{
+.post-actions {
     display: flex;
 }
 
@@ -183,7 +179,6 @@ header a:hover {
     background-color: #333333;
 }
 
-
 /* 3. 썸네일 이미지 */
 
 .thumbnail-container {
@@ -196,7 +191,6 @@ header a:hover {
     height: auto;
     border-radius: 8px;
 }
-
 
 /* 4. 게시물 내용들 */
 .post-content {
@@ -227,12 +221,6 @@ header a:hover {
     color: #FFFFFF; /* 유저 이름 글자 색상 */
 }
 
-
-
-
-
-
-
 .comments-section {
     margin-top: 40px;
 }
@@ -244,111 +232,6 @@ header a:hover {
     color: #ECECEC;
 }
 
-.comment {
-    display: flex;
-    align-items: flex-start;
-    padding-bottom: 20px;
-    margin-top: 20px;
-    border-bottom: 1px solid #444444;
-}
-
-.comment img {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    margin-right: 20px;
-}
-
-.comment-content {
-    flex: 1;
-}
-
-.comment-content button{
-    background-color: #121212; /* 어두운 배경 */
-    color: #96F2D7; /* 흰색 글씨 */
-    border: none;
-    margin-top: 10px;
-}
-
-.comment-content button:hover{
-    color: #63E6BE; /* 어두운 배경 */
-    cursor: pointer;
-}
-
-.comment-header {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 10px;
-}
-
-.comment-author {
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-
-.comment-date {
-    color: #888;
-    font-size: 0.9em;
-}
-
-.comment-body {
-    margin-bottom: 10px;
-    margin-left: 7px;
-}
-
-/* 답글 스타일 */
-.reply {
-    display: flex;
-    align-items: flex-start;
-    padding-bottom: 20px;
-    margin-top: 20px;
-    margin-left: 40px; /* 답글을 들여쓰기 */
-    border-bottom: none; /* 답글에는 border-bottom 제거 */
-}
-
-.reply img {
-    width: 40px; /* 답글 프로필 이미지 크기 조정 */
-    height: 40px; /* 답글 프로필 이미지 크기 조정 */
-    border-radius: 50%;
-    margin-right: 20px;
-}
-
-.reply .comment-content {
-    flex: 1;
-}
-
-.reply .comment-header {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 10px;
-}
-
-.reply .comment-author {
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-
-.reply .comment-date {
-    color: #888;
-    font-size: 0.9em;
-}
-
-.reply .comment-body {
-    margin-bottom: 10px;
-}
-
-.reply-form textarea {
-    width: 100%;
-    height: 50px;
-    margin-top: 10px;
-}
-
-.reply-form button {
-    margin-top: 10px;
-    margin-right: 10px;
-}
-
-/* 댓글 폼 스타일 */
 .comment-form {
     margin-top: 20px;
 }
@@ -394,3 +277,86 @@ header a:hover {
 .submit-btn:hover {
     background-color: #63E6BE; /* 어두운 배경 */
 }
+
+.comment {
+    display: flex;
+    align-items: flex-start;
+    padding-bottom: 20px;
+    margin-top: 20px;
+}
+
+.comment-content {
+    flex: 1;
+    margin-top: 40px;
+}
+
+.comment-header {
+    display: flex;
+    align-items: center;
+}
+
+.comment-image{
+    width: 50px; /* 댓글 프로필 이미지 크기 */
+    height: 50px; /* 댓글 프로필 이미지 크기 */
+    border-radius: 50%;
+    margin-right: 20px;
+}
+
+.comment-author {
+    font-weight: bold;
+    padding-bottom: 2px;
+    padding-top: 0px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.comment-date {
+    color: #888;
+    font-size: 0.9em;
+    padding-bottom: 0px;
+    padding-top: 2px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.comment-content button {
+    background-color: #121212; /* 어두운 배경 */
+    color: #96F2D7; /* 흰색 글씨 */
+    border: none;
+    margin-top: 10px;
+}
+
+.comment-content .submit-btn {
+    background-color: #96F2D7; /* 녹색 배경 */
+    color: #121212; /* 흰색 글씨 */
+}
+
+.comment-content .submit-btn:hover {
+    color: #63E6BE; /* 어두운 배경 */
+    cursor: pointer;
+}
+
+.comment-body {
+    margin-bottom: 10px;
+    margin-left: 7px;
+}
+
+/* 답글 스타일 */
+.reply {
+    margin-left: 40px; /* 답글을 들여쓰기 */
+}
+
+.reply .comment-body {
+    margin-bottom: 10px;
+}
+
+.reply-form button {
+    margin-top: 10px;
+    margin-right: 10px;
+}
+
+
+
+
+
+

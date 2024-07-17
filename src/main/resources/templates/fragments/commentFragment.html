@@ -1,15 +1,16 @@
-<!-- commentFragment.html -->
 <div th:fragment="commentFragment(comment)">
     <div class="comment" th:class="${comment.parent != null} ? 'reply' : ''">
-        <img th:src="@{${comment.user.profileImage}}" alt="프로필 이미지"/>
         <div class="comment-content">
             <div class="comment-header">
-                <span class="comment-author" th:text="${comment.user.name}">유저 이름</span>
-                <span class="comment-date" th:text="${#temporals.format(comment.createdAt, 'yyyy-MM-dd')}">작성일자</span>
+                <img class="comment-image" th:src="@{${comment.user.profileImage}}" alt="프로필 이미지"/>
+                <div>
+                    <p class="comment-author" th:text="${comment.user.name}">유저 이름</p>
+                    <p class="comment-date" th:text="${#temporals.format(comment.createdAt, 'yyyy-MM-dd')}">작성일자</p>
+                </div>
             </div>
             <p class="comment-body" th:text="${comment.content}">댓글 내용</p>
-            <button th:if="${comment.replies.size() > 0}" th:text="'(' + ${comment.replies.size()} + ')개의 답글'" th:onclick="'toggleReplies(' + ${comment.id} + ');'">답글보기</button>
-            <button th:onclick="'showReplyForm(' + ${comment.id} + ');'">답글 달기</button>
+            <button th:if="${comment.replies.size() > 0}" th:text="${comment.replies.size()} + '개의 답글'" th:onclick="'toggleReplies(' + ${comment.id} + ');'">답글보기</button>
+            <button th:onclick="'toggleReplyForm(' + ${comment.id} + ');'">답글 달기</button>
 
             <div class="reply-form" th:id="'reply-form-' + ${comment.id}" style="display:none;">
                 <form th:action="@{/vlog/comments}" method="post">
@@ -25,7 +26,7 @@
 
             <div class="replies" th:id="'replies-' + ${comment.id}" style="display:none;">
                 <div th:each="reply : ${comment.replies}">
-                    <div th:replace="~{commentFragment :: commentFragment(reply)}"></div>
+                    <div th:insert="~{fragments/commentFragment :: commentFragment(comment=${reply})}"></div>
                 </div>
             </div>
         </div>
