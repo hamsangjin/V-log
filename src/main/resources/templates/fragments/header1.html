@@ -14,7 +14,7 @@
                     <div th:if="${user == null}">
                         <a th:href="@{/vlog/loginform}">로그인</a>
                     </div>
-                    <div th:if="${user != null}">
+                    <div th:if="${user != null}" style="display: flex; justify-content: right; align-items: center">
                         <a th:href="@{/vlog/newpost}" class="button">새 글 작성</a>
                         <div class="dropdown">
                             <button class="dropbtn">

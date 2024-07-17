@@ -319,6 +319,12 @@ a[href="/vlog/myblog/*/*"] {
     border: none;
     padding: 10px 20px;
     border-radius: 5px;
+    /*cursor: pointer;*/
+}
+
+.edit-intro-btn:hover,
+.intro-form-container button:hover {
+    background-color: #63e6be;
     cursor: pointer;
 }
 
@@ -327,7 +333,7 @@ a[href="/vlog/myblog/*/*"] {
 }
 
 .intro-form-container textarea {
-    width: 100%;
+    width: 98%;
     height: 200px;
     padding: 10px;
     border: 1px solid #ccc;

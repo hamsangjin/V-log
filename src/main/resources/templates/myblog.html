@@ -109,7 +109,9 @@
                                 <div class="intro-form-container" style="display: none;">
                                     <form th:action="@{'/vlog/myblog/@' + ${blogOwner.username} + '/about/update'}" method="post">
                                         <textarea name="intro" th:attr="placeholder='당신은 어떤 사람인가요? 당신에 대해서 알려주세요.'" th:text="${blog.intro}"></textarea>
-                                        <button type="submit">저장하기</button>
+                                        <div class="right-align">
+                                            <button type="submit">저장하기</button>
+                                        </div>
                                     </form>
                                 </div>
                             </div>
