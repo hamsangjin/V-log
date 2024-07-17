@@ -1,7 +1,7 @@
 package hello.velog.service;
 
 import hello.velog.domain.*;
-import hello.velog.exception.PostNotFoundException;
+import hello.velog.exception.*;
 import hello.velog.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,6 +20,9 @@ public class PostService {
     private final TagRepository tagRepository;
     private final LikeRepository likeRepository;
     private final PostTagRepository postTagRepository;
+    private final SeriesService seriesService;
+    private final TagService tagService;
+
 
     @Transactional
     public void savePost(Post post) {
@@ -120,4 +123,50 @@ public class PostService {
         return user != null ? user.getUsername() : null;
     }
 
+    @Transactional
+    public void createNewPost(User user, String title, String content, MultipartFile thumbnailImageFile, String thumbnailText, Long seriesId, String newSeries, String tagsString, boolean privacySetting, boolean temporarySetting) throws IOException {
+        Post post = new Post();
+        post.setTitle(title);
+        post.setContent(content);
+        post.setThumbnailText(thumbnailText);
+        post.setPrivacySetting(privacySetting);
+        post.setTemporarySetting(temporarySetting);
+
+        Series series = seriesService.handleSeriesCreationOrUpdate(newSeries, seriesId, user);
+        post.setSeries(series);
+
+        List<Tag> tags = tagService.processTags(tagsString, user.getBlog().getId());
+        post.setTags(tags);
+
+        String thumbnailImagePath = handleThumbnailImageUpload(thumbnailImageFile);
+        post.setThumbnailImage(thumbnailImagePath);
+
+        post.setUserId(user.getId());
+
+        savePost(post);
+    }
+
+    @Transactional
+    public void updatePost(User user, Long postId, String title, String content, MultipartFile thumbnailImageFile, String thumbnailText, Long seriesId, String newSeries, String tagsString, boolean privacySetting, boolean temporarySetting) throws IOException {
+        Post post = getPostById(postId);
+
+        post.setTitle(title);
+        post.setContent(content);
+        post.setThumbnailText(thumbnailText);
+        post.setPrivacySetting(privacySetting);
+        post.setTemporarySetting(temporarySetting);
+
+        Series series = seriesService.handleSeriesCreationOrUpdate(newSeries, seriesId, user);
+        post.setSeries(series);
+
+        List<Tag> tags = tagService.processTags(tagsString, user.getBlog().getId());
+        post.setTags(tags);
+
+        if (!thumbnailImageFile.isEmpty()) {
+            String thumbnailImagePath = handleThumbnailImageUpload(thumbnailImageFile);
+            post.setThumbnailImage(thumbnailImagePath);
+        }
+
+        savePost(post);
+    }
 }
