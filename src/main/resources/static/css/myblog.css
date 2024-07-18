@@ -156,9 +156,32 @@ header a {
     margin-right: 20px; /* 이미지와 이름 사이의 간격 */
 }
 
-.profile-container span {
+.username-span {
+    font-size: 24px; /* 유저 이름 폰트 크기 */
+    font-weight: bold;
+    color: #FFFFFF; /* 유저 이름 글자 색상 */
+    display: block;
+    margin-bottom: 10px;
+}
+
+.bloginfo-span{
+    font-size: 18px; /* 유저 이름 폰트 크기 */
+    font-weight: lighter;
+    color: #D9D9D9; /* 유저 이름 글자 색상 */
+    display: block;
+}
+
+.profile-container a {
     font-size: 1.2em; /* 유저 이름 폰트 크기 */
     color: #FFFFFF; /* 유저 이름 글자 색상 */
+    display: block;
+    text-decoration: none;
+}
+
+.profile-container a:hover {
+    cursor: pointer;
+    text-decoration: underline;
+    color: #ECECEC;
 }
 
 .follow-info {

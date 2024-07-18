@@ -3,9 +3,13 @@
         <div class="comment-content">
             <div class="comment-header">
                 <div class="comment-img-info">
-                    <img class="comment-image" th:src="@{${comment.user.profileImage}}" alt="프로필 이미지"/>
+                    <a th:href="@{'/vlog/myblog/@' + ${comment.user.username}}">
+                        <img class="comment-image" th:src="@{${comment.user.profileImage}}" alt="프로필 이미지"/>
+                    </a>
                     <div>
-                        <p class="comment-author" th:text="${comment.user.name}">유저 이름</p>
+                        <a th:href="@{'/vlog/myblog/@' + ${comment.user.username}}">
+                            <p class="comment-author" th:text="${comment.user.name}">유저 이름</p>
+                        </a>
                         <p class="comment-date" th:text="${#temporals.format(comment.createdAt, 'yyyy년 MM월 dd일')}">작성일자</p>
                     </div>
                 </div>

@@ -14,8 +14,15 @@
                 <div class="content">
                     <div style="display: flex; justify-content: center; align-items: center">
                         <div class="profile-container">
-                            <img th:src="@{${blogOwner.profileImage}}" alt="프로필 이미지"/>
-                            <span th:text="${blogOwner.name}">유저 이름</span>
+                            <a th:href="@{'/vlog/myblog/@' + ${blogOwner.username}}">
+                                <img th:src="@{${blogOwner.profileImage}}" alt="프로필 이미지"/>
+                            </a>
+                            <div>
+                                <a th:href="@{'/vlog/myblog/@' + ${blogOwner.username}}">
+                                    <span class="username-span" th:text="${blogOwner.name}">유저 이름</span>
+                                </a>
+                                <span class="bloginfo-span" th:text="${blogOwner.getBlog().getInfo()}"> 블로그 한 줄 소개 </span>
+                            </div>
                         </div>
                     </div>
 
