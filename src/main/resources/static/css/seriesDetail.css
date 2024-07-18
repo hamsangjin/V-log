@@ -136,6 +136,15 @@ header a {
 
 /* -- */
 
+.series-container{
+    display: flex;
+    justify-content: center;
+}
+
+.main-container{
+    width: 768px;
+}
+
 /* 게시글 목록을 위한 css */
 .post-title-link h2 {
     margin-bottom: 5px; /* 기존 값보다 작은 값으로 조정 */

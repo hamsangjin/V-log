@@ -8,39 +8,43 @@
     <body>
         <div class="container">
             <div th:replace="~{fragments/header1 :: header1}"></div>
-            <section>
-                <h3 style="color: #63e6be; font-weight: bold; text-decoration: underline"> 시리즈 </h3>
-                <div class="series-info">
-                    <h1 th:text="${title}">Series Title</h1>
-                </div>
-                <div class="post-list">
-                    <div th:each="post : ${posts}" class="post-item">
-                        <!-- 하이퍼링크를 제목과 이미지에만 적용 -->
-                        <div class="thumbnail-container">
-                            <a th:href="@{'/vlog/myblog/@' + ${user.username} + '/' + ${post.id}}">
-                                <img class="post-thumbnail" th:src="@{${post.thumbnailImage}}" alt="Thumbnail Image"/>
-                            </a>
+            <div class="series-container">
+                <div class="main-container">
+                    <section>
+                        <h3 style="color: #63e6be; font-weight: bold; text-decoration: underline"> 시리즈 </h3>
+                        <div class="series-info">
+                            <h1 th:text="${title}">Series Title</h1>
                         </div>
-                        <a th:href="@{'/vlog/myblog/@' + ${user.username} + '/' + ${post.id}}" class="post-title-link">
-                            <h2 th:text="${post.title}">Post Title</h2>
-                        </a>
-                        <p th:text="${post.thumbnailText}" class="post-content">Post Content</p>
-                        <!-- 태그 표시 -->
-                        <div class="tags-container">
-                            <a th:each="tag : ${post.tags}" href="#" th:text="${tag.name}" class="tag-link"></a>
-                        </div>
-                        <div class="flex-center">
-                            <p th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd')}" class="post-date">Post Date</p>
-                            <p style="margin-right: 8px">.</p>
-                            <p class="comment-count"><span th:text="${post.comments.size()}"></span>개의 댓글</p>
-                            <p style="margin-right: 8px">.</p>
-                            <div class="like-count">
-                                <span th:text="'🤍  '+ ${#lists.size(post.likes)}">Likes</span>
+                        <div class="post-list">
+                            <div th:each="post : ${posts}" class="post-item">
+                                <!-- 하이퍼링크를 제목과 이미지에만 적용 -->
+                                <div class="thumbnail-container">
+                                    <a th:href="@{'/vlog/myblog/@' + ${user.username} + '/' + ${post.id}}">
+                                        <img class="post-thumbnail" th:src="@{${post.thumbnailImage}}" alt="Thumbnail Image"/>
+                                    </a>
+                                </div>
+                                <a th:href="@{'/vlog/myblog/@' + ${user.username} + '/' + ${post.id}}" class="post-title-link">
+                                    <h2 th:text="${post.title}">Post Title</h2>
+                                </a>
+                                <p th:text="${post.thumbnailText}" class="post-content">Post Content</p>
+                                <!-- 태그 표시 -->
+                                <div class="tags-container">
+                                    <a th:each="tag : ${post.tags}" href="#" th:text="${tag.name}" class="tag-link"></a>
+                                </div>
+                                <div class="flex-center">
+                                    <p th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd')}" class="post-date">Post Date</p>
+                                    <p style="margin-right: 8px">.</p>
+                                    <p class="comment-count"><span th:text="${post.comments.size()}"></span>개의 댓글</p>
+                                    <p style="margin-right: 8px">.</p>
+                                    <div class="like-count">
+                                        <span th:text="'🤍  '+ ${#lists.size(post.likes)}">Likes</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </section>
                 </div>
-            </section>
+            </div>
         </div>
     </body>
 </html>
