@@ -10,7 +10,7 @@
                 <div class="left">
                     <a th:href="@{/vlog}" class="logo">V</a>
                     <a th:href="@{'/vlog/myblog/@' + ${blogOwner.username}}">
-                        <h1 th:text="${blog.title} + '의 블로그'">User's Blog</h1>
+                        <h2 th:text="${blog.title} + '의 블로그'">User's Blog</h2>
                     </a>
                 </div>
                 <div class="right">

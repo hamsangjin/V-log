@@ -7,7 +7,8 @@
     </head>
     <body>
         <div class="container">
-            <div th:replace="~{fragments/header4 :: header4}"></div>
+            <div th:replace="~{fragments/header1 :: header1}"></div>
+                <h1 style="font-weight: bold; margin-bottom: 50px"> 좋아한 포스트 </h1>
                 <section>
                     <div class="post-list">
                         <div th:each="post : ${posts}" class="post-item">
@@ -27,11 +28,11 @@
                             <div class="flex-center">
                                 <p th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd')}" class="post-date">Post Date</p>
                                 <p style="margin-right: 8px">.</p>
-                                <div class="like-count">
-                                    <span th:text="${#lists.size(post.likes)} + ' likes'">Likes</span>
-                                </div>
-                                <p style="margin-right: 8px">.</p>
                                 <p class="comment-count"><span th:text="${post.comments.size()}"></span>개의 댓글</p>
+                                <p style="margin-right: 8px">.</p>
+                                <div class="like-count">
+                                    <span th:text="'🤍  '+ ${#lists.size(post.likes)}">Likes</span>
+                                </div>
                             </div>
                         </div>
                     </div>

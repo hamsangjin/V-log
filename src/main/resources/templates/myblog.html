@@ -11,19 +11,12 @@
             <div th:replace="~{fragments/header2 :: header2}"></div>
 
             <div class="main-content">
-                <!-- 태그 목록을 특정 경로에서만 표시 -->
-                <div th:if="${activeTab == 'posts'}" class="sidebar">
-                    <p>태그 목록</p>
-                    <div class="tag-list">
-                        <a th:href="@{'/vlog/myblog/@' + ${blogOwner.username} + '/posts'}"
-                           th:text="'전체보기 (' + ${postSize} + ')'"
-                           th:classappend="${selectedTag == null} ? 'selected' : ''"></a>
-                        <a th:each="tagCount : ${tagsWithCount}" th:href="@{'/vlog/myblog/@' + ${blogOwner.username} + '/posts/tag/' + ${tagCount.name}}"
-                           th:text="${tagCount.name} + ' (' + ${tagCount.count} + ')'" th:classappend="${selectedTag == tagCount.name} ? 'selected' : ''"></a>
-                    </div>
-                </div>
-
                 <div class="content">
+                    <div class="profile-container">
+                        <img th:src="@{${blogOwner.profileImage}}" alt="프로필 이미지"/>
+                        <span th:text="${blogOwner.name}">유저 이름</span>
+                    </div>
+
                     <div class="follow-info">
                         <span class="follower-count" th:text="${followerCount} + ' 팔로워'">팔로워 수</span>
                         <span class="following-count" th:text="${followingCount} + ' 팔로잉'">팔로잉 수</span>
@@ -48,7 +41,18 @@
                             </ul>
                         </nav>
 
-                        <div th:if="${activeTab == 'posts'}">
+                        <div th:if="${activeTab == 'posts'}" style="display: flex">
+                            <!-- 태그 목록을 특정 경로에서만 표시 -->
+                            <div class="sidebar">
+                                <p>태그 목록</p>
+                                <div class="tag-list">
+                                    <a th:href="@{'/vlog/myblog/@' + ${blogOwner.username} + '/posts'}"
+                                       th:text="'전체보기 (' + ${postSize} + ')'"
+                                       th:classappend="${selectedTag == null} ? 'selected' : ''"></a>
+                                    <a th:each="tagCount : ${tagsWithCount}" th:href="@{'/vlog/myblog/@' + ${blogOwner.username} + '/posts/tag/' + ${tagCount.name}}"
+                                       th:text="${tagCount.name} + ' (' + ${tagCount.count} + ')'" th:classappend="${selectedTag == tagCount.name} ? 'selected' : ''"></a>
+                                </div>
+                            </div>
                             <div class="post-list">
                                 <div th:each="post : ${posts}" class="post-item">
                                     <div class="thumbnail-container">
@@ -86,12 +90,12 @@
                                         </a>
                                     </div>
                                     <a th:href="@{'/vlog/myblog/@' + ${blogOwner.username} + '/series/' + ${seriesMap.series.title}}" class="series-title-link">
-                                        <h2 th:text="${seriesMap.series.title}">Series Title</h2>
+                                        <p th:text="${seriesMap.series.title}">Series Title</p>
                                     </a>
                                     <div class="series-info">
                                         <p th:text="${seriesMap.series.posts.size()} + '개의 포스트'">Post Count</p>
                                         <p>·</p>
-                                        <p class="light-font" th:text="'마지막 업데이트 ' + ${#temporals.format(seriesMap.series.lastUpdated, 'yyyy-MM-dd')}">Last Updated</p>
+                                        <p class="light-font" th:text="'마지막 업데이트 ' + ${#temporals.format(seriesMap.series.lastUpdated, 'yyyy년 MM월 dd일')}">Last Updated</p>
                                     </div>
                                 </div>
                             </div>

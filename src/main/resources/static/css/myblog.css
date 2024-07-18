@@ -114,7 +114,7 @@ header a {
 }
 
 .sidebar {
-    margin-top: 80px;
+    margin-top: 10px;
     flex: 0 0 200px; /* 사이드바 너비 */
     margin-right: 20px; /* 오른쪽 마진 */
 }
@@ -126,6 +126,26 @@ header a {
 
 .content {
     flex: 1;
+}
+
+/* 추가된 CSS 코드 */
+.profile-container {
+    display: flex;
+    align-items: center;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #444444;
+}
+
+.profile-container img {
+    width: 100px; /* 이미지 너비 */
+    height: 100px; /* 이미지 높이 */
+    border-radius: 50%; /* 이미지 둥글게 만들기 */
+    margin-right: 20px; /* 이미지와 이름 사이의 간격 */
+}
+
+.profile-container span {
+    font-size: 1.2em; /* 유저 이름 폰트 크기 */
+    color: #FFFFFF; /* 유저 이름 글자 색상 */
 }
 
 .nav-tabs {
@@ -224,28 +244,20 @@ header a {
 }
 
 .series-item {
-    background-color: #1e1e1e;
+    background-color: transparent;
     padding: 20px;
     border-radius: 8px;
     transition: background-color 0.3s;
     text-align: left; /* 텍스트 왼쪽 정렬 */
 }
 
-.series-item:hover {
-    background-color: #333333;
-}
-
-.series-item h2{
-    margin-bottom: 10px;
+.series-title-link p{
+    margin-bottom: 0px;
     margin-top: 20px;
+    font-size: 16px;
+    color: #FFFFFF;
+    font-weight: bold;
 }
-
-/*.series-thumbnail {*/
-/*    max-width: 100%;*/
-/*    height: auto;*/
-/*    border-radius: 8px;*/
-/*    margin-bottom: 10px;*/
-/*}*/
 
 .light-font{
     color: #666666;
@@ -365,6 +377,7 @@ a[href="/vlog/myblog/*/*"] {
 .follow-info {
     display: flex;
     gap: 10px;
+    margin-top: 20px;
     margin-bottom: 10px;
     font-size: 1em;
     justify-content: flex-end; /* 오른쪽 정렬 추가 */
