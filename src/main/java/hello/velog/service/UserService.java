@@ -11,7 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import java.util.Optional;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Service
@@ -21,7 +21,14 @@ public class UserService {
     private final UserRoleRepository userRoleRepository;
     private final BlogRepository blogRepository;
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    private final PostRepository postRepository;
+    private final CommentRepository commentRepository;
+    private final LikeRepository likeRepository;
+    private final FollowRepository followRepository;
+    private final PostService postService;
+    private final CommentService commentService;
 
+    @Transactional
     public User register(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         Blog blog = new Blog(user, user.getName());
@@ -79,5 +86,40 @@ public class UserService {
             return findByUsername(userDetails.getUsername());
         }
         return null;
+    }
+
+    @Transactional
+    public User saveUser(User user) {
+        return userRepository.save(user);
+    }
+
+
+    @Transactional
+    public void deleteUser(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + userId));
+
+        // post 삭제
+        List<Post> byUserIdPost = postRepository.findByUserId(user.getId());
+        for (Post post : byUserIdPost) {
+            postService.deletePost(post.getId());
+        }
+
+        // 댓글 삭제
+        List<Comment> byUserIdComment = commentRepository.findByUserId(userId);
+        for (Comment comment : byUserIdComment) {
+            commentService.deleteComment(comment.getId());
+        }
+
+        // 좋아요 삭제
+        likeRepository.deleteByUserId(userId);
+
+        // 팔로우 삭제
+        followRepository.deleteByFollowerId(userId);
+
+        // 블로그 삭제
+        blogRepository.deleteByUserId(userId);
+
+        // 유저 삭제
+        userRepository.delete(user);
     }
 }

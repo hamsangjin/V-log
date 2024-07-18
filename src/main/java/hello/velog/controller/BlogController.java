@@ -7,7 +7,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -231,5 +233,84 @@ public class BlogController {
         model.addAttribute("posts", likedPosts);
         model.addAttribute("postUsernames", postUsernames);
         return "liked";
+    }
+
+    @GetMapping("/settings")
+    public String settings(Model model) {
+        User user = userService.getCurrentUser();
+        Blog blog = blogService.findBlogByUserId(user.getId());
+
+        model.addAttribute("user", user);
+        model.addAttribute("blog", blog);
+        return "settings";
+    }
+
+    // 이미지 업로드
+    @PostMapping("/uploadImage")
+    public String uploadImage(@RequestParam("image") MultipartFile image) {
+        User user = userService.getCurrentUser();
+        if (!image.isEmpty()) {
+            String imagePath = null;
+            try {
+                imagePath = postService.handleThumbnailImageUpload(image);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            user.setProfileImage(imagePath);
+            userService.saveUser(user);
+        }
+        return "redirect:/vlog/settings";
+    }
+
+    // 이미지 제거
+    @PostMapping("/removeImage")
+    public String removeImage() {
+        User user = userService.getCurrentUser();
+        user.setProfileImage("/images/user/default-image.png");
+        userService.saveUser(user);
+        return "redirect:/vlog/settings";
+    }
+
+    // 이름 및 info 수정
+    @PostMapping("/updateNameInfo")
+    public String updateNameInfo(@RequestParam("name") String name, @RequestParam("info") String info) {
+        User user = userService.getCurrentUser();
+        if (name != null && !name.trim().isEmpty()) {
+            user.setName(name);
+        }
+        user.getBlog().setInfo(info);
+        userService.saveUser(user);
+        blogService.saveBlog(user.getBlog());
+        return "redirect:/vlog/settings";
+    }
+
+    // 블로그 제목 수정
+    @PostMapping("/updateTitle")
+    public String updateTitle(@RequestParam("title") String title) {
+        User user = userService.getCurrentUser();
+        if (title != null && !title.trim().isEmpty()) {
+            user.getBlog().setTitle(title);
+            blogService.saveBlog(user.getBlog());
+        }
+        return "redirect:/vlog/settings";
+    }
+
+    // 이메일 변경
+    @PostMapping("/updateEmail")
+    public String updateEmail(@RequestParam("email") String email) {
+        User user = userService.getCurrentUser();
+        if (email != null && !email.trim().isEmpty() && !userService.isEmailTaken(email)) {
+            user.setEmail(email);
+            userService.saveUser(user);
+        }
+        return "redirect:/vlog/settings";
+    }
+
+    // 회원 탈퇴
+    @PostMapping("/deleteUser")
+    public String deleteUser() {
+        User user = userService.getCurrentUser();
+        userService.deleteUser(user.getId());
+        return "redirect:/vlog/logout";
     }
 }

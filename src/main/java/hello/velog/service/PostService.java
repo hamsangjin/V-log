@@ -31,6 +31,7 @@ public class PostService {
         postRepository.save(post);
     }
 
+    @Transactional(readOnly = true)
     public List<Post> findPostsByUserId(Long userId) {
         return postRepository.findByUserId(userId);
     }
@@ -51,11 +52,13 @@ public class PostService {
         }).collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     public User getUserById(Long userId) {
         return userRepository.findById(userId).orElse(null);
     }
 
     // 포스트 상세보기를 위한 메소드
+    @Transactional(readOnly = true)
     public Post getPostById(Long id) {
         return postRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid post ID"));
     }
@@ -85,6 +88,7 @@ public class PostService {
         postRepository.delete(post);
     }
 
+    @Transactional(readOnly = true)
     public List<Post> getLikedPosts(Long userId) {
         return likeRepository.findLikedPostsByUserId(userId);
     }
@@ -174,14 +178,17 @@ public class PostService {
         savePost(post);
     }
 
+    @Transactional(readOnly = true)
     public List<Post> getUserPostsByTag(Long userId, String tagName, Boolean privacySetting, Boolean temporarySetting) {
         return postRepository.findByUserIdAndTagName(userId, tagName, privacySetting, temporarySetting);
     }
 
+    @Transactional(readOnly = true)
     public List<String> getTagsByUser(Long userId) {
         return postRepository.findTagsByUserId(userId);
     }
 
+    @Transactional(readOnly = true)
     public List<TagCount> getTagsWithCountByUser(Long userId, boolean isBlogOwner) {
         return postRepository.findTagsWithCountByUserId(userId, isBlogOwner);
     }

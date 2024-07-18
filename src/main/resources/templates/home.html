@@ -7,7 +7,7 @@
     </head>
     <body>
         <div class="container">
-            <div th:replace="~{fragments/header1 :: header1(user=${user})}"></div>
+            <div th:replace="~{fragments/header1 :: header1}"></div>
             <div class="tabs">
                 <ul class="nav-tabs">
                     <li th:classappend="${activeTab == 'trending'} ? 'active'"><a href="/vlog/trending">트렌딩</a></li>

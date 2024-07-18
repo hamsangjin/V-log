@@ -1,14 +1,10 @@
 package hello.velog.repository;
 
-import hello.velog.domain.Follow;
-import hello.velog.domain.User;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
+import hello.velog.domain.*;
+import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Repository
 public interface FollowRepository extends JpaRepository<Follow, Long> {
@@ -21,4 +17,6 @@ public interface FollowRepository extends JpaRepository<Follow, Long> {
     int countFollowingByUserId(@Param("userId") Long userId);
 
     List<Follow> findByFollower(User follower);
+
+    void deleteByFollowerId(Long followerId);
 }

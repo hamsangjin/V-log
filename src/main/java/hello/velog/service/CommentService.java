@@ -28,7 +28,8 @@ public class CommentService {
         deleteCommentRecursively(comment);
     }
 
-    private void deleteCommentRecursively(Comment comment) {
+    @Transactional
+    public void deleteCommentRecursively(Comment comment) {
         for (Comment reply : comment.getReplies()) {
             deleteCommentRecursively(reply);
         }

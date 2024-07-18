@@ -17,10 +17,12 @@ public class SeriesService {
     private final SeriesRepository seriesRepository;
     private final PostRepository postRepository;
 
+    @Transactional(readOnly = true)
     public List<Series> findAllSeries() {
         return seriesRepository.findAll();
     }
 
+    @Transactional(readOnly = true)
     public Series findById(Long id) {
         return seriesRepository.findById(id).orElse(null);
     }
@@ -66,6 +68,8 @@ public class SeriesService {
         return posts.isEmpty() ? null : posts.get(0);
     }
 
+
+    @Transactional(readOnly = true)
     public List<Map<String, Object>> findAllSeriesWithThumbnailByBlogId(Long blogId) {
         List<Series> seriesList = seriesRepository.findByBlogId(blogId);
 

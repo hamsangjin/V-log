@@ -24,6 +24,8 @@ public class Blog {
     @Column(columnDefinition = "longtext")
     private String intro;
 
+    private String info;
+
     @OneToMany(mappedBy = "blog")
     private List<Tag> tags = new ArrayList<>();
 

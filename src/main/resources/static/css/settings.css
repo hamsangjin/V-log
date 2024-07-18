@@ -1,0 +1,317 @@
+html {
+    background-color: #121212; /* 검은색 배경 */
+    color: #FFFFFF; /* 흰색 글씨 */
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #121212; /* 검은색 배경 */
+    color: #FFFFFF; /* 흰색 글씨 */
+    border-radius: 8px;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    margin-bottom: 20px; /* 아래쪽 여백 */
+}
+
+header a {
+    color: #FFFFFF; /* 흰색 글씨 */
+    text-decoration: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    background-color: #121212; /* 검은색 배경 */
+}
+
+.left {
+    flex: 1;
+    display: flex;
+    align-items: center;
+}
+
+.right {
+    flex: 1;
+    text-align: right;
+}
+
+.button {
+    border: 1px solid #F1F3F5;
+    border-radius: 20px;
+    padding: 5px 15px;
+    color: #F1F3F5;
+    background-color: #121212;
+}
+
+.button:hover {
+    background-color: #F1F3F5;
+    color: #1E1E1E;
+    cursor: pointer;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropbtn {
+    background-color: #121212;
+    color: white;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    border-radius: 50%;
+}
+
+.profile-image1 {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #121212;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    border-radius: 5px;
+}
+
+.dropdown-content a {
+    color: white;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {
+    color: #96f2d7;
+}
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+
+/*!* 섹션 스타일 *!*/
+/*.profile-section, .name-info-section, .title-section, .email-section, .delete-account-section {*/
+/*    margin-bottom: 20px;*/
+/*}*/
+
+.profile-section {
+    display: flex;
+    margin-bottom: 100px;
+    text-align: center;
+}
+
+.image-section{
+    padding-right: 30px;
+    border-right: 1px solid #2a2a2a;
+    align-items: center;
+}
+
+.image-upload{
+    background-color: #96f2d7;
+    color: #121212;
+    font-size: 0.9em;
+    font-weight: bold;
+    border: none;
+    padding: 7px 25px;
+    border-radius: 3px;
+    margin-bottom: 5px;
+}
+
+.image-upload:hover{
+    background-color: #63e6be;
+    cursor: pointer;
+}
+
+.image-remove{
+    color: #96f2d7;
+    background-color: #121212;
+    font-size: 0.9em;
+    font-weight: bold;
+    border: none;
+    padding: 7px 25px;
+    border-radius: 3px;
+}
+
+.image-remove:hover{
+    background-color: #666666;
+    cursor: pointer;
+}
+
+.profile-image2{
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    display: block;
+    margin-bottom: 10px;
+}
+
+
+.name-info-section{
+    margin-left: 30px;
+    width: calc(100% - 22px);
+    text-align: left;
+}
+
+.name-info-section  button{
+    color: #96F2D7;
+    background-color: transparent;
+    border: none;
+    text-decoration: underline;
+    font-size: 1em;
+}
+
+.name-info-section button:hover{
+    color: #63e6be;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.name-input{
+    display: block;
+    background-color: #444444;
+    color: #D9D9D9;
+    width: calc(50%);
+    margin-bottom: 10px;
+    font-size: 24px;
+    padding: 5px;
+}
+
+.info-input{
+    display: block;
+    background-color: #1E1E1E;
+    color: #D9D9D9;
+    width: calc(97%);
+    margin-bottom: 10px;
+    font-size: 12px;
+}
+
+.right-align {
+    text-align: right;
+}
+
+.name-info-section form div button{
+    background-color: #96f2d7;
+    color: #121212;
+    font-size: 0.9em;
+    font-weight: bold;
+    border: none;
+    padding: 7px 25px;
+    border-radius: 3px;
+    margin-bottom: 5px;
+    text-decoration: none;
+}
+
+.name-info-section form div button:hover{
+    background-color: #63e6be;
+    color: #121212;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+
+.title-section{
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+    align-items: center;
+}
+
+.h3-form{
+    display: flex;
+    align-items: center;
+    gap: 30px
+}
+
+.h3-form input{
+    width: 757px;
+    margin-right: 20px;
+}
+
+
+
+.title-section button{
+    color: #96F2D7;
+    background-color: transparent;
+    border: none;
+    /*font-size: 1em;*/
+    /*font-weight: bolder;*/
+    /*padding: 7px 18px;*/
+}
+
+.title-section button:hover{
+    color: #96F2D7;
+    background-color: transparent;
+    text-decoration : underline;
+    cursor: pointer;
+}
+
+.input-info{
+    font-size: 14px;
+    color: #666666;
+    margin: 0px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #2a2a2a;
+    background-color: transparent;
+}
+
+
+form input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #121212;
+    color: #FFFFFF;
+}
+
+.email-section{
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+    align-items: center;
+}
+
+.email-section button{
+    color: #96F2D7;
+    background-color: transparent;
+    border: none;
+    /*font-size: 1em;*/
+    /*font-weight: bolder;*/
+    /*padding: 7px 18px;*/
+}
+
+.email-section button:hover{
+    color: #96F2D7;
+    background-color: transparent;
+    text-decoration : underline;
+    cursor: pointer;
+}
+
+.delete-account-section{
+    display: flex;
+    gap: 30px;
+    align-items: center;
+}
+
+.delete-account-section button{
+    background-color: #ffc9c9;
+    color: #121212;
+    font-size: 1em;
+    font-weight: bolder;
+    padding: 7px 18px;
+    border: none;
+}
+
+.delete-account-section button:hover{
+    background-color: #ffa8a8;
+    cursor: pointer;
+}

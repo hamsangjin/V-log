@@ -105,7 +105,7 @@ header a {
 }
 
 .dropdown-content a:hover {
-    background-color: #333333;
+    color: #96f2d7;
 }
 
 .dropdown:hover .dropdown-content {

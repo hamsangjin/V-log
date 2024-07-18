@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/" lang="ko">
+    <head>
+        <meta charset="UTF-8">
+        <title>My Blog Settings</title>
+        <link rel="stylesheet" href="/css/settings.css">
+    </head>
+    <body>
+        <div class="container">
+            <div th:replace="~{fragments/header1 :: header1}"></div>
+
+            <div class="main-content">
+                <div class="profile-section">
+                    <div class="image-section">
+                        <img class="profile-image2" th:src="@{${user.profileImage}}" alt="Profile Image">
+                        <form id="uploadForm" action="/vlog/uploadImage" method="post" enctype="multipart/form-data">
+                            <input type="file" id="imageInput" name="image" style="display:none;">
+                            <button class="image-upload" type="button" id="uploadButton">이미지 수정</button>
+                        </form>
+                        <form action="/vlog/removeImage" method="post">
+                            <button class="image-remove" type="submit">이미지 제거</button>
+                        </form>
+                    </div>
+
+                    <div class="name-info-section">
+                        <h2 id="displayName" th:text="${user.name}"></h2>
+                        <p id="displayInfo" th:text="${blog.info}"></p>
+                        <button id="editButton" class="button">수정</button>
+
+                        <form id="editForm" action="/vlog/updateNameInfo" method="post" style="display:none;">
+                            <input class="name-input" type="text" id="name" name="name" placeholder="이름" th:value="${user.name}">
+                            <input class="info-input" type="text" id="info" name="info" placeholder="한줄 소개" th:value="${blog.info}">
+                            <div class="right-align">
+                                <button type="submit">저장</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="title-section">
+                    <div class="h3-form">
+                        <h3>블로그 제목</h3>
+                        <span id="displayTitle" th:text="${blog.title}">블로그 제목</span>
+                        <form id="editTitleForm" action="/vlog/updateTitle" method="post" style="display:none;">
+                            <input type="text" id="title" name="title" placeholder="블로그 제목을 입력하세요." th:value="${blog.title}">
+                            <button type="submit">저장</button>
+                        </form>
+                    </div>
+                    <button id="editTitleButton" class="button">수정</button>
+                </div>
+                <p class="input-info">개인 페이지의 좌측 상단에 나타나는 페이지 제목입니다.</p>
+
+                <div class="email-section">
+                    <div class="h3-form">
+                    <h3>이메일 주소</h3>
+                        <span id="displayEmail" th:text="${user.email}"></span>
+                        <form id="editEmailForm" action="/vlog/updateEmail" method="post" style="display:none;">
+                            <input type="email" id="email" name="email" placeholder="이메일을 입력하세요." th:value="${user.email}">
+                            <button type="submit">저장</button>
+                        </form>
+                    </div>
+                    <button id="editEmailButton" class="button">수정</button>
+                </div>
+                <p class="input-info">회원 인증 또는 시스템에서 발송하는 이메일을 수신하는 주소입니다.</p>
+
+                <div class="delete-account-section">
+                    <h3>회원 탈퇴</h3>
+                    <form action="/vlog/deleteUser" method="post">
+                        <button type="submit">회원 탈퇴</button>
+                    </form>
+                </div>
+                <p class="input-info" style="border: none">탈퇴 시 작성하신 포스트 및 댓글이 모두 삭제되며 복구되지 않습니다.</p>
+            </div>
+        </div>
+        <script src="/js/settings.js"></script>
+    </body>
+</html>
