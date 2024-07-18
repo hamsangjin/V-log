@@ -161,6 +161,20 @@ public class BlogController {
         return "myblog";
     }
 
+    @GetMapping("/myblog/@{username}/series/{title}")
+    public String myBlogSeriesDetail(@PathVariable String username, @PathVariable String title, Model model) {
+        User user = userService.getCurrentUser();
+        User blogOwner = userService.findByUsername(username);
+        Blog blog = blogService.findBlogByUserId(blogOwner.getId());
+        List<Post> posts = postService.getPostsByBlogIdAndSeriesTitle(blog.getId(), title);
+
+        model.addAttribute("user", user);
+        model.addAttribute("blogOwner", blogOwner);
+        model.addAttribute("blog", blog);
+        model.addAttribute("posts", posts);
+        return "seriesDetail";
+    }
+
     @GetMapping("/myblog/@{username}/about")
     public String getBlogAbout(@PathVariable String username, Model model) {
         User user = userService.getCurrentUser();

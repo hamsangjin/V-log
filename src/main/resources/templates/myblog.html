@@ -81,9 +81,13 @@
                             <div class="series-list">
                                 <div th:each="seriesMap : ${seriesList}" class="series-item">
                                     <div class="thumbnail-container">
-                                        <img th:src="@{${seriesMap.thumbnailImage}}" alt="Thumbnail Image" class="series-thumbnail"/>
+                                        <a th:href="@{'/vlog/myblog/@' + ${blogOwner.username} + '/series/' + ${seriesMap.series.title}}">
+                                            <img th:src="@{${seriesMap.thumbnailImage}}" alt="Thumbnail Image" class="series-thumbnail"/>
+                                        </a>
                                     </div>
-                                    <h3 th:text="${seriesMap.series.title}">Series Title</h3>
+                                    <a th:href="@{'/vlog/myblog/@' + ${blogOwner.username} + '/series/' + ${seriesMap.series.title}}" class="series-title-link">
+                                        <h2 th:text="${seriesMap.series.title}">Series Title</h2>
+                                    </a>
                                     <div class="series-info">
                                         <p th:text="${seriesMap.series.posts.size()} + '개의 포스트'">Post Count</p>
                                         <p>·</p>

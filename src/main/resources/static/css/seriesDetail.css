@@ -72,7 +72,7 @@ header a {
 }
 
 .dropbtn {
-    background-color: #121212;
+    background-color: #121212; /* 검은색 배경 */
     color: white;
     padding: 10px;
     border: none;
@@ -80,7 +80,17 @@ header a {
     border-radius: 50%;
 }
 
-.profile-image {
+.series-info{
+    border-bottom: 1px solid #444444; /* 아래쪽 경계선 */
+}
+
+.flex-center{
+    display: flex;
+    justify-content: left;
+    align-items: center;
+}
+
+.profile-image1 {
     width: 30px;
     height: 30px;
     border-radius: 50%;
@@ -89,8 +99,9 @@ header a {
 .dropdown-content {
     display: none;
     position: absolute;
-    background-color: #121212;
+    background-color: #121212; /* 검은색 배경 */
     min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
     border-radius: 5px;
 }
@@ -165,10 +176,10 @@ header a {
 /* 태그, 좋아요*/
 
 /* 좋아요 수와 날짜 스타일 조정 */
-.like-count, .post-date {
+.like-count, .post-date, .comment-count{
     color: #ccc; /* 밝은 회색 */
     font-size: 0.9em;
-    margin-bottom: 5px; /* 좋아요와 태그 사이 간격 */
+    margin-right: 8px;
 }
 
 /* 태그 컨테이너 스타일 */

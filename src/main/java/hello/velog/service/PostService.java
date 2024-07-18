@@ -192,4 +192,9 @@ public class PostService {
     public List<TagCount> getTagsWithCountByUser(Long userId, boolean isBlogOwner) {
         return postRepository.findTagsWithCountByUserId(userId, isBlogOwner);
     }
+
+    @Transactional(readOnly = true)
+    public List<Post> getPostsByBlogIdAndSeriesTitle(Long blogId, String title) {
+        return postRepository.findPostsByBlogIdAndSeriesTitle(blogId, title);
+    }
 }
