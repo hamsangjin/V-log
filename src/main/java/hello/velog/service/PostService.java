@@ -131,6 +131,12 @@ public class PostService {
         return user != null ? user.getUsername() : null;
     }
 
+    @Transactional(readOnly = true)
+    public String getProfileImageByUserId(Long userId) {
+        User user = userRepository.findById(userId).orElse(null);
+        return user != null ? user.getProfileImage() : null;
+    }
+
     @Transactional
     public void createNewPost(User user, String title, String content, MultipartFile thumbnailImageFile, String thumbnailText, Long seriesId, String newSeries, String tagsString, boolean privacySetting, boolean temporarySetting) throws IOException {
         Post post = new Post();

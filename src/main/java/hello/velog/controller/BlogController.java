@@ -30,9 +30,15 @@ public class BlogController {
         Map<Long, String> postUsernames = posts.stream()
                 .collect(Collectors.toMap(Post::getId, post -> postService.getUsernameByUserId(post.getUserId())));
 
+        Map<Long, String> postUserThumbnail = posts.stream()
+                .collect(Collectors.toMap(Post::getId, post -> postService.getProfileImageByUserId(post.getUserId())));
+
+        System.out.println(postUserThumbnail);
+
         model.addAttribute("user", user);
         model.addAttribute("posts", posts);
         model.addAttribute("postUsernames", postUsernames);
+        model.addAttribute("postUserThumbnail", postUserThumbnail);
         model.addAttribute("activeTab", activeTab);
     }
 

@@ -166,10 +166,10 @@ header a {
 /* 태그, 좋아요*/
 
 /* 좋아요 수와 날짜 스타일 조정 */
-.like-count, .post-date {
+.like-count, .post-date, .comment-count{
     color: #ccc; /* 밝은 회색 */
     font-size: 0.9em;
-    margin-bottom: 5px; /* 좋아요와 태그 사이 간격 */
+    margin-right: 8px;
 }
 
 /* 태그 컨테이너 스타일 */
@@ -204,4 +204,10 @@ a.tag-link:hover {
 
 a[href="/vlog/myblog/*/*"] {
     display: none;
+}
+
+.flex-center{
+    display: flex;
+    justify-content: left;
+    align-items: center;
 }

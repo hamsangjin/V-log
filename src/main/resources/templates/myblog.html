@@ -67,11 +67,11 @@
                                     <div class="flex-center">
                                         <p th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd')}" class="post-date">Post Date</p>
                                         <p style="margin-right: 8px">.</p>
-                                        <div class="like-count">
-                                            <span th:text="${#lists.size(post.likes)} + ' likes'">Likes</span>
-                                        </div>
-                                        <p style="margin-right: 8px">.</p>
                                         <p class="comment-count"><span th:text="${post.comments.size()}"></span>개의 댓글</p>
+                                        <p style="margin-right: 8px">.</p>
+                                        <div class="like-count">
+                                            <span th:text="'🤍  '+ ${#lists.size(post.likes)}">Likes</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

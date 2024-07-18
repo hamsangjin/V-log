@@ -43,9 +43,18 @@
                                 <h2 th:text="${post.title}">Post Title</h2>
                             </div>
                             <p th:text="${post.thumbnailText}" class="post-content">Post Content</p>
-                            <p th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd')}">Post Date</p>
-                            <div class="like-count">
-                                <span th:text="${#lists.size(post.likes)} + ' likes'">Likes</span>
+                            <div class="date-comment">
+                                <p th:text="${#temporals.format(post.createdAt, 'yyyy년 MM월 dd일')}">Post Date</p>
+                                <p>·</p>
+                                <p class="comment-count"><span th:text="${post.comments.size()}"></span>개의 댓글</p>
+                            </div>
+                            <div class="image-like">
+                                <div class="image-name">
+                                    <img class="profile-image1" th:src="@{${postUserThumbnail[post.id]}}" alt="Profile Image"/>
+                                    <span style="color: #ccc; font-size: 0.9em"> by </span>
+                                    <span style="font-size: 1em" class="author" th:text="${postUsernames[post.id]}">유저 이름 </span>
+                                </div>
+                                <span th:text="'🤍  ' + ${#lists.size(post.likes)}">Likes</span>
                             </div>
                         </div>
                     </div>
@@ -78,9 +87,18 @@
                                 <h2 th:text="${post.title}">Post Title</h2>
                             </div>
                             <p th:text="${post.thumbnailText}" class="post-content">Post Content</p>
-                            <p th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd')}">Post Date</p>
-                            <div class="like-count">
-                                <span th:text="${#lists.size(post.likes)} + ' likes'">Likes</span>
+                            <div class="date-comment">
+                                <p th:text="${#temporals.format(post.createdAt, 'yyyy년 MM월 dd일')}">Post Date</p>
+                                <p>·</p>
+                                <p class="comment-count"><span th:text="${post.comments.size()}"></span>개의 댓글</p>
+                            </div>
+                            <div class="image-like">
+                                <div class="image-name">
+                                    <img class="profile-image1" th:src="@{${postUserThumbnail[post.id]}}" alt="Profile Image"/>
+                                    <span style="color: #ccc; font-size: 0.9em"> by </span>
+                                    <span style="font-size: 1em" class="author" th:text="${postUsernames[post.id]}">유저 이름 </span>
+                                </div>
+                                <span th:text="'🤍  ' + ${#lists.size(post.likes)}">Likes</span>
                             </div>
                         </div>
                     </div>
@@ -89,3 +107,13 @@
         </div>
     </body>
 </html>
+
+<!--<div class="flex-center">-->
+<!--    <p th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd')}" class="post-date">Post Date</p>-->
+<!--    <p style="margin-right: 8px">.</p>-->
+<!--    <div class="like-count">-->
+<!--        <span th:text="${#lists.size(post.likes)} + ' likes'">Likes</span>-->
+<!--    </div>-->
+<!--    <p style="margin-right: 8px">.</p>-->
+<!--    <p class="comment-count"><span th:text="${post.comments.size()}"></span>개의 댓글</p>-->
+<!--</div>-->

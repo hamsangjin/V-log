@@ -162,15 +162,16 @@ header a {
 }
 
 .post-title-link h2 {
-    margin-bottom: 5px; /* 기존 값보다 작은 값으로 조정 */
-    font-size: 1.5em; /* 필요에 따라 폰트 크기 조정 */
-    text-align: left; /* 텍스트 왼쪽 정렬 */
+    margin-bottom: 5px;
+    font-size: 1em;
+    text-align: left;
 }
 
 .post-title-link {
     text-decoration: none; /* 링크 장식 제거 */
     color: inherit; /* 텍스트 색상 상속 */
     cursor: default; /* 마우스 커서를 기본 화살표로 설정 */
+    margin-bottom: 10px;
 }
 
 .post-title-link h2:hover {
@@ -179,9 +180,32 @@ header a {
 
 .post-content {
     margin-top: 5px; /* 콘텐츠 텍스트의 상단 마진을 줄임 */
-    font-size: 1em; /* 필요에 따라 폰트 크기 조정 */
+    font-size: 0.9em; /* 필요에 따라 폰트 크기 조정 */
     color: #ccc; /* 글씨 색상 */
     text-align: left; /* 텍스트 왼쪽 정렬 */
+    height: 50px;
+}
+
+.date-comment{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: #ccc;
+    font-size: 0.9em;
+    border-bottom: 1px solid #2a2a2a;
+}
+
+.image-like{
+    margin-top: 10px;
+    display:flex;
+    align-items: center;
+    justify-content: space-between
+}
+
+.image-name{
+    display:flex;
+    align-items: center;
+    gap: 5px
 }
 
 .feed-message {
