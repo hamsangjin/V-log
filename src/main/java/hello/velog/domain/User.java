@@ -13,7 +13,7 @@ import java.util.*;
 @Table(name = "users")
 @Getter @Setter
 @NoArgsConstructor @AllArgsConstructor
-@EqualsAndHashCode @ToString
+@EqualsAndHashCode
 @EntityListeners(AuditingEntityListener.class)
 public class User {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -72,5 +72,17 @@ public class User {
         this.password = password;
         this.name = name;
         this.email = email;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", profileImage='" + profileImage + '\'' +
+                ", registrationDate=" + registrationDate +
+                '}';
     }
 }
