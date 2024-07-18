@@ -5,9 +5,8 @@ html {
 }
 
 .container {
-    max-width: 960px;
+    max-width: 1500px;
     margin: 0 auto;
-    padding: 20px;
     background-color: #121212; /* 검은색 배경 */
     color: #FFFFFF; /* 흰색 글씨 */
     border-radius: 8px;
@@ -33,6 +32,11 @@ header a {
     flex: 1;
     display: flex;
     align-items: center;
+}
+
+.left img{
+    width: 30px;
+    height: 30px;
 }
 
 .logo {
@@ -109,31 +113,31 @@ header a {
     display: block;
 }
 
+
+/* ---------- */
+
 .main-content {
     display: flex;
-}
-
-.sidebar {
-    margin-top: 10px;
-    flex: 0 0 200px; /* 사이드바 너비 */
-    margin-right: 20px; /* 오른쪽 마진 */
-}
-
-.sidebar p{
-    border-bottom: white 1px solid;
-    padding: 0px 0px 10px 0px;
 }
 
 .content {
     flex: 1;
 }
 
-/* 추가된 CSS 코드 */
-.profile-container {
+.flex-center{
     display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.profile-container {
+    width: 775px;
+    display: flex;
+    justify-content: left;
     align-items: center;
     padding-bottom: 20px;
     border-bottom: 1px solid #444444;
+    margin-right: 25px;
 }
 
 .profile-container img {
@@ -148,12 +152,38 @@ header a {
     color: #FFFFFF; /* 유저 이름 글자 색상 */
 }
 
+.follow-info {
+    width: 775px;
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+    margin-bottom: 100px;
+    margin-right: 25px;
+    font-size: 1em;
+    justify-content: flex-end;
+}
+
+.follow-btn-container {
+    text-align: right;
+    margin-bottom: 10px;
+}
+
+#followBtn {
+    background-color: #96f2d7;
+    color: #121212;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
 .nav-tabs {
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
+    gap: 50px;
     list-style-type: none;
     padding: 0;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
 }
 
 .nav-tabs li {
@@ -161,6 +191,7 @@ header a {
 }
 
 .nav-tabs li a {
+    font-size: 20px;
     display: block;
     padding: 10px 20px;
     text-decoration: none;
@@ -169,22 +200,51 @@ header a {
     transition: all 0.3s;
 }
 
-.nav-tabs li.active a,
-.nav-tabs li a:hover {
+.nav-tabs li.active a{
+    color: #63e6be;
     border-bottom: 2px solid #63e6be;
 }
 
-.post-title-link h2 {
-    margin-bottom: 5px; /* 기존 값보다 작은 값으로 조정 */
-    font-size: 1.5em; /* 필요에 따라 폰트 크기 조정 */
-    text-align: left; /* 텍스트 왼쪽 정렬 */
+
+/* ------------------ 글  ------------------ */
+
+
+.sidebar {
+    margin-top: 10px;
+    flex: 0 0 200px; /* 사이드바 너비 */
+    margin-right: 20px; /* 오른쪽 마진 */
+    margin-left: 110px;
 }
 
-.post-content {
-    margin-top: 5px; /* 콘텐츠 텍스트의 상단 마진을 줄임 */
-    font-size: 1em; /* 필요에 따라 폰트 크기 조정 */
-    color: #ccc; /* 글씨 색상 */
-    text-align: left; /* 텍스트 왼쪽 정렬 */
+.sidebar p{
+    border-bottom: white 1px solid;
+    padding: 0px 0px 10px 0px;
+}
+
+.tag-list {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.tag-list a {
+    background-color: #121212;
+    color: #ECECEC;
+    /*padding: 8px 16px;*/
+    border-radius: 20px;
+    text-decoration: none;
+    font-size: 0.9em;
+    font-weight: 400;
+    transition: background-color 0.3s;
+    margin-bottom: 10px;
+}
+
+.tag-list a.selected {
+    color: #63e6be;;
+}
+
+.tag-list a:hover {
+    text-decoration : underline;
 }
 
 .post-list {
@@ -207,76 +267,36 @@ header a {
 }
 
 .post-item img {
-    max-width: 100%;
-    height: auto;
     border-radius: 5px;
     margin-top: 10px;
 }
 
 .thumbnail-container {
-    width: 100%;
-    height: 200px; /* 원하는 높이로 설정 */
     display: flex;
     justify-content: center;
     align-items: center;
     overflow: hidden;
-    border-radius: 8px;
+    /*border-radius: 8px;*/
 }
 
-.post-thumbnail, .series-thumbnail {
-    width: 100%;
-    height: 100%;
-    object-fit: fill; /* 이미지 비율을 유지하면서 컨테이너 안에 맞춤 */
+.post-thumbnail {
+    width: 768px;
+    height: 400px;
 }
 
-.series-list {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr); /* 한 줄에 최대 시리즈 2개 */
-    gap: 20px;
-}
-
-.series-title-link{
+.post-title-link h2 {
     margin-bottom: 5px; /* 기존 값보다 작은 값으로 조정 */
     font-size: 1.5em; /* 필요에 따라 폰트 크기 조정 */
     text-align: left; /* 텍스트 왼쪽 정렬 */
-    color: #D9D9D9;
-    text-decoration: none;
 }
 
-.series-item {
-    background-color: transparent;
-    padding: 20px;
-    border-radius: 8px;
-    transition: background-color 0.3s;
+.post-content {
+    margin-top: 5px; /* 콘텐츠 텍스트의 상단 마진을 줄임 */
+    font-size: 1em; /* 필요에 따라 폰트 크기 조정 */
+    color: #ccc; /* 글씨 색상 */
     text-align: left; /* 텍스트 왼쪽 정렬 */
 }
 
-.series-title-link p{
-    margin-bottom: 0px;
-    margin-top: 20px;
-    font-size: 16px;
-    color: #FFFFFF;
-    font-weight: bold;
-}
-
-.light-font{
-    color: #666666;
-}
-
-.series-info {
-    display: flex;
-    text-align: left; /* 텍스트 왼쪽 정렬 */
-    gap: 10px;
-}
-
-/* 좋아요 수와 날짜 스타일 조정 */
-.like-count, .post-date, .comment-count{
-    color: #ccc; /* 밝은 회색 */
-    font-size: 0.9em;
-    margin-right: 8px;
-}
-
-/* 태그 컨테이너 스타일 */
 .tags-container {
     display: flex;
     flex-wrap: wrap;
@@ -287,7 +307,6 @@ header a {
     margin-bottom: 10px; /* 하단 여백 추가 */
 }
 
-/* 태그 링크 스타일 */
 a.tag-link {
     background-color: #1e1e1e; /* 어두운 배경 */
     color: #96f2d7; /* 밝은 텍스트 색상 */
@@ -316,19 +335,82 @@ a[href="/vlog/myblog/*/*"] {
     align-items: center;
 }
 
+.comment-count, .post-date, .like-count{
+    color: #ccc;
+    font-size: 0.9em;
+    margin-right: 8px;
+}
+
+
+/* ------------------ 시리즈 ------------------ */
+
+.series-list {
+    width: 800px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 한 줄에 최대 시리즈 2개 */
+    gap: 20px;
+}
+
+.series-item {
+    background-color: transparent;
+    padding: 20px;
+    border-radius: 8px;
+    transition: background-color 0.3s;
+    text-align: left; /* 텍스트 왼쪽 정렬 */
+}
+
+.series-thumbnail{
+    width: 100%;
+    height: 100%;
+}
+
+.series-title-link{
+    margin-bottom: 5px; /* 기존 값보다 작은 값으로 조정 */
+    font-size: 1.5em; /* 필요에 따라 폰트 크기 조정 */
+    text-align: left; /* 텍스트 왼쪽 정렬 */
+    color: #D9D9D9;
+    text-decoration: none;
+}
+
+.series-title-link p{
+    margin-bottom: 0px;
+    margin-top: 20px;
+    font-size: 16px;
+    color: #FFFFFF;
+    font-weight: bold;
+}
+
+.series-info {
+    display: flex;
+    text-align: left; /* 텍스트 왼쪽 정렬 */
+    gap: 10px;
+}
+
+.light-font{
+    color: #666666;
+}
+
+
+/* ------------------ 소개 ------------------ */
+.about-section {
+    width: 768px;
+    display: flex;
+    justify-content: center;
+}
+
 .no-intro {
     text-align: center;
     padding: 20px;
 }
 
 .no-intro img {
-    max-width: 320px;
-    max-height: 320px;
+    max-width: 400px;
+    max-height: 400px;
     margin-bottom: 20px;
 }
 
 .no-intro p {
-    font-size: 1.2em;
+    font-size: 30px;
     color: #ccc;
 }
 
@@ -336,6 +418,8 @@ a[href="/vlog/myblog/*/*"] {
 .intro-form-container button {
     background-color: #96f2d7;
     color: #121212;
+    font-size: 18px;
+    font-weight: bold;
     border: none;
     padding: 10px 20px;
     border-radius: 5px;
@@ -348,12 +432,21 @@ a[href="/vlog/myblog/*/*"] {
     cursor: pointer;
 }
 
+.intro-text {
+    margin-top: 10px;
+    text-align: left; /* 텍스트 왼쪽 정렬 */
+}
+
 .right-align {
     text-align: right;
 }
 
+.intro-form-container {
+    margin-top: 10px;
+}
+
 .intro-form-container textarea {
-    width: 98%;
+    width: 768px;
     height: 200px;
     padding: 10px;
     border: 1px solid #ccc;
@@ -361,65 +454,9 @@ a[href="/vlog/myblog/*/*"] {
     margin-bottom: 10px;
 }
 
-.about-section {
-    position: relative;
-}
-
-.intro-text {
-    margin-top: 10px;
-    text-align: left; /* 텍스트 왼쪽 정렬 */
-}
-
-.intro-form-container {
-    margin-top: 10px;
-}
-
-.follow-info {
-    display: flex;
-    gap: 10px;
-    margin-top: 20px;
-    margin-bottom: 10px;
-    font-size: 1em;
-    justify-content: flex-end; /* 오른쪽 정렬 추가 */
-}
-
-.follow-btn-container {
-    text-align: right;
-    margin-bottom: 10px;
-}
-
-#followBtn {
-    background-color: #96f2d7;
-    color: #121212;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-/* 태그 목록 스타일 */
-.tag-list {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 20px;
-}
-
-.tag-list a {
-    background-color: #121212;
-    color: #ECECEC;
-    /*padding: 8px 16px;*/
-    border-radius: 20px;
-    text-decoration: none;
-    font-size: 0.9em;
-    font-weight: 400;
-    transition: background-color 0.3s;
-    margin-bottom: 10px;
-}
-
-.tag-list a.selected {
-    color: #63e6be;;
-}
-
-.tag-list a:hover {
-    text-decoration : underline;
+.intro-form-container textarea::placeholder {
+    font-size: 18px;
+    color: #ccc;
+    font-style: italic;
+    font-weight: lighter;
 }

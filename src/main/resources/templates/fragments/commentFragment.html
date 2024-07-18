@@ -5,7 +5,7 @@
                 <img class="comment-image" th:src="@{${comment.user.profileImage}}" alt="프로필 이미지"/>
                 <div>
                     <p class="comment-author" th:text="${comment.user.name}">유저 이름</p>
-                    <p class="comment-date" th:text="${#temporals.format(comment.createdAt, 'yyyy-MM-dd')}">작성일자</p>
+                    <p class="comment-date" th:text="${#temporals.format(comment.createdAt, 'yyyy년 MM월 dd일')}">작성일자</p>
                 </div>
             </div>
             <p class="comment-body" th:text="${comment.content}">댓글 내용</p>
@@ -28,7 +28,7 @@
                     <textarea name="content" placeholder="답글을 작성하세요" class="comment-textarea"></textarea>
                     <div class="comment-form-actions">
                         <button type="button" class="cancel-btn" th:onclick="'hideReplyForm(' + ${comment.id} + ');'">취소</button>
-                        <button type="submit" class="submit-btn">작성</button>
+                        <button type="submit" class="submit-btn">댓글 작성</button>
                     </div>
                 </form>
             </div>

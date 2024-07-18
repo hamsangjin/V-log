@@ -13,14 +13,14 @@ document.getElementById("editButton").addEventListener("click", function() {
     document.getElementById("editForm").style.display = 'block';
 });
 
-document.getElementById("editTitleButton").addEventListener("click", function() {
+document.getElementById("editButton1").addEventListener("click", function() {
     document.getElementById("displayTitle").style.display = 'none';
-    document.getElementById("editTitleButton").style.display = 'none';
+    document.getElementById("editButton1").style.display = 'none';
     document.getElementById("editTitleForm").style.display = 'flex';
 });
 
-document.getElementById("editEmailButton").addEventListener("click", function() {
+document.getElementById("editButton2").addEventListener("click", function() {
     document.getElementById("displayEmail").style.display = 'none';
-    document.getElementById("editEmailButton").style.display = 'none';
+    document.getElementById("editButton2").style.display = 'none';
     document.getElementById("editEmailForm").style.display = 'flex';
 });

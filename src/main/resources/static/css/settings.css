@@ -5,9 +5,8 @@ html {
 }
 
 .container {
-    max-width: 960px;
+    max-width: 1500px;
     margin: 0 auto;
-    padding: 20px;
     background-color: #121212; /* 검은색 배경 */
     color: #FFFFFF; /* 흰색 글씨 */
     border-radius: 8px;
@@ -33,6 +32,11 @@ header a {
     flex: 1;
     display: flex;
     align-items: center;
+}
+
+.left img{
+    width: 75px;
+    height: 25px;
 }
 
 .right {
@@ -98,22 +102,35 @@ header a {
     display: block;
 }
 
+.settings-container{
+    display: flex;
+    justify-content: center;
+}
 
-/*!* 섹션 스타일 *!*/
-/*.profile-section, .name-info-section, .title-section, .email-section, .delete-account-section {*/
-/*    margin-bottom: 20px;*/
-/*}*/
+.main-content{
+    width: 768px;
+}
 
+/* 프로필 이미지 변경 및 유저이름, 블로그 한 줄 소개 변경 스타일*/
 .profile-section {
     display: flex;
     margin-bottom: 100px;
     text-align: center;
 }
 
+/* 이미지 변경 */
 .image-section{
     padding-right: 30px;
     border-right: 1px solid #2a2a2a;
     align-items: center;
+}
+
+.profile-image2{
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    display: block;
+    margin-bottom: 10px;
 }
 
 .image-upload{
@@ -147,22 +164,15 @@ header a {
     cursor: pointer;
 }
 
-.profile-image2{
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    display: block;
-    margin-bottom: 10px;
-}
 
-
+/* 유저이름, 블로그 한 줄 소개 변경 */
 .name-info-section{
     margin-left: 30px;
     width: calc(100% - 22px);
     text-align: left;
 }
 
-.name-info-section  button{
+.name-info-section button{
     color: #96F2D7;
     background-color: transparent;
     border: none;
@@ -183,7 +193,10 @@ header a {
     width: calc(50%);
     margin-bottom: 10px;
     font-size: 24px;
-    padding: 5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border: 1px solid #ccc;
+    border-radius: 2px;
 }
 
 .info-input{
@@ -193,13 +206,16 @@ header a {
     width: calc(97%);
     margin-bottom: 10px;
     font-size: 12px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 2px;
 }
 
 .right-align {
     text-align: right;
 }
 
-.name-info-section form div button{
+.right-align button{
     background-color: #96f2d7;
     color: #121212;
     font-size: 0.9em;
@@ -211,7 +227,7 @@ header a {
     text-decoration: none;
 }
 
-.name-info-section form div button:hover{
+.right-align button:hover{
     background-color: #63e6be;
     color: #121212;
     cursor: pointer;
@@ -219,6 +235,7 @@ header a {
 }
 
 
+/* 블로그 제목 수정 스타일 */
 .title-section{
     display: flex;
     justify-content: space-between;
@@ -233,22 +250,36 @@ header a {
 }
 
 .h3-form input{
-    width: 757px;
+    width: 540px;
     margin-right: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #121212;
+    color: #FFFFFF;
 }
 
+#saveButton1, #saveButton2{
+    background-color: #96F2D7;
+    color: #121212;
+    font-size: 0.9em;
+    border: none;
+    border-radius: 3px;
+    padding: 3px 20px;
+}
 
+#saveButton1, #saveButton2:hover{
+    background-color: #63e6be;
+    cursor: pointer;
+}
 
-.title-section button{
+#editButton1, #editButton2{
     color: #96F2D7;
     background-color: transparent;
     border: none;
-    /*font-size: 1em;*/
-    /*font-weight: bolder;*/
-    /*padding: 7px 18px;*/
 }
 
-.title-section button:hover{
+#editButton1, #editButton2:hover{
     color: #96F2D7;
     background-color: transparent;
     text-decoration : underline;
@@ -264,15 +295,7 @@ header a {
     background-color: transparent;
 }
 
-
-form input {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    background-color: #121212;
-    color: #FFFFFF;
-}
-
+/* 이메일 주소 수정 스타일 */
 .email-section{
     display: flex;
     justify-content: space-between;
@@ -280,22 +303,8 @@ form input {
     align-items: center;
 }
 
-.email-section button{
-    color: #96F2D7;
-    background-color: transparent;
-    border: none;
-    /*font-size: 1em;*/
-    /*font-weight: bolder;*/
-    /*padding: 7px 18px;*/
-}
 
-.email-section button:hover{
-    color: #96F2D7;
-    background-color: transparent;
-    text-decoration : underline;
-    cursor: pointer;
-}
-
+/* 회원탈퇴 스타일 */
 .delete-account-section{
     display: flex;
     gap: 30px;
@@ -309,6 +318,7 @@ form input {
     font-weight: bolder;
     padding: 7px 18px;
     border: none;
+    border-radius: 5px;
 }
 
 .delete-account-section button:hover{
