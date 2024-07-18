@@ -122,4 +122,9 @@ public class UserService {
         // 유저 삭제
         userRepository.delete(user);
     }
+
+    public User getUserByPostId(Long postId) {
+        Long userId = postRepository.findUserIdByPostId(postId);
+        return userRepository.findById(userId).orElse(null);
+    }
 }

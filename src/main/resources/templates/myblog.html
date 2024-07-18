@@ -26,11 +26,11 @@
                         </div>
                     </div>
 
-
-                    <div th:if="${!isBlogOwner && user != null}" class="follow-btn-container">
-                        <button id="followBtn" th:data-username="${blogOwner.username}">Follow</button>
+                    <div style="display: flex; justify-content: center; align-items: center">
+                        <div th:if="${!isBlogOwner && user != null}" class="follow-btn-container">
+                            <button id="followBtn" th:data-username="${blogOwner.username}">Follow</button>
+                        </div>
                     </div>
-
                     <section>
                         <nav>
                             <ul class="nav-tabs">

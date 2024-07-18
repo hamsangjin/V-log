@@ -95,3 +95,25 @@ function toggleReplies(commentId) {
         console.error('Replies not found for commentId: ' + commentId);
     }
 }
+
+function toggleEditForm(commentId) {
+    const commentContent = document.getElementById('comment-content-' + commentId);
+    const editForm = document.getElementById('comment-edit-form-' + commentId);
+    if (commentContent && editForm) {
+        commentContent.style.display = 'none';
+        editForm.style.display = 'block';
+    } else {
+        console.error('Edit form or comment content not found for commentId: ' + commentId);
+    }
+}
+
+function cancelEdit(commentId) {
+    const commentContent = document.getElementById('comment-content-' + commentId);
+    const editForm = document.getElementById('comment-edit-form-' + commentId);
+    if (commentContent && editForm) {
+        commentContent.style.display = 'block';
+        editForm.style.display = 'none';
+    } else {
+        console.error('Edit form or comment content not found for commentId: ' + commentId);
+    }
+}

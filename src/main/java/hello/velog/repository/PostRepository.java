@@ -9,6 +9,8 @@ import java.util.List;
 
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long> {
+    @Query("SELECT p.userId FROM Post p WHERE p.id = :postId")
+    Long findUserIdByPostId(@Param("postId") Long postId);
     List<Post> findByUserId(Long userId);
     List<Post> findByUserIdAndPrivacySettingAndTemporarySettingOrderByCreatedAtDesc(Long userId, boolean privacySetting, boolean temporarySetting);
     List<Post> findByUserIdAndTemporarySettingOrderByCreatedAtDesc(Long userId, boolean temporarySetting);

@@ -57,8 +57,8 @@ function toggleFollow(username) {
             })
                 .then(response => response.json())
                 .then(counts => {
-                    const followerCountElement = document.querySelector(".follow-info .follower-count");
-                    const followingCountElement = document.querySelector(".follow-info .following-count");
+                    const followerCountElement = document.querySelector(".follow-info span:nth-child(1)");
+                    const followingCountElement = document.querySelector(".follow-info span:nth-child(2)");
 
                     followerCountElement.textContent = `${counts.followerCount} 팔로워`;
                     followingCountElement.textContent = `${counts.followingCount} 팔로잉`;
