@@ -46,6 +46,15 @@ header a {
     text-align: right;
 }
 
+.right div a{
+    background-color: #F1F3F5;
+    color: #121212;
+    font-weight: bold;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 20px;
+}
+
 /* -- */
 /* 회원가입 폼을 위한 css 부분 */
 

@@ -46,6 +46,15 @@ header a {
     text-align: right;
 }
 
+.right div a{
+    background-color: #F1F3F5;
+    color: #121212;
+    font-weight: bold;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 20px;
+}
+
 .button{
     border: 1px solid #F1F3F5;
     border-radius: 20px;
