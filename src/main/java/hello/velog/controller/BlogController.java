@@ -150,6 +150,7 @@ public class BlogController {
 
         List<Series> seriesList = seriesService.findAllSeriesByBlogId(blog.getId());
         List<Map<String, Object>> seriesWithThumbnails = new ArrayList<>();
+        Map<Long, Integer> seriesPostCountMap = new HashMap<>();
         for (Series series : seriesList) {
             Post firstPost = seriesService.findFirstPostBySeriesId(series.getId());
             String thumbnailImage = firstPost != null ? firstPost.getThumbnailImage() : "/images/post/default-image.png";
@@ -158,14 +159,15 @@ public class BlogController {
             seriesMap.put("thumbnailImage", thumbnailImage);
             seriesWithThumbnails.add(seriesMap);
             if (user != null && user.getId().equals(blogOwner.getId())) {
-                model.addAttribute("seriesPostCount", seriesService.findPostBySeriesId(series.getId(), null).size());
+                seriesPostCountMap.put(series.getId(), seriesService.findPostBySeriesId(series.getId(), null).size());
             } else {
-                model.addAttribute("seriesPostCount", seriesService.findPostBySeriesId(series.getId(), false).size());
+                seriesPostCountMap.put(series.getId(), seriesService.findPostBySeriesId(series.getId(), false).size());
             }
         }
+
         addCommonAttributes(model, user, blogOwner, blog, "series");
         model.addAttribute("seriesList", seriesWithThumbnails);
-
+        model.addAttribute("seriesPostCountMap", seriesPostCountMap);
         return "myblog";
     }
 
