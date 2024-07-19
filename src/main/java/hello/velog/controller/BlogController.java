@@ -272,7 +272,7 @@ public class BlogController {
         if (!image.isEmpty()) {
             String imagePath = null;
             try {
-                imagePath = postService.handleThumbnailImageUpload(image);
+                imagePath = userService.handleProfileImageUpload(image);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

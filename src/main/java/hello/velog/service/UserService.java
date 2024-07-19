@@ -11,6 +11,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 @RequiredArgsConstructor
@@ -123,8 +127,26 @@ public class UserService {
         userRepository.delete(user);
     }
 
+    @Transactional(readOnly = true)
     public User getUserByPostId(Long postId) {
         Long userId = postRepository.findUserIdByPostId(postId);
         return userRepository.findById(userId).orElse(null);
+    }
+
+    @Transactional
+    public String handleProfileImageUpload(MultipartFile profileImage) throws IOException {
+        String profileImagePath = "/images/user/default-image.png";
+        if (!profileImage.isEmpty()) {
+            String uploadDir = "/Users/sangjin/Desktop/likelion/velog/src/main/resources/static/images/user/";
+            String uuid = UUID.randomUUID().toString();
+            String originalFilename = profileImage.getOriginalFilename();
+            String storedFilename = uuid + "_" + originalFilename;
+
+            File destFile = new File(uploadDir + storedFilename);
+            profileImage.transferTo(destFile);
+
+            profileImagePath = "/images/user/" + storedFilename;
+        }
+        return profileImagePath;
     }
 }
