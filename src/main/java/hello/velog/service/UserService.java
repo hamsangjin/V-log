@@ -100,31 +100,55 @@ public class UserService {
 
     @Transactional
     public void deleteUser(Long userId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + userId));
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("Invalid user Id:" + userId));
 
-        // post 삭제
+        deletePostsByUser(user);
+        deleteCommentsByUser(userId);
+        deleteLikesByUser(userId);
+        deleteFollowsByUser(userId);
+        deleteBlogsByUser(userId);
+
+        // 유저 삭제는 마지막에 수행
+        userRepository.delete(user);
+    }
+
+    @Transactional
+    public void deletePostsByUser(User user) {
         List<Post> byUserIdPost = postRepository.findByUserId(user.getId());
         for (Post post : byUserIdPost) {
             postService.deletePost(post.getId());
         }
+    }
 
-        // 댓글 삭제
+    @Transactional
+    public void deleteCommentsByUser(Long userId) {
         List<Comment> byUserIdComment = commentRepository.findByUserId(userId);
         for (Comment comment : byUserIdComment) {
             commentService.deleteComment(comment.getId());
         }
+    }
 
-        // 좋아요 삭제
+    @Transactional
+    public void deleteLikesByUser(Long userId) {
         likeRepository.deleteByUserId(userId);
+    }
 
-        // 팔로우 삭제
-        followRepository.deleteByFollowerId(userId);
+    @Transactional
+    public void deleteFollowsByUser(Long userId) {
+        List<Follow> follows = followRepository.findByFollowerId(userId);
+        for (Follow follow : follows) {
+            followRepository.delete(follow);
+        }
+        follows = followRepository.findByFolloweeId(userId); // Followee로 설정된 경우도 삭제
+        for (Follow follow : follows) {
+            followRepository.delete(follow);
+        }
+    }
 
-        // 블로그 삭제
+    @Transactional
+    public void deleteBlogsByUser(Long userId) {
         blogRepository.deleteByUserId(userId);
-
-        // 유저 삭제
-        userRepository.delete(user);
     }
 
     @Transactional(readOnly = true)
