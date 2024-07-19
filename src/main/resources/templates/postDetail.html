@@ -19,7 +19,7 @@
                         </div>
                         <div class="post-actions">
                             <div th:if="${user != null && user.id == blogOwner.id}">
-                                <button th:onclick="|window.location.href='@{/vlog/myblog/{username}(user.username)/stats/{postId}(postId=${post.id})}'|">통계</button>
+                                <button th:onclick="|window.location.href='@{/vlog/myblog/{username}(username=${user.username})/stats/{postId}(postId=${post.id})}'|">통계</button>
                                 <form th:action="@{/vlog/myblog/{username}/edit/{postId}(username=${user.username}, postId=${post.id})}" method="get" style="display: inline;">
                                     <button type="submit">수정</button>
                                 </form>
@@ -28,9 +28,7 @@
                                 </form>
                             </div>
                             <button id="likeBtn" th:if="${user != null}" th:data-post-id="${post.id}" th:onclick="'toggleLike(\'' + ${post.id} + '\');'">Like</button>
-                            <div th:if="${user != null && !(user.id == blogOwner.id)}">
-                                <button id="followBtn" th:data-username="${blogOwner.username}">Follow</button>
-                            </div>
+                            <button th:if="${user != null && !(user.id == blogOwner.id)}" id="followBtn" th:data-username="${blogOwner.username}">Follow</button>
                         </div>
                     </div>
                     <div class="tags-container">
