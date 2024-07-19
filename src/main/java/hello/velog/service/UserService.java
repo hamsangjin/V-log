@@ -35,7 +35,7 @@ public class UserService {
     @Transactional
     public User register(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        Blog blog = new Blog(user, user.getName());
+        Blog blog = new Blog(user, user.getName() + "의 블로그");
         user.setBlog(blog);
         User savedUser = userRepository.save(user);
 
