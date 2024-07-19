@@ -43,6 +43,11 @@ document.getElementById('tagsContainer').addEventListener('click', function() {
     document.getElementById('tagsInput').focus();
 });
 
+document.querySelectorAll('#tagsContainer .tag').forEach(function(tag) {
+    tag.addEventListener('click', function() {
+        tag.parentNode.removeChild(tag);
+    });
+});
 
 document.getElementById("createSeriesBtn").addEventListener("click", function() {
     let newSeries = document.getElementById("newSeries").value.trim();
