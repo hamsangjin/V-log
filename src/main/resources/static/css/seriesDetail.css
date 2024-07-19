@@ -185,16 +185,17 @@ header a {
 }
 /**/
 
-/* 태그, 좋아요*/
+.flex-center{
+    display: flex;
+    align-items: center;
+}
 
-/* 좋아요 수와 날짜 스타일 조정 */
 .like-count, .post-date, .comment-count{
     color: #ccc; /* 밝은 회색 */
     font-size: 0.9em;
     margin-right: 8px;
 }
 
-/* 태그 컨테이너 스타일 */
 .tags-container {
     display: flex;
     flex-wrap: wrap;

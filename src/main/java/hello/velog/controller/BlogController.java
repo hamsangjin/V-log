@@ -33,8 +33,6 @@ public class BlogController {
         Map<Long, String> postUserThumbnail = posts.stream()
                 .collect(Collectors.toMap(Post::getId, post -> postService.getProfileImageByUserId(post.getUserId())));
 
-        System.out.println(postUserThumbnail);
-
         model.addAttribute("user", user);
         model.addAttribute("posts", posts);
         model.addAttribute("postUsernames", postUsernames);
@@ -159,8 +157,12 @@ public class BlogController {
             seriesMap.put("series", series);
             seriesMap.put("thumbnailImage", thumbnailImage);
             seriesWithThumbnails.add(seriesMap);
+            if (user != null && user.getId().equals(blogOwner.getId())) {
+                model.addAttribute("seriesPostCount", seriesService.findPostBySeriesId(series.getId(), null).size());
+            } else {
+                model.addAttribute("seriesPostCount", seriesService.findPostBySeriesId(series.getId(), false).size());
+            }
         }
-
         addCommonAttributes(model, user, blogOwner, blog, "series");
         model.addAttribute("seriesList", seriesWithThumbnails);
 

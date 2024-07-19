@@ -105,7 +105,7 @@
                                         <p th:text="${seriesMap.series.title}">Series Title</p>
                                     </a>
                                     <div class="series-info">
-                                        <p th:text="${seriesMap.series.posts.size()} + '개의 포스트'">Post Count</p>
+                                        <p th:text="${seriesPostCount} + '개의 포스트'">Post Count</p>
                                         <p>·</p>
                                         <p class="light-font" th:text="'마지막 업데이트 ' + ${#temporals.format(seriesMap.series.lastUpdated, 'yyyy년 MM월 dd일')}">Last Updated</p>
                                     </div>

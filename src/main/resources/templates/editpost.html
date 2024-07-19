@@ -30,7 +30,12 @@
             <label for="series">시리즈 선택</label>
             <select id="series" name="seriesId">
                 <option value="">시리즈를 선택하세요</option>
-                <option th:each="series : ${seriesList}" th:value="${series.id}" th:text="${series.title}" th:selected="${series.id} == ${post.series.id}"></option>
+                <div th:if="${post.series != null}">
+                    <option th:each="series : ${seriesList}" th:value="${series.id}" th:text="${series.title}" th:selected="${series.id} == ${post.series.id}"></option>
+                </div>
+                <div th:if="${post.series == null}">
+                    <option th:each="series : ${seriesList}" th:value="${series.id}" th:text="${series.title}"></option>
+                </div>
             </select>
             <input type="text" id="newSeries" name="newSeries" placeholder="새 시리즈명 입력">
             <button type="button" id="createSeriesBtn">시리즈 생성</button>

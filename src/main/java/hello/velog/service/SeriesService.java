@@ -64,10 +64,14 @@ public class SeriesService {
 
     @Transactional(readOnly = true)
     public Post findFirstPostBySeriesId(Long seriesId) {
-        List<Post> posts = seriesRepository.findFirstPostBySeriesId(seriesId);
+        List<Post> posts = seriesRepository.findFirstPostBySeriesId(seriesId, null);
         return posts.isEmpty() ? null : posts.get(0);
     }
 
+    @Transactional(readOnly = true)
+    public List<Post> findPostBySeriesId(Long seriesId, Boolean privacySetting){
+        return seriesRepository.findFirstPostBySeriesId(seriesId, privacySetting);
+    }
 
     @Transactional(readOnly = true)
     public List<Map<String, Object>> findAllSeriesWithThumbnailByBlogId(Long blogId) {
