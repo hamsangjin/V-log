@@ -3,11 +3,14 @@ document.addEventListener("DOMContentLoaded", function() {
     const introFormContainer = document.querySelector(".intro-form-container");
     const introText = document.querySelector(".intro-text");
     const noIntro = document.querySelector(".no-intro");
+    const yesIntro = document.querySelector(".yes-intro");
+
     const followBtn = document.getElementById("followBtn");
 
     editIntroBtns.forEach(function(editIntroBtn) {
         editIntroBtn.addEventListener("click", function() {
             introFormContainer.style.display = "block";
+            if (yesIntro) yesIntro.style.display = "none";
             if (introText) introText.style.display = "none";
             if (noIntro) noIntro.style.display = "none";
             editIntroBtn.style.display = "none";
