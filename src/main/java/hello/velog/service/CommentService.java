@@ -23,16 +23,16 @@ public class CommentService {
         return commentRepository.save(comment);
     }
 
-    // 댓글 작성자가 아닌데 삭제하려고 하는 경우
+    // 댓글 작성자인지 확인
     @Transactional(readOnly = true)
-    public void isCommentOwner(Long userId, Long OwnerId) {
-        if(userId.equals(OwnerId))    throw new NotCommentOwnerException("댓글 작성자가 아닙니다.");
+    public boolean isCommentOwner(Long userId, Long OwnerId) {
+        return userId.equals(OwnerId);
     }
 
-    // 게시글 작성자가 아닌데 삭제하려고 하는 경우
+    // 게시글 작성자인지 확인
     @Transactional(readOnly = true)
-    public void isPostOwner(Long userId, Long OwnerId) {
-        if(userId.equals(OwnerId))    throw new NotPostOwnerException("게시글 작성자가 아닙니다.");
+    public boolean isPostOwner(Long userId, Long OwnerId) {
+        return userId.equals(OwnerId);
     }
 
     // 댓글 삭제

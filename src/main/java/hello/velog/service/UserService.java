@@ -11,9 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.*;
 import java.util.*;
 
 @RequiredArgsConstructor
@@ -121,5 +119,14 @@ public class UserService {
     public User getUserByPostId(Long postId) {
         Long userId = postRepository.findUserIdByPostId(postId);
         return userRepository.findById(userId).orElse(null);
+    }
+
+    @Transactional(readOnly = true)
+    public Blog findBlogByUsername(String username) {
+        // 해당 username을 가진 유저 조회
+        User user = findByUsername(username);
+
+        // 유저가 존재할 경우 블로그 조회
+        return blogService.findBlogByUserId(user.getId());
     }
 }

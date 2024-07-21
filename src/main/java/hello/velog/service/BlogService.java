@@ -12,21 +12,10 @@ import org.springframework.transaction.annotation.Transactional;
 public class BlogService {
     private final BlogRepository blogRepository;
     private final SeriesService seriesService;
-    private final UserService userService;
 
     @Transactional(readOnly = true)
     public Blog findBlogByUserId(Long userId) {
         return blogRepository.findById(userId)
-                .orElseThrow(() -> new BlogNotFoundException("블로그를 찾을 수 없습니다."));
-    }
-
-    @Transactional(readOnly = true)
-    public Blog findBlogByUsername(String username) {
-        // 해당 username을 가진 유저 조회
-        User user = userService.findByUsername(username);
-
-        // 유저가 존재할 경우 블로그 조회
-        return blogRepository.findById(user.getId())
                 .orElseThrow(() -> new BlogNotFoundException("블로그를 찾을 수 없습니다."));
     }
 

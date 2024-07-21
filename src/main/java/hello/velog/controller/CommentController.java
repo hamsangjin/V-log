@@ -39,10 +39,10 @@ public class CommentController {
         User blogOwner = userService.getUserByPostId(comment.getPost().getId());
 
         // 댓글 삭제 권한 확인
-        commentService.isCommentOwner(user.getId(), comment.getUser().getId());
-        commentService.isPostOwner(user.getId(), comment.getPost().getId());
+        boolean isCommentOwner = commentService.isCommentOwner(user.getId(), comment.getUser().getId());
+        boolean isPostOwner = commentService.isPostOwner(user.getId(), comment.getPost().getId());
 
-        commentService.deleteComment(commentId);
+        if(isCommentOwner || isPostOwner) commentService.deleteComment(commentId);
 
         return "redirect:/vlog/myblog/@" + blogOwner.getUsername() + "/" + postId;
     }

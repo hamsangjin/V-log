@@ -26,7 +26,6 @@ public class BlogController {
     private final LikeService likeService;
 
     // home에 관한 코드 시작
-
     private void addHomeModelAttributes(Model model, User user, List<Post> posts, String activeTab) {
         Map<Long, String> postUsernames = posts.stream()
                 .collect(Collectors.toMap(Post::getId, post -> postService.getUsernameByUserId(post.getUserId())));
@@ -209,7 +208,7 @@ public class BlogController {
     @GetMapping("/myblog/@{username}/about")
     public String getBlogAbout(@PathVariable String username, Model model) {
         User user = userService.getCurrentUser();
-        Blog blog = blogService.findBlogByUsername(username);
+        Blog blog = userService.findBlogByUsername(username);
         User blogOwner = userService.findByUsername(username);
 
         addMyblogModelAttributes(model, user, blogOwner, blog, "about");
@@ -226,7 +225,7 @@ public class BlogController {
 
         if (!isBlogOwner)   return "redirect:/vlog/myblog/@" + username + "/about";
 
-        Blog blog = blogService.findBlogByUsername(username);
+        Blog blog = userService.findBlogByUsername(username);
         blog.setIntro(intro);
         blogService.saveBlog(blog);
         return "redirect:/vlog/myblog/@" + username + "/about";

@@ -95,15 +95,6 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
     }
 
-    @ExceptionHandler(NotCommentOwnerException.class)
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public ResponseEntity<Map<String, Object>> handleNotCommentOwner(NotCommentOwnerException ex) {
-        Map<String, Object> response = new HashMap<>();
-        response.put("success", false);
-        response.put("message", ex.getMessage());
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
-    }
-
     // ----------------------------------------------------------------
 
     // BAD_REQUEST 처리
