@@ -13,8 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
 @RequiredArgsConstructor
@@ -31,9 +30,7 @@ public class UserService {
     private final CommentService commentService;
     private final LikeService likeService;
     private final FollowService followService;
-    private final SeriesService seriesService;
     private final BlogService blogService;
-
 
     // 회원가입 관련
     @Transactional
@@ -76,13 +73,6 @@ public class UserService {
         return userRepository.findByEmail(email).isPresent();
     }
 
-
-    // 로그인 관련 로직
-    @Transactional(readOnly = true)
-    public User findById(Long id) {
-        return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("사용자를 찾을 수 없습니다."));
-    }
-
     @Transactional(readOnly = true)
     public User findByUsername(String username) {
         return userRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException("사용자를 찾을 수 없습니다."));
@@ -98,57 +88,33 @@ public class UserService {
         return null;
     }
 
-    // 유저 프로필 이미지 변경
     @Transactional
-    public String handleProfileImageUpload(MultipartFile profileImage){
-        String profileImagePath = "/images/user/default-image.png";
-        if (!profileImage.isEmpty()) {
-            String uploadDir = "/Users/sangjin/Desktop/likelion/velog/src/main/resources/static/images/user/";
-            String uuid = UUID.randomUUID().toString();
-            String originalFilename = profileImage.getOriginalFilename();
-            String storedFilename = uuid + "_" + originalFilename;
+    public void updateName(User user, String newName) {
+        if (newName != null && !newName.trim().isEmpty())       user.setName(newName);
 
-            File destFile = new File(uploadDir + storedFilename);
-            try {
-                profileImage.transferTo(destFile);
-            } catch (IOException e) {
-                throw new ImageUploadException("이미지 업로드 중 오류가 발생했습니다.");
-            }
+        userRepository.save(user);
+    }
 
-            profileImagePath = "/images/user/" + storedFilename;
-        }
-        return profileImagePath;
+    @Transactional
+    public void updateEmail(User user, String newEmail) {
+        if (newEmail != null && !newEmail.trim().isEmpty() && !isEmailTaken(newEmail))      user.setEmail(newEmail);
+
+        userRepository.save(user);
     }
 
     // 회원 탈퇴 로직
     @Transactional
     public void deleteUser(Long userId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException("Invalid user Id:" + userId));
+                .orElseThrow(() -> new UserNotFoundException("사용자를 찾을 수 없습니다."));
 
-        // 게시물 삭제 시 게시물과 연결된 댓글, 좋아요, 태그 삭제됨
-        postService.deletePostsByUser(user);
-        // 본인이 작성하지 않은 게시물의 댓글 및 답글 삭제
-        commentService.deleteCommentsByUser(userId);
-        // 본인이 작성하지 않은 게시물의 좋아요 삭제
-        likeService.deleteLikesByUser(userId);
-        // 본인을 팔로우하거나 본인이 팔로우한 정보 삭제
-        followService.deleteFollowsByUser(userId);
-        // 유저와 연결된 블로그 및 팔로우 삭제
-        blogService.deleteBlogsAndSeriesByUser(userId);
-        // 유저 삭제
-        userRepository.delete(user);
+        postService.deletePostsByUser(user);                // 게시물 삭제 시 게시물과 연결된 댓글, 좋아요, 태그 삭제됨
+        commentService.deleteCommentsByUser(userId);        // 본인이 작성하지 않은 게시물의 댓글 및 답글 삭제
+        likeService.deleteLikesByUser(userId);              // 본인이 작성하지 않은 게시물의 좋아요 삭제
+        followService.deleteFollowsByUser(userId);          // 본인을 팔로우하거나 본인이 팔로우한 정보 삭제
+        blogService.deleteBlogsAndSeriesByUser(userId);     // 유저와 연결된 블로그 및 팔로우 삭제
+        userRepository.delete(user);                        // 유저 삭제
     }
-
-
-
-
-
-
-
-
-
-
 
     // 게시물 작성자 정보 리턴
     @Transactional(readOnly = true)

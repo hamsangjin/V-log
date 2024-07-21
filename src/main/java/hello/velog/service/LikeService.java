@@ -13,6 +13,11 @@ import java.util.List;
 public class LikeService {
     private final LikeRepository likeRepository;
 
+    @Transactional(readOnly = true)
+    public List<Post> getLikedPosts(Long userId) {
+        return likeRepository.findLikedPostsByUserId(userId);
+    }
+
     @Transactional
     public boolean toggleLike(Long postId, User user) {
         Like like = likeRepository.findByPostIdAndUserId(postId, user.getId());

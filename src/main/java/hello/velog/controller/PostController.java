@@ -8,7 +8,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import java.io.IOException;
 
 @Controller
 @RequestMapping("/vlog")
@@ -42,14 +41,8 @@ public class PostController {
             RedirectAttributes redirectAttributes) {
 
         User user = userService.getCurrentUser();
-
-        try {
-            postService.createNewPost(user, title, content, thumbnailImageFile, thumbnailText, seriesId, newSeries, tagsString, privacySetting, temporarySetting);
-            redirectAttributes.addFlashAttribute("message", "글이 성공적으로 작성되었습니다.");
-        } catch (IOException e) {
-            redirectAttributes.addFlashAttribute("errorMSG", "썸네일 이미지 업로드 중 오류가 발생했습니다.");
-            return "redirect:/vlog/newpost";
-        }
+        postService.createNewPost(user, title, content, thumbnailImageFile, thumbnailText, seriesId, newSeries, tagsString, privacySetting, temporarySetting);
+        redirectAttributes.addFlashAttribute("message", "글이 성공적으로 작성되었습니다.");
 
         return "redirect:/vlog/myblog/@" + user.getUsername();
     }
@@ -66,9 +59,8 @@ public class PostController {
         User user = userService.getCurrentUser();
         Post post = postService.getPostById(postId);
 
-        if (!user.getUsername().equals(username) || !post.getUserId().equals(user.getId())) {
-            return "redirect:/vlog/myblog/@" + username;
-        }
+        // 게시글 작성자인지 확인
+        postService.checkPostOwner(user, username, post);
 
         model.addAttribute("user", user);
         model.addAttribute("post", post);
@@ -92,13 +84,8 @@ public class PostController {
             RedirectAttributes redirectAttributes) {
 
         User user = userService.getCurrentUser();
-        try {
-            postService.updatePost(user, postId, title, content, thumbnailImageFile, thumbnailText, seriesId, newSeries, tagsString, privacySetting, temporarySetting);
-            redirectAttributes.addFlashAttribute("message", "글이 성공적으로 수정되었습니다.");
-        } catch (IOException e) {
-            redirectAttributes.addFlashAttribute("errorMSG", "썸네일 이미지 업로드 중 오류가 발생했습니다.");
-            return "redirect:/vlog/myblog/" + username + "/edit/" + postId;
-        }
+        postService.updatePost(user, postId, title, content, thumbnailImageFile, thumbnailText, seriesId, newSeries, tagsString, privacySetting, temporarySetting);
+        redirectAttributes.addFlashAttribute("message", "글이 성공적으로 수정되었습니다.");
 
         return "redirect:/vlog/myblog/@" + username;
     }

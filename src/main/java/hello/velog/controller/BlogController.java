@@ -22,6 +22,8 @@ public class BlogController {
     private final SeriesService seriesService;
     private final MarkdownService markdownService;
     private final FollowService followService;
+    private final ThumbnailService thumbnailService;
+    private final LikeService likeService;
 
     // home에 관한 코드 시작
 
@@ -267,7 +269,7 @@ public class BlogController {
     public String liked(Model model) {
         User user = userService.getCurrentUser();
 
-        List<Post> likedPosts = postService.getLikedPosts(user.getId());
+        List<Post> likedPosts = likeService.getLikedPosts(user.getId());
         Map<Long, String> postUsernames = likedPosts.stream()
                 .collect(Collectors.toMap(Post::getId, post -> postService.getUsernameByUserId(post.getUserId())));
 
@@ -295,8 +297,7 @@ public class BlogController {
     @PostMapping("/uploadImage")
     public String uploadImage(@RequestParam("image") MultipartFile image) {
         User user = userService.getCurrentUser();
-
-        String imagePath = userService.handleProfileImageUpload(image);
+        String imagePath = thumbnailService.uploadThumbnail(image, "USER");
         user.setProfileImage(imagePath);
         userService.saveUser(user);
 
@@ -307,7 +308,6 @@ public class BlogController {
     @PostMapping("/removeImage")
     public String removeImage() {
         User user = userService.getCurrentUser();
-
         user.setProfileImage("/images/user/default-image.png");
         userService.saveUser(user);
 
@@ -318,13 +318,9 @@ public class BlogController {
     @PostMapping("/updateNameInfo")
     public String updateNameInfo(@RequestParam("name") String name, @RequestParam("info") String info) {
         User user = userService.getCurrentUser();
-        if (name != null && !name.trim().isEmpty()) {
-            user.setName(name);
-        }
+        userService.updateName(user, name);
+        blogService.updateInfo(user.getBlog(), info);
 
-        user.getBlog().setInfo(info);
-        userService.saveUser(user);
-        blogService.saveBlog(user.getBlog());
         return "redirect:/vlog/settings";
     }
 
@@ -332,10 +328,8 @@ public class BlogController {
     @PostMapping("/updateTitle")
     public String updateTitle(@RequestParam("title") String title) {
         User user = userService.getCurrentUser();
-        if (title != null && !title.trim().isEmpty()) {
-            user.getBlog().setTitle(title);
-            blogService.saveBlog(user.getBlog());
-        }
+        blogService.updateTitle(user.getBlog(), title);
+
         return "redirect:/vlog/settings";
     }
 
@@ -343,10 +337,8 @@ public class BlogController {
     @PostMapping("/updateEmail")
     public String updateEmail(@RequestParam("email") String email) {
         User user = userService.getCurrentUser();
-        if (email != null && !email.trim().isEmpty() && !userService.isEmailTaken(email)) {
-            user.setEmail(email);
-            userService.saveUser(user);
-        }
+        userService.updateEmail(user, email);
+
         return "redirect:/vlog/settings";
     }
 
@@ -355,6 +347,7 @@ public class BlogController {
     public String deleteUser() {
         User user = userService.getCurrentUser();
         userService.deleteUser(user.getId());
+
         return "redirect:/vlog/logout";
     }
 }

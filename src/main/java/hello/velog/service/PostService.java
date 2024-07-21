@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.*;
 import java.util.*;
 
 @Service
@@ -26,7 +25,11 @@ public class PostService {
     private final PostTagService postTagService;
     private final ThumbnailService thumbnailService;
 
-    private void preparePost(Post post, User user, String title, String content, String thumbnailText, boolean privacySetting, boolean temporarySetting, MultipartFile thumbnailImageFile, Long seriesId, String newSeries, String tagsString) throws IOException {
+    private void preparePost(Post post, User user,
+                             String title, String content, String thumbnailText,
+                             boolean privacySetting, boolean temporarySetting,
+                             MultipartFile thumbnailImageFile, Long seriesId,
+                             String newSeries, String tagsString){
         post.setTitle(title);
         post.setContent(content);
         post.setThumbnailText(thumbnailText);
@@ -41,22 +44,29 @@ public class PostService {
         post.setTags(tags);
 
         if (!thumbnailImageFile.isEmpty()) {
-            String thumbnailImagePath = thumbnailService.uploadThumbnail(thumbnailImageFile);
+            String thumbnailImagePath = thumbnailService.uploadThumbnail(thumbnailImageFile, "POST");
             post.setThumbnailImage(thumbnailImagePath);
         }
     }
 
     // 게시물 작성
     @Transactional
-    public void createNewPost(User user, String title, String content, MultipartFile thumbnailImageFile, String thumbnailText, Long seriesId, String newSeries, String tagsString, boolean privacySetting, boolean temporarySetting) throws IOException {
+    public void createNewPost(User user, String title, String content, MultipartFile thumbnailImageFile, String thumbnailText, Long seriesId, String newSeries, String tagsString, boolean privacySetting, boolean temporarySetting){
         Post post = new Post();
         preparePost(post, user, title, content, thumbnailText, privacySetting, temporarySetting, thumbnailImageFile, seriesId, newSeries, tagsString);
         postRepository.save(post);
     }
 
+    @Transactional(readOnly = true)
+    public void checkPostOwner(User user, String username, Post post){
+        if (!user.getUsername().equals(username) || !post.getUserId().equals(user.getId())) {
+            throw new NotPostOwnerException("개시물 작성자가 아닙니다.");
+        }
+    }
+
     // 게시물 수정
     @Transactional
-    public void updatePost(User user, Long postId, String title, String content, MultipartFile thumbnailImageFile, String thumbnailText, Long seriesId, String newSeries, String tagsString, boolean privacySetting, boolean temporarySetting) throws IOException {
+    public void updatePost(User user, Long postId, String title, String content, MultipartFile thumbnailImageFile, String thumbnailText, Long seriesId, String newSeries, String tagsString, boolean privacySetting, boolean temporarySetting){
         Post post = getPostById(postId);
         preparePost(post, user, title, content, thumbnailText, privacySetting, temporarySetting, thumbnailImageFile, seriesId, newSeries, tagsString);
         postRepository.save(post);
@@ -119,11 +129,6 @@ public class PostService {
         likeService.deleteByPostId(postId);                             // likes 삭제
         postTagService.deletePostTagsAndCleanupTagsByPostId(postId);    // postTags 삭제 및 tag 정리
         postRepository.delete(post);                                    // post 삭제
-    }
-
-    @Transactional(readOnly = true)
-    public List<Post> getLikedPosts(Long userId) {
-        return likeRepository.findLikedPostsByUserId(userId);
     }
 
     @Transactional(readOnly = true)

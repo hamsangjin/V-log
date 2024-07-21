@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/vlog")
 @RequiredArgsConstructor
-public class LikeController {
+public class LikeRestController {
 
     private final LikeService likeService;
     private final UserService userService;

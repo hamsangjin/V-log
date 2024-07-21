@@ -33,7 +33,6 @@ public class FollowService {
         return followRepository.findByFollowerAndFollowee(follower, followee).isPresent();
     }
 
-
     // 유저의 팔로워 수 조회
     @Transactional(readOnly = true)
     public int getFollowerCount(Long userId) {
