@@ -33,11 +33,14 @@ public class FollowService {
         return followRepository.findByFollowerAndFollowee(follower, followee).isPresent();
     }
 
+
+    // 유저의 팔로워 수 조회
     @Transactional(readOnly = true)
     public int getFollowerCount(Long userId) {
         return followRepository.countFollowersByUserId(userId);
     }
 
+    // 유저의 팔로우 수 조회
     @Transactional(readOnly = true)
     public int getFollowingCount(Long userId) {
         return followRepository.countFollowingByUserId(userId);
@@ -46,5 +49,22 @@ public class FollowService {
     @Transactional(readOnly = true)
     public List<Follow> findByFollower(User follower) {
         return followRepository.findByFollower(follower);
+    }
+
+    // 탈퇴할 유저의 팔로워 및 팔로우 삭제
+    @Transactional
+    public void deleteFollowsByUser(Long userId) {
+        List<Follow> follows = followRepository.findByFollowerId(userId);
+
+        // 유저가 팔로우한 정보 삭제
+        for (Follow follow : follows) {
+            followRepository.delete(follow);
+        }
+
+        // 유저를 팔로우한 정보 삭제
+        follows = followRepository.findByFolloweeId(userId);
+        for (Follow follow : follows) {
+            followRepository.delete(follow);
+        }
     }
 }

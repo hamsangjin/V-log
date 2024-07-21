@@ -76,3 +76,57 @@ document.getElementById("createSeriesBtn").addEventListener("click", function() 
             });
     }
 });
+
+
+// let simplemde = new SimpleMDE({ element: document.getElementById("editor") });
+//
+// function updatePreview() {
+//     var previewContent = simplemde.options.previewRender(simplemde.value());
+//     document.getElementById("preview").innerHTML = previewContent;
+// }
+//
+// simplemde.codemirror.on("change", updatePreview);
+// window.onload = updatePreview;
+//
+// document.getElementById("submitBtn").addEventListener("click", function() {
+//     document.getElementById("content").value = simplemde.value();
+//
+//     // 태그 캡처
+//     let tagElements = document.querySelectorAll('#tagsContainer .tag');
+//     let tags = Array.from(tagElements).map(tag => tag.textContent).join(',');
+//     let tagsInputHidden = document.createElement('input');
+//     tagsInputHidden.type = 'hidden';
+//     tagsInputHidden.name = 'tags';
+//     tagsInputHidden.value = tags;
+//     document.getElementById("postForm").appendChild(tagsInputHidden);
+//
+//     document.getElementById("postForm").submit();
+// });
+//
+// document.getElementById('tagsInput').addEventListener('keydown', function(event) {
+//     let key = event.key;
+//     let input = document.getElementById('tagsInput');
+//     let container = document.getElementById('tagsContainer');
+//
+//     function createTagElement(text) {
+//         let span = document.createElement('span');
+//         span.className = 'tag';
+//         span.textContent = text;
+//         span.onclick = function() { container.removeChild(span); };
+//         return span;
+//     }
+//
+//     if (key === ',' || key === 'Enter') {
+//         event.preventDefault();
+//         let tagText = input.value.trim().replace(/,/, '');
+//         if (tagText !== "") {
+//             let tagElement = createTagElement(tagText);
+//             container.insertBefore(tagElement, input);
+//             input.value = '';
+//         }
+//     }
+// });
+//
+// document.getElementById('tagsContainer').addEventListener('click', function() {
+//     document.getElementById('tagsInput').focus();
+// });

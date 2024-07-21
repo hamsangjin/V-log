@@ -17,6 +17,7 @@ public class CommentController {
     @PostMapping("/comments")
     public String addComment(@RequestParam Long postId, @RequestParam String content, @RequestParam(required = false) Long parentId) {
         User user = userService.getCurrentUser();
+
         Post post = postService.getPostById(postId);
 
         Comment parentComment = parentId != null ? commentService.getCommentById(parentId) : null;

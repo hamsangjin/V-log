@@ -69,8 +69,9 @@ public class SeriesService {
     }
 
     @Transactional(readOnly = true)
-    public List<Post> findPostBySeriesId(Long seriesId, Boolean privacySetting){
-        return seriesRepository.findFirstPostBySeriesId(seriesId, privacySetting);
+    public List<Post> findPostBySeriesId(Long seriesId, Boolean isBlogOwner){
+        if(isBlogOwner) return seriesRepository.findFirstPostBySeriesId(seriesId, null);
+        else            return seriesRepository.findFirstPostBySeriesId(seriesId, false);
     }
 
     @Transactional(readOnly = true)
@@ -87,5 +88,14 @@ public class SeriesService {
 
             return seriesMap;
         }).collect(Collectors.toList());
+    }
+
+    // 삭제할 유저의 블로그에 달린 시리즈 삭제
+    @Transactional
+    public void deleteSeries(Long blogId) {
+        List<Series> byBlogId = seriesRepository.findByBlogId(blogId);
+        for (Series series : byBlogId) {
+            seriesRepository.delete(series);
+        }
     }
 }

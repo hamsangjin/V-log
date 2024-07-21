@@ -7,11 +7,13 @@
     </head>
     <body>
         <div class="container">
-            <div th:replace="~{fragments/header1 :: header1}"></div>
+            <div th:replace="~{fragments/header2 :: header2}"></div>
             <div class="series-container">
                 <div class="main-container">
                     <section>
-                        <h3 style="color: #63e6be; font-weight: bold; text-decoration: underline"> 시리즈 </h3>
+                        <a th:href="@{'/vlog/myblog/@' + ${blogOwner.username} + '/series'}">
+                            <h3> 시리즈 </h3>
+                        </a>
                         <div class="series-info">
                             <h1 th:text="${title}">Series Title</h1>
                         </div>

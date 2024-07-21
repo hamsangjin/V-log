@@ -44,4 +44,9 @@ public class TagService {
         Collections.reverse(tagSet);
         return tagSet;
     }
+
+    @Transactional(readOnly = true)
+    public List<Tag> getTagsByPostId(Long postId) {
+        return tagRepository.findByPostsId(postId);
+    }
 }

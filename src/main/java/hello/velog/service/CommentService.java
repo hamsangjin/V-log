@@ -36,6 +36,20 @@ public class CommentService {
         commentRepository.delete(comment);
     }
 
+    // 탈퇴할 유저의 댓글 삭제
+    @Transactional
+    public void deleteCommentsByUser(Long userId) {
+        List<Comment> byUserIdComment = commentRepository.findByUserId(userId);
+        for (Comment comment : byUserIdComment) {
+            deleteComment(comment.getId());
+        }
+    }
+
+    @Transactional
+    public void deleteByPostId(Long postId) {
+        commentRepository.deleteByPostId(postId);
+    }
+
     @Transactional(readOnly = true)
     public Comment getCommentById(Long commentId) {
         return commentRepository.findById(commentId).orElseThrow(() -> new RuntimeException("Comment not found"));

@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class BlogService {
     private final BlogRepository blogRepository;
     private final UserRepository userRepository;
+    private final SeriesService seriesService;
 
     @Transactional(readOnly = true)
     public Blog findBlogByUserId(Long userId) {
@@ -38,5 +39,18 @@ public class BlogService {
     @Transactional
     public Blog saveBlog(Blog blog) {
         return blogRepository.save(blog);
+    }
+
+    // 탈퇴할 유저의 블로그 삭제
+    @Transactional
+    public void deleteBlogsAndSeriesByUser(Long userId) {
+
+        // userId와 연결된 블로그 정보 조회
+        Blog findBlog = blogRepository.findByUserId(userId);
+        // 해당 블로그와 연결된 시리즈 삭제
+        seriesService.deleteSeries(findBlog.getId());
+
+        // 유저와 연결된 블로그 삭제
+        blogRepository.deleteByUserId(userId);
     }
 }

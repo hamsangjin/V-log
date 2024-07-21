@@ -41,6 +41,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
             "GROUP BY t.id, t.name")
     List<TagCount> findTagsWithCountByUserId(@Param("userId") Long userId, @Param("isBlogOwner") boolean isBlogOwner);
 
-    @Query("SELECT p FROM Post p JOIN p.series s WHERE s.blog.id = :blogId AND s.title = :title AND p.privacySetting = false AND p.temporarySetting = false")
-    List<Post> findPostsByBlogIdAndSeriesTitle(@Param("blogId") Long blogId, @Param("title") String title);
+    @Query("SELECT p FROM Post p JOIN p.series s WHERE s.blog.id = :blogId AND s.title = :title AND (:privacySetting IS NULL OR p.privacySetting = :privacySetting) AND p.temporarySetting = false")
+    List<Post> findPostsByBlogIdAndSeriesTitle(@Param("blogId") Long blogId, @Param("title") String title, @Param("privacySetting") Boolean privacySetting);
 }
