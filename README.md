@@ -15,7 +15,7 @@ Spring Boot를 이용한 웹 애플리케이션 개발 프로젝트로, <a href=
 
 ## 개요
 - 프로젝트 이름: V-log
-- 프로젝트 지속기간: 2024. 06. 18 ~
+- 프로젝트 지속기간: 2024. 06. 18 ~ 2024. 07. 19
 - 개인 프로젝트
 
 <br>
@@ -111,5 +111,9 @@ Spring Boot를 이용한 웹 애플리케이션 개발 프로젝트로, <a href=
 
 <br>
 
-## 화면 구성
-~ing
+## 시연 영상
+아래 그림을 클릭하면 유튜브로 연결됩니다.
+
+<a href="https://youtu.be/s40xUHc08TI"> 
+  <img width="1498" alt="velog 클론 코딩 썸네일" src="https://github.com/user-attachments/assets/b0175278-7ab5-4fa3-8141-78e9c9685606">
+</a>
