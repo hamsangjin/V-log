@@ -9,17 +9,12 @@ import java.util.*;
 @Repository
 public interface FollowRepository extends JpaRepository<Follow, Long> {
     Optional<Follow> findByFollowerAndFollowee(User follower, User followee);
-
-    @Query("SELECT COUNT(f) FROM Follow f WHERE f.followee.id = :userId")
-    int countFollowersByUserId(@Param("userId") Long userId);
-
-    @Query("SELECT COUNT(f) FROM Follow f WHERE f.follower.id = :userId")
-    int countFollowingByUserId(@Param("userId") Long userId);
-
     List<Follow> findByFollower(User follower);
-
     List<Follow> findByFollowerId(Long followerId);
     List<Follow> findByFolloweeId(Long followerId);
 
-    void deleteByFollowerId(Long followerId);
+    @Query("SELECT COUNT(f) FROM Follow f WHERE f.followee.id = :userId")
+    int countFollowersByUserId(@Param("userId") Long userId);
+    @Query("SELECT COUNT(f) FROM Follow f WHERE f.follower.id = :userId")
+    int countFollowingByUserId(@Param("userId") Long userId);
 }

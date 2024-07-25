@@ -10,6 +10,4 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByUsername(String username);
     Optional<User> findByEmail(String email);
     Optional<User> findById(Long id);
-    long countByFollowers_Id(Long userId); // 팔로워 수
-    long countByFollowing_Id(Long userId); // 팔로잉 수
 }

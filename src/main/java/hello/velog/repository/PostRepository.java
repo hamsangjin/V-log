@@ -15,22 +15,18 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     List<Post> findByUserIdAndPrivacySettingAndTemporarySettingOrderByCreatedAtDesc(Long userId, boolean privacySetting, boolean temporarySetting);
     List<Post> findByUserIdAndTemporarySettingOrderByCreatedAtDesc(Long userId, boolean temporarySetting);
     Post findFirstBySeriesOrderByCreatedAtAsc(Series series);
-    List<Post> findByUserIdIn(List<Long> userIds);
+
     @Query("SELECT p FROM Post p WHERE p.privacySetting = false AND p.temporarySetting = false ORDER BY size(p.likes) DESC")
     List<Post> findAllByOrderByLikesDesc();
-
     @Query("SELECT p FROM Post p WHERE p.privacySetting = false AND p.temporarySetting = false ORDER BY p.createdAt DESC")
     List<Post> findAllByOrderByCreatedAtDesc();
-
     @Query("SELECT p FROM Post p WHERE p.userId IN :userIds AND p.privacySetting = false AND p.temporarySetting = false ORDER BY p.createdAt DESC")
     List<Post> findByUserIdInAndOrderByCreatedAtDesc(List<Long> userIds);
 
     @Query("SELECT p FROM Post p JOIN p.tags t WHERE p.userId = :userId AND t.name = :tagName AND (:privacySetting IS NULL OR p.privacySetting = :privacySetting) AND (:temporarySetting IS NULL OR p.temporarySetting = :temporarySetting)")
     List<Post> findByUserIdAndTagName(@Param("userId") Long userId, @Param("tagName") String tagName, @Param("privacySetting") Boolean privacySetting, @Param("temporarySetting") Boolean temporarySetting);
-
     @Query("SELECT DISTINCT t.name FROM Post p JOIN p.tags t WHERE p.userId = :userId")
     List<String> findTagsByUserId(@Param("userId") Long userId);
-
     @Query("SELECT new hello.velog.dto.TagCount(t.id, t.name, COUNT(pt)) " +
             "FROM PostTag pt " +
             "JOIN pt.tag t " +

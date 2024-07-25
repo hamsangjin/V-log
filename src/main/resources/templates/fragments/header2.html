@@ -1,41 +1,41 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-    <head>
-        <meta charset="UTF-8">
-        <title>Fragment Header</title>
-    </head>
-    <body>
-        <div th:fragment="header2">
-            <header>
-                <div class="left">
-                    <a th:href="@{/vlog}" style="align-items: center">
-                        <img src="/images/logo2.png" alt="No Posts" />
-                    </a>
-                    <a th:href="@{'/vlog/myblog/@' + ${blogOwner.username}}">
-                        <h2 th:text="${blog.title}">User's Blog</h2>
-                    </a>
-                </div>
-                <div class="right">
-                    <div th:if="${user == null}">
-                        <a class="login-button" th:href="@{/vlog/loginform}">로그인</a>
-                    </div>
-                    <div th:if="${user != null}" style="display: flex; justify-content: right; align-items: center">
-                        <a th:href="@{/vlog/newpost}" class="button">새 글 작성</a>
-                        <div class="dropdown">
-                            <button class="dropbtn">
-                                <img th:src="@{${user.profileImage}}" alt="Profile Image" class="profile-image"/>
-                            </button>
-                            <div class="dropdown-content">
-                                <a th:href="@{'/vlog/myblog/@' + ${user.username}}">내 블로그</a>
-                                <a th:href="@{/vlog/saves}">임시 글</a>
-                                <a th:href="@{/vlog/liked}">읽기 목록</a>
-                                <a th:href="@{/vlog/settings}">설정</a>
-                                <a th:href="@{/vlog/logout}">로그아웃</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </header>
+<head>
+    <meta charset="UTF-8">
+    <title>Fragment Header</title>
+</head>
+<body>
+<div th:fragment="header2">
+    <header>
+        <div class="left">
+            <a th:href="@{/vlog}" style="align-items: center">
+                <img src="/images/logo2.png" alt="No Posts"/>
+            </a>
+            <a th:href="@{'/vlog/myblog/@' + ${blogOwner.username}}">
+                <h2 th:text="${blog.title}">User's Blog</h2>
+            </a>
         </div>
-    </body>
+        <div class="right">
+            <div th:if="${user == null}">
+                <a class="login-button" th:href="@{/vlog/loginform}">로그인</a>
+            </div>
+            <div th:if="${user != null}" style="display: flex; justify-content: right; align-items: center">
+                <a th:href="@{/vlog/newpost}" class="button">새 글 작성</a>
+                <div class="dropdown">
+                    <button class="dropbtn">
+                        <img th:src="@{${user.profileImage}}" alt="Profile Image" class="profile-image"/>
+                    </button>
+                    <div class="dropdown-content">
+                        <a th:href="@{'/vlog/myblog/@' + ${user.username}}">내 블로그</a>
+                        <a th:href="@{/vlog/saves}">임시 글</a>
+                        <a th:href="@{/vlog/liked}">읽기 목록</a>
+                        <a th:href="@{/vlog/settings}">설정</a>
+                        <a th:href="@{/vlog/logout}">로그아웃</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+</div>
+</body>
 </html>

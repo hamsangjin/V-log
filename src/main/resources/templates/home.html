@@ -1,111 +1,113 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org/" lang="ko">
-    <head>
-        <meta charset="UTF-8">
-        <title>V-log 메인 화면</title>
-        <link rel="stylesheet" href="/css/home.css">
-    </head>
-    <body>
-        <div class="container">
-            <div th:replace="~{fragments/header1 :: header1}"></div>
-            <div class="tabs">
-                <ul class="nav-tabs">
-                    <li th:classappend="${activeTab == 'trending'} ? 'active'"><a href="/vlog/trending">트렌딩</a></li>
-                    <li th:classappend="${activeTab == 'latest'} ? 'active'"><a href="/vlog/latest">최신</a></li>
-                    <li th:classappend="${activeTab == 'feed'} ? 'active'"><a href="/vlog/feed">피드</a></li>
-                </ul>
-            </div>
+<head>
+    <meta charset="UTF-8">
+    <title>V-log 메인 화면</title>
+    <link rel="stylesheet" href="/css/home.css">
+</head>
+<body>
+<div class="container">
+    <div th:replace="~{fragments/header1 :: header1}"></div>
+    <div class="tabs">
+        <ul class="nav-tabs">
+            <li th:classappend="${activeTab == 'trending'} ? 'active'"><a href="/vlog/trending">트렌딩</a></li>
+            <li th:classappend="${activeTab == 'latest'} ? 'active'"><a href="/vlog/latest">최신</a></li>
+            <li th:classappend="${activeTab == 'feed'} ? 'active'"><a href="/vlog/feed">피드</a></li>
+        </ul>
+    </div>
 
-            <!--  로그인하지 않은 경우  -->
-            <div th:if="${user == null}">
-                <!-- 피드에 방문한 경우 -->
-                <div th:if="${activeTab == 'feed'}" class="feed-message">
-                    <img src="/images/no-feed.png" alt="No Feed" />
-                    <p>로그인이 필요한 기능입니다.</p>
-                    <a href="/vlog/loginform" class="create-post-button">로그인</a>
-                </div>
-                <!-- 최신/트렌딩에 게시물 없는 경우 -->
-                <div th:if="${posts != null && posts.isEmpty() && activeTab != 'feed'}" class="feed-message">
-                    <img src="/images/no-feed.png" alt="No Posts" />
-                    <p>새로운 게시물이 없네요.</p>
-                    <a href="/vlog/newpost" class="create-post-button">게시물 작성</a>
-                </div>
-                <!-- 최신/트렌딩에 게시물 있는 경우 -->
-                <div th:if="${posts != null && !posts.isEmpty() && activeTab != 'feed'}">
-                    <div class="post-list">
-                        <div th:each="post : ${posts}" class="post-item">
-                            <div class="thumbnail-container">
-                                <a th:href="@{'/vlog/myblog/@' + ${postUsernames[post.id]} + '/' + ${post.id}}">
-                                    <img class="post-thumbnail" th:src="@{${post.thumbnailImage}}" alt="Thumbnail Image"/>
-                                </a>
-                            </div>
-                            <div class="post-title-link">
-                                <h2 th:text="${post.title}">Post Title</h2>
-                            </div>
-                            <p th:text="${post.thumbnailText}" class="post-content">Post Content</p>
-                            <div class="date-comment">
-                                <p th:text="${#temporals.format(post.createdAt, 'yyyy년 MM월 dd일')}">Post Date</p>
-                                <p>·</p>
-                                <p class="comment-count"><span th:text="${post.comments.size()}"></span>개의 댓글</p>
-                            </div>
-                            <div class="image-like">
-                                <div class="image-name">
-                                    <img class="profile-image1" th:src="@{${postUserThumbnail[post.id]}}" alt="Profile Image"/>
-                                    <span style="color: #ccc; font-size: 0.9em"> by </span>
-                                    <span style="font-size: 1em" class="author" th:text="${postUsernames[post.id]}">유저 이름 </span>
-                                </div>
-                                <span th:text="'🤍  ' + ${#lists.size(post.likes)}">Likes</span>
-                            </div>
-                        </div>
+    <!--  로그인하지 않은 경우  -->
+    <div th:if="${user == null}">
+        <!-- 피드에 방문한 경우 -->
+        <div th:if="${activeTab == 'feed'}" class="feed-message">
+            <img src="/images/no-feed.png" alt="No Feed"/>
+            <p>로그인이 필요한 기능입니다.</p>
+            <a href="/vlog/loginform" class="create-post-button">로그인</a>
+        </div>
+        <!-- 최신/트렌딩에 게시물 없는 경우 -->
+        <div th:if="${posts != null && posts.isEmpty() && activeTab != 'feed'}" class="feed-message">
+            <img src="/images/no-feed.png" alt="No Posts"/>
+            <p>새로운 게시물이 없네요.</p>
+            <a href="/vlog/newpost" class="create-post-button">게시물 작성</a>
+        </div>
+        <!-- 최신/트렌딩에 게시물 있는 경우 -->
+        <div th:if="${posts != null && !posts.isEmpty() && activeTab != 'feed'}">
+            <div class="post-list">
+                <div th:each="post : ${posts}" class="post-item">
+                    <div class="thumbnail-container">
+                        <a th:href="@{'/vlog/myblog/@' + ${postUsernames[post.id]} + '/' + ${post.id}}">
+                            <img class="post-thumbnail" th:src="@{${post.thumbnailImage}}" alt="Thumbnail Image"/>
+                        </a>
                     </div>
-                </div>
-            </div>
-
-            <!-- 로그인한 경우 -->
-            <div th:if="${user != null}">
-                <!-- 최신/트렌딩에 게시물 없는 경우 -->
-                <div th:if="${posts != null && posts.isEmpty() && activeTab != 'feed'}" class="feed-message">
-                    <img src="/images/no-feed.png" alt="No Posts" />
-                    <p>새로운 게시물이 없네요.</p>
-                    <a href="/vlog/newpost" class="create-post-button">게시물 작성</a>
-                </div>
-                <!-- 피드에 게시물이 없는 경우 -->
-                <div th:if="${posts == null || (posts.isEmpty() && activeTab == 'feed')}" class="feed-message">
-                    <img src="/images/no-feed.png" alt="No Posts" />
-                    <p>새로운 피드가 없네요.</p>
-                </div>
-                <!-- 어떤 탭이든 게시물이 있는 경우 -->
-                <div th:if="${posts != null && !posts.isEmpty()}">
-                    <div class="post-list">
-                        <div th:each="post : ${posts}" class="post-item">
-                            <div class="thumbnail-container">
-                                <a th:href="@{'/vlog/myblog/@' + ${postUsernames[post.id]} + '/' + ${post.id}}">
-                                    <img class="post-thumbnail" th:src="@{${post.thumbnailImage}}" alt="Thumbnail Image"/>
-                                </a>
-                            </div>
-                            <div class="post-title-link">
-                                <h2 th:text="${post.title}">Post Title</h2>
-                            </div>
-                            <p th:text="${post.thumbnailText}" class="post-content">Post Content</p>
-                            <div class="date-comment">
-                                <p th:text="${#temporals.format(post.createdAt, 'yyyy년 MM월 dd일')}">Post Date</p>
-                                <p>·</p>
-                                <p class="comment-count"><span th:text="${post.comments.size()}"></span>개의 댓글</p>
-                            </div>
-                            <div class="image-like">
-                                <div class="image-name">
-                                    <img class="profile-image1" th:src="@{${postUserThumbnail[post.id]}}" alt="Profile Image"/>
-                                    <span style="color: #ccc; font-size: 0.9em"> by </span>
-                                    <span style="font-size: 1em" class="author" th:text="${postUsernames[post.id]}">유저 이름 </span>
-                                </div>
-                                <span th:text="'🤍  ' + ${#lists.size(post.likes)}">Likes</span>
-                            </div>
+                    <div class="post-title-link">
+                        <h2 th:text="${post.title}">Post Title</h2>
+                    </div>
+                    <p th:text="${post.thumbnailText}" class="post-content">Post Content</p>
+                    <div class="date-comment">
+                        <p th:text="${#temporals.format(post.createdAt, 'yyyy년 MM월 dd일')}">Post Date</p>
+                        <p>·</p>
+                        <p class="comment-count"><span th:text="${post.comments.size()}"></span>개의 댓글</p>
+                    </div>
+                    <div class="image-like">
+                        <div class="image-name">
+                            <img class="profile-image1" th:src="@{${postUserThumbnail[post.id]}}" alt="Profile Image"/>
+                            <span style="color: #ccc; font-size: 0.9em"> by </span>
+                            <span style="font-size: 1em" class="author"
+                                  th:text="${postUsernames[post.id]}">유저 이름 </span>
                         </div>
+                        <span th:text="'🤍  ' + ${#lists.size(post.likes)}">Likes</span>
                     </div>
                 </div>
             </div>
         </div>
-    </body>
+    </div>
+
+    <!-- 로그인한 경우 -->
+    <div th:if="${user != null}">
+        <!-- 최신/트렌딩에 게시물 없는 경우 -->
+        <div th:if="${posts != null && posts.isEmpty() && activeTab != 'feed'}" class="feed-message">
+            <img src="/images/no-feed.png" alt="No Posts"/>
+            <p>새로운 게시물이 없네요.</p>
+            <a href="/vlog/newpost" class="create-post-button">게시물 작성</a>
+        </div>
+        <!-- 피드에 게시물이 없는 경우 -->
+        <div th:if="${posts == null || (posts.isEmpty() && activeTab == 'feed')}" class="feed-message">
+            <img src="/images/no-feed.png" alt="No Posts"/>
+            <p>새로운 피드가 없네요.</p>
+        </div>
+        <!-- 어떤 탭이든 게시물이 있는 경우 -->
+        <div th:if="${posts != null && !posts.isEmpty()}">
+            <div class="post-list">
+                <div th:each="post : ${posts}" class="post-item">
+                    <div class="thumbnail-container">
+                        <a th:href="@{'/vlog/myblog/@' + ${postUsernames[post.id]} + '/' + ${post.id}}">
+                            <img class="post-thumbnail" th:src="@{${post.thumbnailImage}}" alt="Thumbnail Image"/>
+                        </a>
+                    </div>
+                    <div class="post-title-link">
+                        <h2 th:text="${post.title}">Post Title</h2>
+                    </div>
+                    <p th:text="${post.thumbnailText}" class="post-content">Post Content</p>
+                    <div class="date-comment">
+                        <p th:text="${#temporals.format(post.createdAt, 'yyyy년 MM월 dd일')}">Post Date</p>
+                        <p>·</p>
+                        <p class="comment-count"><span th:text="${post.comments.size()}"></span>개의 댓글</p>
+                    </div>
+                    <div class="image-like">
+                        <div class="image-name">
+                            <img class="profile-image1" th:src="@{${postUserThumbnail[post.id]}}" alt="Profile Image"/>
+                            <span style="color: #ccc; font-size: 0.9em"> by </span>
+                            <span style="font-size: 1em" class="author"
+                                  th:text="${postUsernames[post.id]}">유저 이름 </span>
+                        </div>
+                        <span th:text="'🤍  ' + ${#lists.size(post.likes)}">Likes</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
 </html>
 
 <!--<div class="flex-center">-->
