@@ -5,22 +5,26 @@ Spring Boot를 이용한 웹 애플리케이션 개발 프로젝트로, <a href=
 
 <br>
 
-## 목차
+# 목차
   - [개요](#개요)
   - [기술 스택](#기술-스택)
   - [요구사항](#요구사항)
-
+  - [도메인 설계](#도메인-설계)
+  - [시연 영상](#시연-영상)
+  - [프로젝트를 마치며](#프로젝트를-마치며)
 
 <br>
+<br>
 
-## 개요
+# 개요
 - 프로젝트 이름: V-log
-- 프로젝트 지속기간: 2024. 06. 18 ~
+- 프로젝트 지속기간: 2024. 06. 18 ~ 2024. 07. 19
 - 개인 프로젝트
 
 <br>
+<br>
 
-## 기술 스택
+# 기술 스택
 | 분류 | 기술 스택 |
 |:---:|:---:|
 | 개발 언어 | ![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white) ![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E) ![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white) ![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white) |
@@ -31,8 +35,9 @@ Spring Boot를 이용한 웹 애플리케이션 개발 프로젝트로, <a href=
 <!-- | 배포 | ![AWS](https://img.shields.io/badge/AWS-%23FF9900.svg?style=for-the-badge&logo=amazon-aws&logoColor=white) | -->
 
 <br>
+<br>
 
-## 요구사항
+# 요구사항
 <details><summary> 📚 <b>블로그</b></summary>
 
         ✅ 회원 1명은 1개의 Blog를 가질 수 있다.
@@ -108,8 +113,44 @@ Spring Boot를 이용한 웹 애플리케이션 개발 프로젝트로, <a href=
         ❌ 관리자는 어떤 글이든 삭제할 수 있습니다
 </details>
 
-
+<br>
 <br>
 
-## 화면 구성
-~ing
+# 도메인 설계
+<img width="826" alt="스크린샷 2024-07-23 23 02 42" src="https://github.com/user-attachments/assets/3b50340f-7018-494f-bc74-b003437f492a">
+
+
+<br>
+<br>
+
+# 시연 영상
+아래 그림을 클릭하면 유튜브로 연결됩니다.
+
+<a href="https://youtu.be/s40xUHc08TI"> 
+  <img width="1498" alt="velog 클론 코딩 썸네일" src="https://github.com/user-attachments/assets/b0175278-7ab5-4fa3-8141-78e9c9685606">
+</a>
+
+<br>
+<br>
+
+# 프로젝트를 마치며
+
+## 배운 점
+- 도메인 설계를 하고, 개발을 하면서 설계에 대한 중요성을 알게 되었다.
+  - 진짜 설계만 제대로 해도 개발 시간이 많이 단축될 거 같다.(요구사항 분석 및 API 명세서도 !!)
+- 개인 프로젝트인 만큼 혼자 모든 걸 구현하다보니, 머리로만 알고있던 MVC 패턴을 체화시킬 수 있었다.
+- 컨트롤러와 서비스 로직의 분리를 위한 리팩토링을 하다보니, 어느 코드가 서비스에 들어갈지, 컨트롤러에 들어갈지 알게 되었다.
+
+
+## 고쳐야할 점
+- 기능 하나하나를 구현하기 급급해 테스트 코드를 작성하지 않으면서 개발하여, 디버깅을 할 때 어디서 문제가 났는지 찾기 어려웠다.
+- Chat gpt에 대한 의존을 하게 돼서, 동작만 하면 넘어가버린 적이 있다.
+  - ps. 새로운 기능을 구현할 때 틀을 잡는 정도로 사용하니 더욱 유용하게 사용할 수 있었다.
+- Controller에서 Client한테 데이터를 넘길 때 DTO를 사용하지 않고, 그냥 도메인을 넘겨버린 점을 고쳐야한다.
+
+## 아쉬운 점
+- 프로젝트 초반까지는 Spring Security를 배우지 않고 만들다가, 중간에 배워 적용하려다보니 Spring Security의 폼 로그인만 사용했다.
+  - JWT, OAuth 등을 추가해보고 싶다
+- 체계적인 코드 리뷰를 받지 못해서 내가 올바르게 개발하고 있는가에 대한 의구심이 계속 들었다.
+  - 패키지 아키텍처, 클린 코드 등등..
+- 개인 프로젝트라고 생각해 git 브랜치 전략을 사용하지 않았다.
