@@ -7,12 +7,12 @@
 
 # 목차
   - [개요](#개요)
-  - [기술 스택](#기술-스택)
-  - [도메인 설계](#도메인-설계)
-  - [패키지 구조](#패키지-구조)
   - [Preview](#preview)
   - [시연 영상](#시연-영상)
   - [개발 기능](#개발-기능)
+  - [기술 스택](#기술-스택)
+  - [ERD](#erd)
+  - [아키텍처](#아키텍처)
 
 <br>
 <br>
@@ -23,54 +23,6 @@
 
 <br>
 <br>
-
-# 기술 스택
-| 분류 | 기술 스택 |
-|:---:|:---:|
-| 개발 언어 | ![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white) ![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E) ![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white) ![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white) |
-| 프레임워크/라이브러리 | ![Spring](https://img.shields.io/badge/spring-%236DB33F.svg?style=for-the-badge&logo=spring&logoColor=white) ![Spring Boot](https://img.shields.io/badge/springboot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white) ![Sprint Secutiry](https://img.shields.io/badge/springsecurity-6DB33F?style=for-the-badge&logo=springsecurity&logoColor=white) <!-- ![JWT](https://img.shields.io/badge/JWT-black?style=for-the-badge&logo=JSON%20web%20tokens)--> ![Thymeleaf](https://img.shields.io/badge/Thymeleaf-%23005C0F.svg?style=for-the-badge&logo=Thymeleaf&logoColor=white) | 
-| 데이터베이스 | ![Mysql](https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white) |
-| etc | ![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white) ![Notion](https://img.shields.io/badge/Notion-%23000000.svg?style=for-the-badge&logo=notion&logoColor=white)
-
-<br>
-<br>
-
-# 도메인 설계
-<img width="826" alt="스크린샷 2024-07-23 23 02 42" src="https://github.com/user-attachments/assets/3b50340f-7018-494f-bc74-b003437f492a">
-
-<br>
-<br>
-
-# 패키지 구조
-```
-src
-├── main
-│   ├── java
-│   │   └── hello
-│   │       └── velog
-│   │           ├── config
-│   │           ├── controller
-│   │           ├── domain
-│   │           ├── dto
-│   │           ├── exception
-│   │           ├── global
-│   │           ├── repository
-│   │           └── service
-│   └── resources
-│       ├── static
-│       │   ├── css
-│       │   ├── images
-│       │   │   ├── post
-│       │   │   └── user
-│       │   └── js
-│       └── templates
-│           └── fragments
-└── test
-```
-
-<br>
-<br>
-
 
 # Preview
 ## 1. Home
@@ -115,3 +67,50 @@ src
 - `블로그 글 관리`: 사용자는 글을 작성, 수정, 삭제할 수 있으며, 즉시 출간하거나 임시 글을 공개적으로 또는 비공개로 출간할 수 있습니다.
 - `블로그 글 보기`: 공개된 블로그 글 보기 및 비공개 글 표시 기능을 제공하며, 사용자는 다른 사람의 글에 좋아요를 할 수 있고, 필요에 따라 팔로우할 수 있습니다.
 - `댓글 기능`: 블로그 글에 댓글을 작성하고, 답글을 추가하거나 삭제할 수 있습니다.
+
+<br>
+<br>
+
+# 기술 스택
+| 분류 | 기술 스택 |
+|:---:|:---:|
+| 개발 언어 | ![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white) ![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E) ![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white) ![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white) |
+| 프레임워크/라이브러리 | ![Spring](https://img.shields.io/badge/spring-%236DB33F.svg?style=for-the-badge&logo=spring&logoColor=white) ![Spring Boot](https://img.shields.io/badge/springboot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white) ![Sprint Secutiry](https://img.shields.io/badge/springsecurity-6DB33F?style=for-the-badge&logo=springsecurity&logoColor=white) <!-- ![JWT](https://img.shields.io/badge/JWT-black?style=for-the-badge&logo=JSON%20web%20tokens)--> ![Thymeleaf](https://img.shields.io/badge/Thymeleaf-%23005C0F.svg?style=for-the-badge&logo=Thymeleaf&logoColor=white) | 
+| 데이터베이스 | ![Mysql](https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white) |
+| etc | ![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white) ![Notion](https://img.shields.io/badge/Notion-%23000000.svg?style=for-the-badge&logo=notion&logoColor=white)
+
+<br>
+<br>
+
+# ERD
+<img width="826" alt="스크린샷 2024-07-23 23 02 42" src="https://github.com/user-attachments/assets/3b50340f-7018-494f-bc74-b003437f492a">
+
+<br>
+<br>
+
+# 아키텍처
+```
+src
+├── main
+│   ├── java
+│   │   └── hello
+│   │       └── velog
+│   │           ├── config
+│   │           ├── controller
+│   │           ├── domain
+│   │           ├── dto
+│   │           ├── exception
+│   │           ├── global
+│   │           ├── repository
+│   │           └── service
+│   └── resources
+│       ├── static
+│       │   ├── css
+│       │   ├── images
+│       │   │   ├── post
+│       │   │   └── user
+│       │   └── js
+│       └── templates
+│           └── fragments
+└── test
+```
